@@ -281,7 +281,7 @@ Note that Pedersen commitment is a trapdoor commitment scheme (see the first sec
 
 [1] C. Hazay and Y. Lindell. Efficient Secure Two-Party Computation: Techniques and Constructions. Springer, 2010.
 
-[2] I. Damg˚ard. On Σ Protocols. http://www.daimi.au.dk/∼ivan/Sigma.pdf
+[2] I. Damgard. On Σ Protocols. http://www.daimi.au.dk/∼ivan/Sigma.pdf
 
 [3] https://tools.ietf.org/html/rfc4252#page-8
 
