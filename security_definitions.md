@@ -110,8 +110,6 @@ An example of not CPA-secure system is a block encryption where CBC mode with pr
 
 ![semantic security many time key](https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security_many_time_key.png)
 
-The famous BEAST attack exploits the misuse of initialization vectors as well, see more on http://crypto.stackexchange.com/questions/1078/how-can-cipher-block-chaining-cbc-in-ssl-be-attacked/1082#1082.
-
 The adversary in CPA definition is so powerful that the encryption must be randomized to withstand the attack. If the same message is encrypted twice, the obtained ciphertexts need to be different (non deterministic encryption).
 
 Two security notions have been summarized:

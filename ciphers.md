@@ -1,4 +1,4 @@
-#AES 
+# AES 
 
 AES operates on 4x4 matrix of bytes which is named a state (state can contain 16 bytes which is the same as 128 bits - which is AES block size). Likewise, the cipher key is contained in a similar matrix with four rows and 4, 6, or 8 columns (depends on the key size). Each element in the matrix can be considered as an element from GF(2^8). More about GFs can be found in [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md).
 

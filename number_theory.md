@@ -417,7 +417,7 @@ x^13 + x^12 + x^7 + x^6 + x^4 + x^3 + x^1 + x^0
 
 Now we need to reduce this polynomial once again because the exponents are not in GF(2^8) - the highest coefficient should be at most 7. This is done by dividing with an irreducible polynomial (the polynomial that cannot be factored) and keeping the remainder.
 
-There is not only one polynomial that can be chosen for reducing - the multiplication will depend on it, but all the fields constructed using the properly chosen reducing polynomial will be isomorphic. For GF(2^8) we can choose for example x^8 + x^4 + x^3 + x^1 + x^0 (this is what AES uses, see ciphers.md).
+There is not only one polynomial that can be chosen for reducing - the multiplication will depend on it, but all the fields constructed using the properly chosen reducing polynomial will be isomorphic. For GF(2^8) we can choose for example x^8 + x^4 + x^3 + x^1 + x^0 (this is what AES uses, see [ciphers.md](https://github.com/miha-stopar/crypto-notes/blob/master/ciphers.md)).
 
 Let us sage (SageMath) for a little demonstration. Let us create GF(2^8):
 

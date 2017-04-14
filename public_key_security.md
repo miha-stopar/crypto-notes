@@ -120,7 +120,7 @@ G() chooses two random primes p, q and set N = p * q. The primes p and q should 
 
 Next, an integer e is chosen such that gcd(e, phi(N)) = 1. Lastly, an integer d is chosen such that e * d = 1 mod phi(N). Public key is a pair (N, e), private key is a pair (N, d).
 
-Private key d in calculated using extended Euclidean algorithm (see[number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md)). For a given a and b the extended Euclidean algorithm finds x and y such that a * x + b * y = gcd(a, b). 
+Private key d in calculated using extended Euclidean algorithm (see [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md)). For a given a and b the extended Euclidean algorithm finds x and y such that a * x + b * y = gcd(a, b). 
 
 For RSA we want to find x and y such that phi(N) * x + e * y = gcd(phi(N), e). An integer e was chosen such that gcd(phi(N), e) = 1, thus there exists x and y such that phi(N) * x + e * y = 1. Apply mod phi(N) and you get e * y = 1. Number y is what we are looking for: private key d.
 
