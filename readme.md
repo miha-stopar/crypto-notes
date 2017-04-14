@@ -2,7 +2,7 @@
 
 I started taking these notes when doing Dan Boneh crypto course on Coursera and when solving Matasano challenges. Both are highly recommended. While trying to learn some more crypto I am gradually adding further content.
 
-A helpful resources I sometimes use:
+Resources I sometimes use:
  
  * [Handbook of applied cryptography](http://cacr.uwaterloo.ca/hac/) by Alfred J. Menezes, Paul C. van Oorschot and Scott A. Vanstone
  * [Guide to Elliptic Curve Cryptography](http://cacr.uwaterloo.ca/ecc/) by Darrel Hankerson, Alfred Menezes, and Scott Vanstone
