@@ -273,8 +273,8 @@ Note that CPA and CCA queries can be interleaved in any order. When asking for a
 
 The system is chosen-ciphertext secure (as always here - this is just a sketch of definition) if the probability that the adversary determines which messages have been returned in CPA queries is negligible (the attacker is allowed to decrypt any ciphertext other than the challenged ciphertexts, but he still cannot determine whether the first or second messages have been encrypted).
 
-(for pub-key is different, see [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/publick_key_security.md))
-Note that for public key encryption the definition for security is different (no need to give an attacker the ability to mount the CPA, because an attacker has a public key and can encrypt any message), see [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/publick_key_security.md).
+(for pub-key is different, see [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/public_key_security.md))
+Note that for public key encryption the definition for security is different (no need to give an attacker the ability to mount the CPA, because an attacker has a public key and can encrypt any message), see [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/public_key_security.md).
 
 ## Authenticated encryption
 

@@ -364,7 +364,7 @@ The **order** of a finite field is the number of elements in the field. Finite f
 
 Examples of *infinite* fields are rational numbers, real numbers and complex numbers. However, cryptography makes use of *finite* fields. Évariste Galois who was born in 1811 and killed at the age of 20 in a duel (picture from Wikipedia) found out that for any prime integer p and any integer n, a unique field with p^n elements exists, usually denoted GF(p^n). That means that if we take two Galois fields with the same number of elements, say A and B, there is always a mapping function f: A->B for which it holds f(a+b) = f(a) + f(b) and f(a * b) = f(a) * f(b). Such mapping function is called isomorphism.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img-wikipedia/galois.jpg
+![Galois](https://raw.github.com/miha-stopar/crypto-notes/master/img-wikipedia/galois.jpg)
 
 ### Prime Galois fields
 

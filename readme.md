@@ -18,7 +18,7 @@ Terms like semantic security, chosen-plaintext attack, chosen-ciphertext attack,
 [security_definitions.md](https://github.com/miha-stopar/crypto-notes/blob/master/security_definitions.md).
 
 Public key security definitions and most known schemes (ElGamal, RSA, DSA):
-[public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/publick_key_security.md).
+[public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/public_key_security.md).
 
 A brief history of provable security:
 [provable_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/provable_security.md).

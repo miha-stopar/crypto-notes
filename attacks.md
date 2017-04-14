@@ -24,7 +24,7 @@ Note: only the key length is required to be known.
 
 When the same message is sent to three different entities, each having its own RSA modulus N (let us say N1, N2, N3) and each using the same small encryption exponent e (like e = 3), the message can be trivially decrypted by an eavesdropper.
 
-The message m is encrypted as `c1 = m^3 % N1, c2 = m^3 % N2, c3 = m^3 % N3`. The integers N1, N2, N3 are pairwise relatively prime (otherwise the factorization of N gets much easier, see RSA problems section in [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/publick_key_security.md)), and thus by Chinese remainder theorem we can find x such that:
+The message m is encrypted as `c1 = m^3 % N1, c2 = m^3 % N2, c3 = m^3 % N3`. The integers N1, N2, N3 are pairwise relatively prime (otherwise the factorization of N gets much easier, see RSA problems section in [public_key_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/public_key_security.md)), and thus by Chinese remainder theorem we can find x such that:
 
  * x = c1 mod N1
  * x = c2 mod N2
