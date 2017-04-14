@@ -78,11 +78,11 @@ sage: P
 Launched png viewer for Graphics object consisting of 1 graphics primitive
 ```
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/ecc1.png
+![ECC](https://raw.github.com/miha-stopar/crypto-notes/master/img/ecc1.png)
 
 An example elliptic curve is given (all points drawn, not only from K) here (taken from [Wikipedia](https://en.wikipedia.org/wiki/Elliptic_curve)):
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img-wikipedia/ecc-addition.png
+![ECC addition](https://raw.github.com/miha-stopar/crypto-notes/master/img-wikipedia/ecc-addition.png)
 
 The picture above also demonstrates how addition of two points is defined for elliptic curves - a line needs to be drawn from P to Q, the intersection of this line with the curve is then relected over the x axis to get -R = P + Q (picture shows only R). This is called chord-and-tangent rule for adding points. Such addition turns elliptic curve over a finite field into an abelian group where infinity (denoted as 0) serves as an identity element.
 

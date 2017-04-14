@@ -24,15 +24,15 @@ SubBytes uses 16x16 substitution table to find a replacement byte for a given by
 
 Substition table (S-box) is constructed by composing two transformations. First we prepare the initial table where value in each cell is the joined value of row index and column index:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox1.png
+![sbox](https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox1.png)
 
 Then we replace the value in each cell by its multiplicative inverse in GF(2^8), using the irreducible polynomial x^8 + x^4 + x^3 + x + 1. The value 0x00 is replaced by itself (it does not have a multiplicative inverse). After this step, bit scrambling is applied on the value on each cell. The value in a cell should now be thought as a vector, like 10010001 (coordinates b_7, b_6,...,b_0). Bit scrambling is done using the affine transformation:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox3.png
+![sbox](https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox3.png)
 
 Once the bit scrambling is applied, the result is S-box:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox2.png
+![sbox](https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox2.png)
 
 When applying SubBytes for a particular value, say 53 (which in decimal is 5 * 16 + 3 = 83), simply the value in the matrix at row index 5 and column index 3 is taken, which is ed (237 in decimal).
 
@@ -46,7 +46,7 @@ For example there was a linearity found in DES with a bias greater than 2^(-21).
 
 ShiftFows does not change the first row, shifts the second row by one byte to the left, the third row by two bytes, and shifts the last row by three bytes (it scrambles the byte order inside the 128-bit block):
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox4.png
+![sbox](https://raw.github.com/miha-stopar/crypto-notes/master/img/sbox4.png)
 
 ## MixColumns
 
@@ -81,7 +81,7 @@ AddRoundKey takes the round key (derived from the original 128-bit key) and xors
 
 First, the 16 bytes of the original key are arranged in the matrix in the same way it is done for the input block. 
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/key_expansion1.png
+![key expansion](https://raw.github.com/miha-stopar/crypto-notes/master/img/key_expansion1.png)
 
 The first column (the first four bytes of the key) constitute the word w_0, the second w_1...:
 

@@ -51,7 +51,7 @@ It works when exponent is 3. An RSA signature is pretty much the same as RSA enc
 
 First the message needs to be hashed. Let's say that we want to sign a message 'hi mom'. Its hash is: '925a89b43f3caff507db0a86d20a2428007f10b6'. The hash is then prepended with bytes in ASN.1 format which say what hash algorithm is used. We will simplify this and say only the hash length is prepended which is 20 (14 is hex). This is then prepended with PKCS-1 padding like this (byte of 0, byte of 1, string of 0xFF bytes, byte of 0):
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher1.png
+![Bleichenbacher](https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher1.png)
 
 Note that n has to be big enough - in the case above the message has been formatted to have 384x8 bits = 3072 bits), so we have to choose p and q of 1536 bits to have n of 3072 bits.
 
@@ -61,7 +61,7 @@ The problem appears when the implementation of the verifier does not check wheth
 
 For example an attacker can provide a valid signature for 'hi mom' without knowing the private key exponent. First, the hash is padded like below:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher2.png
+![Bleichenbacher](https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher2.png)
 
 Only three 0xFF bytes are given before the byte of 0, byte 14 (hash length) and hash data. We assume here that implementation checks for pattern 'FF FF FF 00', then reads the hash length and finally extracts the hash data. The bytes behind the hash (garbage data) are never read (there are just bytes of 0 there, but this is to be changed immediately).
 
@@ -71,7 +71,7 @@ Let's denote the constructed string with only bytes of 0 appended (as on the pic
 
 However, r ^ 3 should not be greater than the number representation of the string on the picture below (otherwise the bytes other than in garbage data will be changed): 
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher3.png
+![Bleichenbacher](https://raw.github.com/miha-stopar/crypto-notes/master/img/bleichenbacher3.png)
 
 The value r (or bytes representation of it) is the valid signature of 'hi mom' and can be sent to the verifier.
 
@@ -85,7 +85,7 @@ We use the oracle function iteratively and by each step we will have a more prec
 
 For an easier understanding below is an example with plaintext number being 7 and RSA n parameter being 11.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/rsa_parity.png
+![RSA parity](https://raw.github.com/miha-stopar/crypto-notes/master/img/rsa_parity.png)
 
 We do not know the number 7, so let us say it is variable x. We can check whether 2*x is odd or even (actually whether (2*x)\*\*e is odd or even, but we can simply check 2\*x because (2\*x)^e is odd if and only if 2*x is odd). We know that n is odd, because it is a product of two odd (large prime) numbers. From this it follows that 2*x is odd when 2*x mod n is even. 
 

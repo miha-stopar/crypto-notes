@@ -53,7 +53,7 @@ In the last step third-party verifier does not check only that dealer knows alph
 
 Note that (g^y)^alpha is given by S_i to the power of the second element in enc_P_i(s_i): `S_i^(s_i_inv * y^alpha) = g^(s_i * s_i_inv * y^alpha) = (g^y)^alpha`.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/stadler_verifiable_encryption.png
+![stadler verifiable encryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/stadler_verifiable_encryption.png)
 
 Basically, this is Schnorr protocol for proving the knowledge of log to base g of h^alpha and knowledge of log to base g^y of (g^y)^alpha and that in both cases the value (alpha) is the same.
 

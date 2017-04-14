@@ -7,7 +7,7 @@
 miniLock forces you to choose a passphrase (as password, but longer) with at least 100 bits of entropy. The passphrase is then hashed using BLAKE2 and passed to scrypt (email is used as a salt, see crypto_libraries.md for slightly more info about scrypt). 
 The 32-byte output of scrypt is used as a private key. The public key is then derived by TweetNaCl curve25519-xsalsa20-poly1305 contruction.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-key-derivation.png
+![key derivation](https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-key-derivation.png)
 
 ## Encryption / decryption of a file
 
@@ -19,19 +19,19 @@ A fileInfo (containing fileKey) is encrypted directly with persistent keys (send
 
 A decryptInfo is encrypted using the ephemeral key (receiver's public key and ephemeral private key). Besides encrypted decryptInfo, sender sends also public part of ephemeral key in the clear.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-fileKey-encryption.png
+![fileKey encryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-fileKey-encryption.png)
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-ephemeral-encryption.png
+![ephemeral encryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-ephemeral-encryption.png)
 
 So, the sender's public key (sender's ID which is included in decryptInfo) is needed to decrypt fileInfo.
 
 Sender is anonymous until the receiver decrypts decryptInfo with the ephemeral public key and his private key as depicted below:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-ephemeral-decryption.png
+![ephemeral decryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-ephemeral-decryption.png)
 
 At this point the receiver has sender's ID (public key) and can decrypt the fileInfo using sender's public key and his private key:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-fileKey-decryption.png
+![fileKey decryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/minilock-fileKey-decryption.png)
 
 However, later on the sender cannot decrypt the message because he does not store the ephemeral private key (while the ephemeral public key is always available in the header of the binary blob of encrypted file).
 

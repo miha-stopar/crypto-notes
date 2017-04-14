@@ -44,7 +44,7 @@ Adversary sends two messages m0, m1 (the same length) to the challenger, challen
 
 Informally (this is not a formal definition), adversary should not be able to guess which message has been encrypted - the probability of the correct guess should be very close 0.5.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security_public_key.png
+![semantic security public key](https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security_public_key.png)
 
 Note that in public key encryption there is no need to give an attacker the ability to mount the chosen-plaintext attack because an attacker has a public key and can encrypt any message (in symmetric encryption an attacker needs help from the challenger to create ciphertexts). See [security_definitions.md](https://github.com/miha-stopar/crypto-notes/blob/master/security_definitions.md).
 
@@ -61,7 +61,7 @@ Now the adversary can continue with the ciphertext query. This is CCA phase 2. T
 
 Informally, adversary should not be able to guess which message (m_0 or m_1) has been encrypted.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/cca_security_public_key.png
+![CCA security](https://raw.github.com/miha-stopar/crypto-notes/master/img/cca_security_public_key.png)
 
 # Trapdoor functions (TDF)
 
@@ -89,9 +89,9 @@ Public key encryption system (G, E, D) is defined as:
  * E(pk, m) is defined as: take random x from X, calculate y = F(pk, x), calculate k = H(x), calculate c = E_S(k, m), outputs (y, c)
  * D(sk, (y, c)) is defined as: calculate x = F^(-1)(sk, y), calculate k = H(x), calculate m = D_s(k, c), outputs m
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/trapdoor_encrypt.png
+![trapdoor encryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/trapdoor_encrypt.png)
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/trapdoor_decrypt.png
+![trapdoor decryption](https://raw.github.com/miha-stopar/crypto-notes/master/img/trapdoor_decrypt.png)
 
 So TDF is used only to encrypt a random x, the actual message is encrypted using a symmetric encryption.
 

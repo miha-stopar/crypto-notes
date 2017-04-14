@@ -102,7 +102,7 @@ Thus, once the current b reaches 0, we can express current a (the actual greates
 
 See the recursion steps below for a = 32 and b = 12:
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/extended_euclid.png
+![Extended Euclid](https://raw.github.com/miha-stopar/crypto-notes/master/img/extended_euclid.png)
 
 The greatest common divisor is 4 and can be expressed as 4 = 32 * (-1) + 12 * 3.
 

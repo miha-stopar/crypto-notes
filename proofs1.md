@@ -31,11 +31,11 @@ Values p, q, g, h are public, h is secret.
 
 When committing to some x from Z_q, sender chooses random r from Z_q and sends `c = (g^x * h^r) % p` to receiver.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/pedersen_commit.png
+![pedersen commmit](https://raw.github.com/miha-stopar/crypto-notes/master/img/pedersen_commit.png)
 
 When a sender reveals x and r, receiver verifies that `c = (g^x * h^r) % p`.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/pedersen_decommit.png
+![pedersen decommit](https://raw.github.com/miha-stopar/crypto-notes/master/img/pedersen_decommit.png)
 
 Note that Pedersen commitment is a **trapdoor commitment scheme**: if the committer knows the exponent a (trapdoor), she can decommit c to an arbitrary value x'. 
 Decommitter simply reveals (x', r' = r + (x - x')/a). It holds:
@@ -76,7 +76,7 @@ A simple example of a zero knowledge proof is the proof of knowledge of a discre
  * prover sends y = (r+s*c) % q to the verifier
  * verifier verifies that g^y = g^r * (g^s)^c (mod p)
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/schnorr_protocol.png
+![schnorr protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/schnorr_protocol.png)
 
 Note that a verifier cannot extract s from y = r + s*c since she does not know r (to extract r a discrete logarithm would need to be solved). Also note that if c is not chosen randomly (if prover can predict the value c), the prover can set x = g^y * t^(-c) and convince the verifier that she knows the secret witout really knowing it.
 
@@ -113,7 +113,7 @@ The signature is then (y, c), where y = r + s\*c
 
 Verifier needs to check g^y = g^r * (g^s)^hash(m || x) (mod p).
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/schnorr_signature.png
+![schnorr signature](https://raw.github.com/miha-stopar/crypto-notes/master/img/schnorr_signature.png)
 
 ## Formal definition of sigma protocols
 
@@ -214,7 +214,7 @@ If epsilon(x) > kappa(x), then upon input x and oracle access to P\*, the machin
 Completeness holds by definition. What we need to show is that we are able to find two accepting transcripts "sufficently" quickly.
 Let's visualize all possible interactions in a matrix - one row for each possible choices by P, one column for each possible challenge value e.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/zero_knowledge.png
+![zero knowledge](https://raw.github.com/miha-stopar/crypto-notes/master/img/zero_knowledge.png)
 
 I assume by this is meant that each row presents a possible first message in a protocol. 
 The matrix contains 1 if P can convince V for the first message (which defines this row) and for the challenge that defines this column (there are 2^t possible values for challenge), otherwise there is 0.
@@ -274,7 +274,7 @@ The difference is that now the extractor can obtain the trapdoor and get e' != e
 
 **It can be proved that this protocol is zero-knowledge proof of knowledge.**
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/zk_from_sigma_protocol.png
+![zero knowledge from sigma](https://raw.github.com/miha-stopar/crypto-notes/master/img/zk_from_sigma_protocol.png)
 
 Note that Pedersen commitment is a trapdoor commitment scheme (see the first section on this page) and can be thus used to construct a zero-knowledge proof of knowledge.
 

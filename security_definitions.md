@@ -49,7 +49,7 @@ The formal definition of semantic security uses a challenger / adversary game (s
  * challenger generates a random key, encrypts one of these two messages and sends the ciphertext to the adversary
  * adversary guesses which message was sent back
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security.png
+![semantic security](https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security.png)
 
 The accuracy of the guesses must not be better than a coin flip.
 
@@ -108,7 +108,7 @@ An example of not CPA-secure system is a block encryption where CBC mode with pr
  * send the two following messages to the challenger: m_0 = iv \xor iv_1 and an arbitrary m_1 which is different from m_0 
  * challenger returns either E(k, (iv \xor iv_1) \xor iv) or E(k, m_1). The first one is the same as E(k, iv_1) which is a known value from the first step, thus the adversary can easily say which message (m_0 or m_1) has been encrypted
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security_many_time_key.png
+![semantic security many time key](https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security_many_time_key.png)
 
 The famous BEAST attack exploits the misuse of initialization vectors as well, see more on http://crypto.stackexchange.com/questions/1078/how-can-cipher-block-chaining-cbc-in-ssl-be-attacked/1082#1082.
 
@@ -127,7 +127,7 @@ While integrity (and confidentiality) is a crucial part of authenticated encrypt
 
 Alice sends message m to Bob. Alice needs to generate a tag S(k, m) which is later verified by Bob: V(k, m, tag) returns yes (the message m has not been changed) or no (the message m has been changed).
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/mac.png
+![mac](https://raw.github.com/miha-stopar/crypto-notes/master/img/mac.png)
 
 The integrity is provided by MAC.
 MAC I = (S, V) defined over (K, M, T) is a pair of algorithms:
@@ -269,7 +269,7 @@ Adversary have both CPA and CCA power:
 
 Note that CPA and CCA queries can be interleaved in any order. When asking for a decryption for c_i (CCA query), c_i must not be from {c_1, ..., c_(i-1)} where c_1,...,c_(i-1) are all responses to CPA queries so far.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security.png
+![semantic security](https://raw.github.com/miha-stopar/crypto-notes/master/img/semantic_security.png)
 
 The system is chosen-ciphertext secure (as always here - this is just a sketch of definition) if the probability that the adversary determines which messages have been returned in CPA queries is negligible (the attacker is allowed to decrypt any ciphertext other than the challenged ciphertexts, but he still cannot determine whether the first or second messages have been encrypted).
 

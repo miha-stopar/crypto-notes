@@ -129,7 +129,7 @@ DDH: having g, g^a, g^b, Z, check whether Z = g^(a * b).
 
 We define encryption as in ElGamal with a as private key and (g, g^a) as public key, but instead of (g^r, g^(r * a) * m) we use (g^r, Z * m).
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/elgamal_security_proof.png
+![security proof](https://raw.github.com/miha-stopar/crypto-notes/master/img/elgamal_security_proof.png)
 
 Now we encrypt m by using b as r: (g^b, Z * m). 
 If Z = g^(a * b), we should be able with our algorithm to distinguish between (g^b, Z * m0) and (g^b, Z * m1).
@@ -206,7 +206,7 @@ We build a simulator which encrypts as Cramer-Shoup, but uses u1 and u2 from the
 
 When we send two messages m_0 and m_1 to the simulator, it chooses bit k (which message to encrypt), encrypts m_k and returns the ciphertext to us.
 
-.. image:: https://raw.github.com/miha-stopar/crypto-notes/master/img/cramer_shoup_security_proof.png
+![cramer shoup security proof](https://raw.github.com/miha-stopar/crypto-notes/master/img/cramer_shoup_security_proof.png)
 
  1. If r1 = r2 the encryption is as in Cramer-Shoup and (as we are able to break it) we will be able to determine which message has been encrypted with probability which is (for some non-negligible amount) bigger than 0.5.
 
