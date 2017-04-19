@@ -48,7 +48,7 @@ Decommitter simply reveals (x', r' = r + (x - x')/a). It holds:
 
 The majority of the notes in this section are taken from Hazay-Lindell [1] Sigma protocols and efficient zero-knowledge chapter which is based on [2].
 
-Zero-knowledge (ZK) proof is a method by which one party proves to another party that a given statement is true. Zero-knowledge proof of knowledge (ZKPOK) is a method where one party proves to another that she knows how to prove a statement (without actually proving it).
+Zero-knowledge proof is an interactive proof where verifier learns nothing beyond the correctness of the statement being proved. Zero-knowledge proofs can be used to enforce the proper behavior of the verifier.
 
 Many zero-knowledge protocols are constructed from a simpler primitive called sigma protocol (it is far easier to construct a protocol and prove that it is a sigma protocol, than to construct a protocol and prove that it is zero-knowledge proof of knowledge).
 
@@ -100,9 +100,15 @@ There is also a notion of honest-verifier zero knowledge protocol which means th
 
 Soundness can be demonstrated by an existance of a knowledge extractor algorithm which can extract the secret from a prover. The intuition behind is - if a prover can convince the verifier that she knows the secret without actually knowing it, then no algorithm could extract the secret from a prover.
 
-The Schnorr's protocol is sound because there exists an algorithm which extracs a secret from a prover. If prover sends x to the verifier and then follows the protocol two times (obtains two challenges c_1 and c_2) and returns proper y for both cases (y_1 = r + s*c_1 and y_2 = r + s*c_2), this means that x = g^(y_1)*t^(-c_1) = g^(y_2)*t^(-c2) from where it follows s = (y_2 - y_1)/(c_2 - c_1) - prover knows a secret s.
+The Schnorr's protocol is sound because there exists an algorithm which extracs a secret from a prover. If prover sends x to the verifier and then follows the protocol two times (obtains two challenges c_1 and c_2) and returns proper y for both cases (y_1 = r + s\*c_1 and y_2 = r + s\*c_2), this means that x = g^(y_1)*t^(-c_1) = g^(y_2)*t^(-c2) from where it follows s = (y_2 - y_1)/(c_2 - c_1) - prover knows a secret s. This is called rewinding.
 
 Schnorr's protocol is however honest-verifier zero knowledge (below more about this), it is not known if it is zero knowledge.
+
+Zero-knowledge property can be shown by the existance of a simulator with which we can simulate acceptable protocol runs without knowing the actual language statement.
+
+This can be done for Schnorr protocol if t is small (there are no many possible challenges c). Here again, a rewinding technique is used. We choose y1, try to guess c1, compute x1 = g^y1 * t^(-c1). If we now send x1 to the verifier and get c1 (for which there is a high probability, because the space for challenges is small), the transcript (x1, c1, y1) will be accepted. So, we can simulate acceptable runs without knowing s (s is secret, we know only t = g^s % p).
+
+As mentioned for large t, we don't know whether Schnorr protocol is zero-knowledge (whether verifier could extract some information about s after having a number of transcripts). However, a description how to make sigma protocols zero-knowledge is given below.
 
 ## Schnorr signatures
 
@@ -191,7 +197,7 @@ If t' is bigger than t, the SP2 can be constructed by running SP1 in parallel mu
 ## Proofs of knowledge
 
 We haven't proved that sigma protocol is really a proof of knowledge yet. 
-Intuitively, the special soundness is equivalent to the proof of knowledge, however, the proof is should say how the two accepting transcripts are found.
+Intuitively, the special soundness is equivalent to the proof of knowledge, however, the proof should say how the two accepting transcripts are found.
 
 The standard definition of proofs of knowledge which is given below was proposed by Bellare and Goldreich [4]. Roughly, some older definitions went like this: if the verifier is always convinced, then there exists a knowledge extractor which can extract a knowledge from a prover.
 Bellare and Goldreich proposed definition which takes into account cases when the prover is able to convince the verifier with some non-constant probability smaller than 1.
@@ -229,7 +235,7 @@ It turns out we can design an algorithm which will find two 1's in a row "suffic
 
 It is obvious how to construct a sigma protocol to prove an AND statement. Simply, the prover proves both statements in parallel - the verifier sends a single challenge for both proofs.
 
-For OR statements the construction is more complex. Both, P and V, have a pair (x_0, x_1). P wansts to prove to V that it knows w such that either (x_0, w) from R_0 or (x_1, w) from R_1 (w is solution for either x_0 or x_1).
+For OR statements the construction is more complex. Both, P and V, have a pair (x_0, x_1). P wants to prove to V that it knows w such that either (x_0, w) from R_0 or (x_1, w) from R_1 (w is solution for either x_0 or x_1).
 
 Let b be such that (x_b, w) is from R_b. The protocol goes like this:
 
@@ -281,7 +287,7 @@ Note that Pedersen commitment is a trapdoor commitment scheme (see the first sec
 
 [1] C. Hazay and Y. Lindell. Efficient Secure Two-Party Computation: Techniques and Constructions. Springer, 2010.
 
-[2] I. Damgard. On Σ Protocols. http://www.daimi.au.dk/∼ivan/Sigma.pdf
+[2] I. Damgard. On Σ Protocols. http://www.cs.au.dk/~ivan/Sigma.pdf
 
 [3] https://tools.ietf.org/html/rfc4252#page-8
 
