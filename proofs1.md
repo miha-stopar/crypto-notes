@@ -27,7 +27,7 @@ Receiver chooses:
  * random secret a from Z_q
  * h = g^a % p
 
-Values p, q, g, h are public, h is secret.
+Values p, q, g, h are public, a is secret (a is called trapdoor).
 
 When committing to some x from Z_q, sender chooses random r from Z_q and sends `c = (g^x * h^r) % p` to receiver.
 

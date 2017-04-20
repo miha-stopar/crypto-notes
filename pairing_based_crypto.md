@@ -4,7 +4,7 @@ Notes mostly taken from [1].
 
 ## Bilinear pairing
 
-Let G_1, G_2 be two groups of the same prime order n. Let us view G_1 as an additive group with identity ∞ and G_2 as a multiplicative group with identity 1. Let P be a generator of G_1 (G_1 = <P>).
+Let G_1, G_2 be two groups of the same prime order n. Let us view G_1 as an additive group with identity ∞ and G_2 as a multiplicative group with identity 1. Let P be a generator of G_1.
 
 A mapping e: G_1 x G_1 -> G_2 is called bilinear map when:
 
