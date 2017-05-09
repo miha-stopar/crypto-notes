@@ -29,6 +29,9 @@ Commitment schemes, sigma protocols, zero knowledge proofs:
 Shamir's secret sharing scheme, Paillier's encryption, publicly verifiable encryption:
 [proofs2.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs2.md).
 
+Anonymous credential systems:
+[proofs3.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs3.md).
+
 Brief descriptions of some of the attacks included in Matasano challenges (length-extension attacks, Bleichenbacher, hash collisions, Wang, RC4 biases ... ):
 [attacks.md](https://github.com/miha-stopar/crypto-notes/blob/master/attacks.md).
 
