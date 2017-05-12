@@ -10,12 +10,20 @@ Chaum-Pedersen protocol [1] proves the knowledge of dlog and the fact that it is
 
 ![dlog equality](https://raw.github.com/miha-stopar/crypto-notes/master/img/dlog_equality.png)
 
-# Blind non-interactive proof of discrete logarithm equality
+# Proof of discrete logarithm equality that produces a blinded transcript
 
-Proof of dlog equality can be made non-interactive by using hash function - instead of challenge prepared by a verifier, the prover generates it as hash(A, B), where A = g1^r % p and B = g2^r % p are the two values sent in the first step to the verifier.
+![dlog equality_blinded_transcript](https://raw.github.com/miha-stopar/crypto-notes/master/img/dlog_equality_blinded_transcript.png)
 
-To make it blind,
+We will see later how in a pseudonym system [2] a blinded transcript is used that proves the knowledge of dlog_g1(h1), dlog_g2(h2) and that dlog_g1(h1) = dlog_g2(h2). Blinded means that if a verifier runs the protocol several times, the prover will not be able to determine which conversation refers to which transcript.
 
+Note that gamma is used because in [2] the verifier does not want to make public g2, h2 and thus he uses G2 = g2^gamma, H2 = h2^gamma.
+
+Now, somebody who would like to check that the transcript is a valid proof for knowledge of log_g1(h1), log_G2(H2) and log_g1(h1) = log_G2(H2), he needs to check:
+
+```
+g1^(y+alpha) = A' * h1(c-beta)
+G2^(y+alpha) = B' * H2(c-beta)
+```
 
 # Pseudonym systems [2]
 
@@ -41,14 +49,34 @@ User U's master secret key is x and master public key is g^x.
 
 At the end user U and organisation O remembers U's nym: (a, b). 
 
-However, how is it ensured that the user doesn't use some random value for x (and not the secret that has been used for registration with CA)? Note that a is generated in the way that user does not know log_g(a). This is supposed to ensure that all user's nyms are tied to his secret x, but I think it does not.
+Note that a is generated in the way that user does not know log_g(a). This is supposed to ensure that all user's nyms are tied to his secret x.
 
+## Issuing a credential
 
+User's nym with organization O: (a, b) where b = a^s and s is user's master secret.
 
+Organization O's public key is (g, h1, h2) where h1=g^s1, h2=g^s2.
+
+![nym credential_issue](https://raw.github.com/miha-stopar/crypto-notes/master/img/nym_credential_issue.png)
+
+Note that the organization never sees the transcripts and as the transcripts are blind, the organization cannot link transcripts and users.
+
+## Transferring a credential to another organization
+
+User's nym with organization O1: (a1, b1) where b1 = a1^s.
+User's credential from organization O is: (a'=a^gamma, b'=b^gamma, A'=A^gamma, B'=B^gamma, T1, T2).
+
+![nym certificate_transfer](https://raw.github.com/miha-stopar/crypto-notes/master/img/nym_certificate_transfer.png)
+
+User authenticates to the organization O1 by proving the knowledge of log_a1(b1). Using dlog equality proof user at the same time proves the knowledge of log_a'(b') - that the same master private key is used as for credential issue.
+
+Organization then checks whether both transcripts are valid.
+
+Note that the credential does not contain (a, b) in plain and thus the organization that verifies the credential cannot know the user's nym for the organization that issued a credential (this is why gamma is used in generation of the transcript).
 
 # Non-transferable anonymous credentials [4]
 
-While [2] discourage users from sharing their pseudonyms and credentials using PKI-assured non-transferability (sharing a credential implies also sharing a particular, valuable secret key from outside the system), Camenisch-Lysyanskaya [4] proposed a system which uses all-or-nothing non-transferability which does not require having some external valeable secret key. Here, sharing one pseudonym or credential implies sharing all of the user's other credentials and pseudonyms in the system.
+While [2] discourage users from sharing their pseudonyms and credentials using PKI-assured non-transferability (sharing a credential implies also sharing a particular, valuable secret key from outside the system), Camenisch-Lysyanskaya [4] proposed a system which uses all-or-nothing non-transferability which does not require having some external valuable secret key. Here, sharing one pseudonym or credential implies sharing all of the user's other credentials and pseudonyms in the system.
 
 
 
