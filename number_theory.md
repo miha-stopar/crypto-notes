@@ -261,11 +261,20 @@ Thus there exists integer k such that r = 2*k and `a = g^(2*k) = (g^k)^2 (mod p)
 
 ### Quadratic residues modulo p where p is prime
 
-Exactly half of Z_p\* are quadratic residues. Why: x^2 = (-x)^2 (mod p), which means if we take the first (p-1)/2 elements of Z_p\*, we have all quadratic residues (and it can be quickly shown that all these elements are different):
+Exactly half of Z_p\* are quadratic residues. Why: x^2 = (-x)^2 (mod p) and if we take the first (p-1)/2 elements of Z_p\*, we have all quadratic residues (it can be quickly shown that all these elements are different):
 
 ```
 QR_p = 1^2, 2^2, ..., ((p-1)/2)^2
 ```
+
+To compute x from x^2 = a (mod p) (when it exists):
+
+```
+x_1 = a^((p+1)/4)
+x_2 = -a^((p+1)/4)
+```
+
+See Rabin encryption in [provable_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/provable_security.md). When a^((p-1)/2) = 1, it means a^((p+1)/2) = a ...
 
 ### Quadratic residues when N is product of two safe primes
 
@@ -287,6 +296,13 @@ The elements in QR_N have one of the following orders: 2, p1, q1, 2 * p1, 2 * q1
 If a is of order 2 (a^2 = 1 (mod n)), then a = 1 (mod n) or a = -1 (mod n), but we ruled out these elements (actually we ruled out elements for which a = 1 (mod p) ..., but due to ring isomorphis ...).
 If a is of order p1 (a^p1 = 1 (mod n)), then a^p1 = 1 (mod q) and q-1 divides p1 (little Fermat). However, q-1 = 2 * q1 and we know that q1 and p1 are primes, so q-1 cannot divide p1. 
 We do similarly for other orders and thus show that the only elements that are not ruled out, are of order 2 * p1 * q1.
+
+To compute x from x^2 = a (mod N) CRT can be used:
+
+```
+x^2 = a (mod p)
+x^2 = a (mod q)
+```
 
 ## Schnorr group
 

@@ -46,9 +46,12 @@ Decommitter simply reveals (x', r' = r + (x - x')/a). It holds:
 
 # Zero-knowledge proofs
 
-The majority of the notes in this section are taken from Hazay-Lindell [1] Sigma protocols and efficient zero-knowledge chapter which is based on [2].
-
 Zero-knowledge proof is an interactive proof where verifier learns nothing beyond the correctness of the statement being proved. Zero-knowledge proofs can be used to enforce the proper behavior of the verifier.
+
+Zero-knowledge proofs have been introduced in the seminal paper of Goldwasser, Micali, and Rackoff [5].
+
+
+The majority of the notes below are taken from Hazay-Lindell [1] Sigma protocols and efficient zero-knowledge chapter which is based on [2].
 
 Many zero-knowledge protocols are constructed from a simpler primitive called sigma protocol (it is far easier to construct a protocol and prove that it is a sigma protocol, than to construct a protocol and prove that it is zero-knowledge proof of knowledge).
 
@@ -292,5 +295,7 @@ Note that Pedersen commitment is a trapdoor commitment scheme (see the first sec
 [3] https://tools.ietf.org/html/rfc4252#page-8
 
 [4] M. Bellare and O. Goldreich: On defining proofs of knowledge: proc. of Crypto 92.
+
+[5] GOLDWASSER, S., MICALI, S., AND RACKOFF, C. 1989. The knowledge complexity of interactive proof systems. SIAM J. Comput. 18, 1 (Feb.), 186–208.
 
 

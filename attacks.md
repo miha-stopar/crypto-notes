@@ -606,6 +606,58 @@ For example for decryption of a secret cookie which is included into some web re
 Due to the bias, this byte is supposed to be xored with byte 240 in slightly more cases than with other bytes. So if we take the byte at 16-th position that appeared in the most cases, and we xor it with 240, we should get an actual 16-th byte of a secret token.
 For 15-th byte we need to somehow prepend a byte to a request and then repeat the process above.
 
+# Key-recovery attack on GCM with repeated nonces
+
+Joux [6] described an attack against GCM if nonces are reused. GCM is the most widely deployed block cipher mode for authenticated encryption with associated data (AEAD). Associated data is data that does not need to be encrypted and is sent together with a ciphertext. 
+
+The ciphertext C and associated data A are then authenticated using a hash function GHASH.
+
+First, let's see how the ciphertext C is obtained in GCM - it is simply by a CTR mode encryption. 
+
+We have the plaintext `P = P1 || P2 || ... || P_m`. We define m+1 counter blocks (i = 0, 1, ..., m):
+
+```
+J_0 = IV || 0^31 || 1
+J_i = IV || (i+1) mod 2^32 for i = 1,...,m
+```
+
+where IV is a 96-bit initialization vector.
+
+Each counter block J_i for i = 1, ..., m is encrypted using AES and then xor-ed with P_i to obtain a ciphertext C (C_i = P_i xor Enc_k(J_i)).
+
+Let's say we have a ciphertext C and associated data A. Both are split into 128-bit blocks:
+
+```
+C = C_1 || C_2 || ... || C_m*
+A = A_1 || A_2 || ... || A_n*
+```
+
+Blocks C_m\* and A_n\* have been padded with zeros to make them 128-bit (if they were not). 
+
+GHASH is now computed as:
+
+```
+T = A_1 * H^(m+n+1) + ... + A_m* * H^(n+2) + C_1 * H^(n+1) + ... + C_n* * H^2 + (len(A) || len(C)) * H + Enc_k(J_0)
+```
+
+where H is hash key generated as `H = Enc_k(0^128)` and where \* means Galois multiplication (see [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md)) and + means xor.
+
+Let's say two plaintexts have been encrypted using the same key and the same nonce:
+
+```
+T1 = A1_1 * H^(m+n+1) + ... + A1_m* * H^(n+2) + C1_1 * H^(n+1) + ... + C1_n* * H^2 + (len(A1) || len(C1)) * H + Enc_k(J_0)
+T2 = A2_1 * H^(m+n+1) + ... + A2_m* * H^(n+2) + C2_1 * H^(n+1) + ... + C2_n* * H^2 + (len(A2) || len(C2)) * H + Enc_k(J_0)
+```
+
+We define two polynomials:
+
+```
+g1(X) = A1_1 * X^(m+n+1) + ... + A1_m* * X^(n+2) + C1_1 * X^(n+1) + ... + C1_n* * X^2 + (len(A1) || len(C1)) * X + Enc_k(J_0) + T1
+g2(X) = A2_1 * X^(m+n+1) + ... + A2_m* * X^(n+2) + C2_1 * X^(n+1) + ... + C2_n* * X^2 + (len(A2) || len(C2)) * X + Enc_k(J_0) + T2
+```
+
+It holds: g1(H) = g2(H) = 0. Let's define now g(X) = g1(X) + g2(X) (remember, this is xor). Note that Enc_k(J_0) which is not known to us, gets cancelled by xor operation. It holds g(H) = 0 and we know all coefficients of the polynomial. Now we factor the polynomial g to find its roots and we have candidates for authentication key H (in practice usually relatively short).
+
 
 
 [1] AlFardan, N., Bernstein, D., Paterson, K., Poettering, B., Schuldt,
@@ -627,3 +679,9 @@ volume 3494 of Lecture Notes in Computer Science, pages 474–490. Springer-Verl
 Berlin, Germany, 2005.
 
 [5] R. Bardou, R. Focardi, Y. Kawamoto, L. Simionato, G. Steel, and J.-K. Tsay. Efficient padding oracle attacks on cryptographic hardware. In CRYPTO, pages 608–625, 2012
+
+[6] Joux, A. Authentication failures in NIST version of GCM. http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/comments/ 800-38_Series-Drafts/GCM/Joux_comments.pdf.
+
+
+
+
