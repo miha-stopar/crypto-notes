@@ -287,6 +287,38 @@ The difference is that now the extractor can obtain the trapdoor and get e' != e
 
 Note that Pedersen commitment is a trapdoor commitment scheme (see the first section on this page) and can be thus used to construct a zero-knowledge proof of knowledge.
 
+# Zero-knowledge proofs a bit more formally
+
+The concept of zero-knowledge was introduced by Goldwasser, Micali, and Rackoff [5]. Goldreich, Micali, and Widgerson showed [6] how to construct zero-knowledge proof systems for any NP-set (they showed how to create a zero-knowledge proof for graph coloring problem which is NP-complete, implying that ZKP exists for any NP problem), using any commimtment scheme.
+
+Let P, V, S be Turing machines. An interactive proof system (P, V) for a language L is zero-knowledge if for any verifier V1 exists an efficient simulator S that can reproduce the conversation between P and V1 on any given input:
+
+```
+for every x from L, z from {0, 1}*, transcript = S(x, z)
+```
+
+The auxiliary string z plays the role of prior knowledge. V1 cannot use any prior knowledge string z, because if S is also given this prior knowledge, then it can reproduce the transcript.
+
+This is a definition for perfect zero-knowledge. Computational zero-knolwedge is when views of the verifier V1 and the simulator are only computationally indistinguishable.
+
+## Zero-knolwedge proof for quadratic residues
+
+The language L consists of all quadratic residues in Z_N\* for some N = p * q (see about quadratic residues in [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md)).
+
+We want to prove that x is from L (that there exists a such that x = alpha^2 (mod N).
+
+![qr_zkp](https://raw.github.com/miha-stopar/crypto-notes/master/img/qr_zkp.png)
+
+The simulator is:
+
+ * choose z from Z_N\* and random b from {0, 1}
+ * set a = z^2 / x^b (mod N)
+ * run V with a as the first message
+ * V outputs b1 from {0, 1}: if b != b1 go to step 1, otherwise output transcript (a, b, z)
+
+
+
+
 
 [1] C. Hazay and Y. Lindell. Efficient Secure Two-Party Computation: Techniques and Constructions. Springer, 2010.
 
@@ -297,5 +329,8 @@ Note that Pedersen commitment is a trapdoor commitment scheme (see the first sec
 [4] M. Bellare and O. Goldreich: On defining proofs of knowledge: proc. of Crypto 92.
 
 [5] GOLDWASSER, S., MICALI, S., AND RACKOFF, C. 1989. The knowledge complexity of interactive proof systems. SIAM J. Comput. 18, 1 (Feb.), 186–208.
+
+[6] Goldreich Oded, Silvio Micali, and Avi Wigderson (1991). “Proofs that yield nothing but their validity or all languages in NP have zero-knowledge proof systems.” Journal of the Association for Computing Machinery, 38 (3), 691–729.
+
 
 
