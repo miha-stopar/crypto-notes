@@ -50,6 +50,9 @@ Zero-knowledge proof is an interactive proof where verifier learns nothing beyon
 
 Zero-knowledge proofs have been introduced in the seminal paper of Goldwasser, Micali, and Rackoff [5].
 
+Before [5] interactive proof systems mostly considered the cases where a malicious prover attempts to convince a verifier to believe a false statement. In [5] also the verifier was considered as someone who can cheat. The authors asked if the verifier can be convinced about a statement without any information being leaked except for the validity of the statement.
+
+
 
 The majority of the notes below are taken from Hazay-Lindell [1] Sigma protocols and efficient zero-knowledge chapter which is based on [2].
 
@@ -109,9 +112,11 @@ Schnorr's protocol is however honest-verifier zero knowledge (below more about t
 
 Zero-knowledge property can be shown by the existance of a simulator with which we can simulate acceptable protocol runs without knowing the actual language statement.
 
-This can be done for Schnorr protocol if t is small (there are no many possible challenges c). Here again, a rewinding technique is used. We choose y1, try to guess c1, compute x1 = g^y1 * t^(-c1). If we now send x1 to the verifier and get c1 (for which there is a high probability, because the space for challenges is small), the transcript (x1, c1, y1) will be accepted. So, we can simulate acceptable runs without knowing s (s is secret, we know only t = g^s % p).
+This can be done for Schnorr protocol if t is small (there are no many possible challenges c). Here again, a rewinding technique is used. We choose y1, try to guess c1, compute x1 = g^y1 * t^(-c1). If we now send x1 to the verifier and get c1 (for which there is a high probability, because the space for challenges is small), the transcript (x1, c1, y1) will be accepted. If we didn't correctly guess c1, we rewind to the beginning. That means we provide a new x1 (now we know the challenge c1) and send a new x1 to the verifier. Verifier will respond with the same challenge c1 (rewinding).
 
-As mentioned for large t, we don't know whether Schnorr protocol is zero-knowledge (whether verifier could extract some information about s after having a number of transcripts). However, a description how to make sigma protocols zero-knowledge is given below.
+So, we can simulate acceptable runs without knowing s (s is secret, we know only t = g^s % p). However, this strategy does not work when the verifier is dishonest. Instead of choosing a random challenge, a verifier can choose a challenge c based on the input x - in this case the simulator cannot apply the strategy described above. Schnorr protocol is thus honest-verifier zero-knowledge. But it can be made a fully zero-knowledge by using commitment scheme.
+
+We don't know whether Schnorr protocol is zero-knowledge (whether verifier could extract some information about s after having a number of transcripts). However, a description how to make sigma protocols by using commitment scheme to be zero-knowledge is given below.
 
 ## Schnorr signatures
 
@@ -253,7 +258,7 @@ Let b be such that (x_b, w) is from R_b. The protocol goes like this:
 As we saw above sigma protocol is a proof of knowledge. However, it is not a zero knolwedge proof of knowledge - because it requires an honest verifier.
 
 **The problem is that the challenge generation of the verifier cannot be simulated. 
-Note that the point of zero knowledge proof is that the verifier learns nothing about the statement (except that it is correct), so if the verifier cheats and doesn't follow the protocol properly, it might be able to somehow extract some knowledge. 
+Note that the point of zero knowledge proof is that the verifier learns nothing about the statement (except that it is correct), so if the verifier cheats and doesn't follow the protocol properly, it might be able to somehow extract some knowledge (instead of choosing a challenge randomly, the verifier could choose it somehow based on the first message).
 For this reason we have to be somehow assured that verifier does not cheat.**
 
 This can be solved by having the verifier commit to its challenge e before the execution begins (this way the verifier cannot choose some special e once he knows the first message a). The protocol then goes:
@@ -264,7 +269,7 @@ This can be solved by having the verifier commit to its challenge e before the e
  * P verifies the decommitment and aborts if it is not valid. Otherwise, it computes the answer z and sends it to V.
  * V accepts if and only if transcript is accepting.
 
-**If a commitment scheme is perfectly-hiding, then the sigma protocol extended as above is a zero knowledge proof for L_R with soundness error 2^(-t).**
+**If a commitment scheme is perfectly-hiding (because the prover is assumed infinitely powerful, whereas the verifier is restricted to be a probabilistically polynomial time and thus computationally binding scheme suffices), then the sigma protocol extended as above is a zero knowledge proof for L_R with soundness error 2^(-t).**
 
 The complexity of the protocol above depends on the cost of running a perfectly-hiding commitment protocol.
 One possibility is to use Pedersen commitment protocol (see Commitment schemes section above) which is highly efficient.
@@ -287,34 +292,100 @@ The difference is that now the extractor can obtain the trapdoor and get e' != e
 
 Note that Pedersen commitment is a trapdoor commitment scheme (see the first section on this page) and can be thus used to construct a zero-knowledge proof of knowledge.
 
-# Zero-knowledge proofs a bit more formally
+# Zero-knowledge proofs (historically)
 
-The concept of zero-knowledge was introduced by Goldwasser, Micali, and Rackoff [5]. Goldreich, Micali, and Widgerson showed [6] how to construct zero-knowledge proof systems for any NP-set (they showed how to create a zero-knowledge proof for graph coloring problem which is NP-complete, implying that ZKP exists for any NP problem), using any commimtment scheme.
+But before zero-knowledge proofs briefly about Boolean circuits and one-way functions
 
-Let P, V, S be Turing machines. An interactive proof system (P, V) for a language L is zero-knowledge if for any verifier V1 exists an efficient simulator S that can reproduce the conversation between P and V1 on any given input:
+## Boolean circuits
+
+Boolean circuit is a generalization of Boolean formulae and a formalization of a silicon chip. Boolean circuit is a digram showing how to derive an output from an input by a combination of the basic Boolean operations of OR, AND, and NOT. Boolean circuit is called a Boolean formula if each node has at most one outgoing edge.
+
+It can be shown that Boolean circuits implements functions from {0, 1}^n to {0, 1}^m. Boolean operations OR, AND, and NOT form a universal basis, meaning that every function from {0,1}^n to {0,1}^m can be implemented by a Boolean circuit (actually, a Boolean formulae).
+
+A silicon chip is an implementation of a Boolean circuit using a technology called VLSI. If we have a small circuit for a computational task, it can be implemented very efficiently as a silicon chip.
+
+Boolean circuits are a natural model for nonuniform computation where different algorithms are allowed for each input size. On the other hand, in uniform computation the same Turing machine solves the problem for inputs of all sizes.
+
+## One-way functions
+
+Most of the cryptography is based on one-way functions - functions that are easy to evaluate but hard to invert.
+
+Definition:
+A function f:{0,1}\* -> {0,1}\* is called one-way if the following the conditions hold:
+
+ * easy to evaluate: there exist a polynomial-time algorithm A such that A(x) = f(x) for every x from {0,1}\*
+ * hard to invert: for every family of polynomial-size circuits {C_n}, every polynomial p, and all sufficiently large n, `Pr[C_n(f(x)) from f^(-1)(f(x))] < 1/p(n)`, where the probability is taken uniformly over all the possible choices of x from {0,1}^n.
+
+## Zero-knowledge proofs and complexity theory
+
+Vadhan's A study of statistical zero knowledge proofs [10] gives some good introduction into the topic.
+
+To facilitate a complexity-theoretic study of ZKPs, assertions are thought as strings written in some fixed alphabet, and their interpretations are given by a language L identifying the valid assertions. For example, assertions about 3-colorability of graphs can be formalizaed we can talk about a string x as a graph and the language L being the set of x which are 3-colorable. Assertion is then x ϵ L which means x is 3-colorable. The language L is defining the decision problem: given a string x, decide whether it is in L or not. Thus, "assertion", "language", "problem" are often used interchangeably in informal discussions.
+
+The complexity class NP consists of the languages possessing efficiently verifiable proofs. A language L is in NP if there exists an efficient proof-verification algorithm (verifier) satisfying:
+
+ * completeness: for every valid assertion (every string in L), there exists a proof that the verifier will accept
+ * soundness: for every invalid assertion (everyt string not in L), no proof can make the verifier accept
+
+Efficient means that the verifier should run in time polynomial in the length of the assertion (written as a string).
+
+Interactive proofs introduced by [5] serve the same purpose as the above "classical" proofs - to convince a verifier with limited computation power that some assertion is true. However, this is no longer accomplished by giving the verifier a fixed, written proof, but rather by having the verifier to interact with a prover that has unbounded computation power. The verifier's computation time is still polynomial in the length of the assertion, but now both the prover and verifier may be randomized. Such a proof is a randomized and dynamic process that consists of tricky questions asked by the verifier, to which the prover has to reply convincingly.
+
+The notion of completeness and soundness in interactive proof is now slightly relaxed (see "high probability"):
+
+ * for every valid assertion, there is a prover strategy that will make the verifier accept with high probablity 
+ * for every invalid assertion, the verifier will reject with high probability, no matter what strategy the prover follows
+
+The complexity class IP is the class of languages possessing interactive proofs. Clearly, every language that possesses a classical proof also possesses an interactive proof (the prover simply sends the classical proof). It has been shown that many more languages possess interactive proofs than classical ones (IP is much larger than NP).
+
+A zero-knowledge proof is an interactive proof in which the verifier learns nothing from the interaction with the prover, other than the assertion being proven is true. This is guaranteed by requiring that whatever the verifier sees in the interaction with the prover is something it could have efficiently generated on its own. That means a polynomial-time simulator should exist that simulates the verifier's view of the interaction of the prover. As the interaction between the prover and verifier is probabilistic, the simulator is also probabilistic, and it is required that it generates an output distribution that is "close" to what the verifier sees when interacting with the prover. Intuitively, this means that the verifier learns nothing because it can run the simulator instead of interacting with the prover.
+
+In [5] three different interpretations of "close" were suggested:
+
+ * perferct zero knowledge: requires that the distributions are identical
+ * statistical zero knowledge: requires that the distributions are statistically close
+ * computational zero knowledge: requires that the distributions cannot be distinguished by any polynomial-time algorithm
+
+PKZ, SZK, and CZK are the classes of languages possessing perfect, statistical, and computational zero-knowledge proofs.
+
+Pefect and statistical zero knowledge means that the zero-knowledge condition is meaningful regardless of the computational power of the verifier (a verifier needs only to run in polynomial time to verify the interactive proof, however a cheating verifier may be willing to invest additional computation to gain knowledge from the proof).
+
+In [5] it was shown that every problem having a classical proof also has a computationl zero-knowledge proof, meaning NP ⊂ CZK. Actually, IP = CZK. Both these results are based on the assumption that one-way functions exist.
+
+In contrast, it is unlikely that every problem in NP possesses a perfect or statistical zero-knowledge proof. However, a number of important, nontrivial problems posses statistical zero-knowledge proofs which are sufficient for some cryptographic applications.
+
+Naturally, these results started a line of research how to improve the efficiency of zero-knowledge protocols for NP complete problems (such as SAT). For some languages efficient zero-knowledge proofs have been constructed, however generic constructions for zero-knowledge are few (for example [9]).
+
+[8] showed that if one-way functions exist, then all languages in IP (and hence in NP) have zero-knowledge proofs. So under reasonable computational assumptions, all languages that have an interactive proof, also have a zero-knowledge interactive proof, but it can be much less efficient. 
+
+A variant on the notion of interactive proofs was introduced by Brassard, Chaum, and Crepau [7], who relaxed the soundness condition so that it only refers to feasible ways of trying to fool the verifier (instead of all possible ways). Protocols that satisfy the computational-soundness condition are called **arguments**.
+
+## Famous GMR [5] and (statistical) zero-knowledge proof for QR and QNR
+
+In [5] three notions of indistinguishability have been defined: equality, statistical indistinguishability, computational indistinguishability (hence PZK, SZK, CZK).
+
+Let's say we have two families of random variables {U(x)} and {V(x)}. "Judge" is given a sample from either {U(x)} of {V(x)} and needs to declare from which set the sample is coming. There are two relevant parameters: the size of the example and the amount of time the judge is given to produce the verdict.
+
+ * {U(x)} and {V(x)} are equal: the judge cannot say from which one is coming even if he is given samples of arbitrary size and can study them for an arbitrary amount of time
+ * {U(x)} and {V(x)} are statistically indistinguishable: the judge cannot say when he is given an infinite amount of time but only random, polynomial in |x| size samples
+ * U(x)} and {V(x)} are computationally indistinguishable: the judge cannot say when he is given a polynomial in |x| size samples and polynomial in |x| time
+
+GMR [5] defined interaction proofs and zero-knowledge proofs, as well as showed that languages QR and QNR both have zero-knowledge proof (the first zero-knowledge protocols demonstrated for languages not known to be recognizable in probabilistic polynomial time).
 
 ```
-for every x from L, z from {0, 1}*, transcript = S(x, z)
+QR = {(x, y); y is a quadratic residue mod x}
+QNR = {(x, y); y is a quadratic nonresidue mod x}
 ```
 
-The auxiliary string z plays the role of prior knowledge. V1 cannot use any prior knowledge string z, because if S is also given this prior knowledge, then it can reproduce the transcript.
+For some info about quadratic residues see [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md).
 
-This is a definition for perfect zero-knowledge. Computational zero-knolwedge is when views of the verifier V1 and the simulator are only computationally indistinguishable.
+Both, QR and QNR are in NP, and thus possess a classic proof (for instance, to prove membership in QNR, the prover just sends x's factorization).
 
-## Zero-knolwedge proof for quadratic residues
+### Zero-knowledge proofs of quadratic residuosity
 
-The language L consists of all quadratic residues in Z_N\* for some N = p * q (see about quadratic residues in [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md)).
 
-We want to prove that x is from L (that there exists a such that x = alpha^2 (mod N).
 
-![qr_zkp](https://raw.github.com/miha-stopar/crypto-notes/master/img/qr_zkp.png)
-
-The simulator is:
-
- * choose z from Z_N\* and random b from {0, 1}
- * set a = z^2 / x^b (mod N)
- * run V with a as the first message
- * V outputs b1 from {0, 1}: if b != b1 go to step 1, otherwise output transcript (a, b, z)
+### Zero-knowledge proofs of quadratic nonresiduosity
 
 
 
@@ -331,6 +402,18 @@ The simulator is:
 [5] GOLDWASSER, S., MICALI, S., AND RACKOFF, C. 1989. The knowledge complexity of interactive proof systems. SIAM J. Comput. 18, 1 (Feb.), 186–208.
 
 [6] Goldreich Oded, Silvio Micali, and Avi Wigderson (1991). “Proofs that yield nothing but their validity or all languages in NP have zero-knowledge proof systems.” Journal of the Association for Computing Machinery, 38 (3), 691–729.
+
+[7] G. B RASSARD , D. C HAUM , AND C. C RÉPEAU - , “Minimum disclosure proofs of knowledge”, Journal of Computer and System Sciences, 37 (1988), 156–189.
+
+[8] Michael Ben-Or, Oded Goldreich, Shafi Goldwasser, Johan H˚astad, Joe Kilian, Silvio Micali, and Phillip Rogaway. Everything provable is provable in zero-knowledge. In CRYPTO, pages 37–56, 1988.
+
+[9] Marek Jawurek, Florian Kerschbaum, and Claudio Orlandi. Zero-knowledge using
+garbled circuits: how to prove non-algebraic statements efficiently. In 2013 ACM
+SIGSAC Conference on Computer and Communications Security, CCS’13, Berlin,
+Germany, November 4-8, 2013, pages 955–966, 2013.
+
+[10] S. Vadhan, A Study of Statistical Zero Knowledge Proofs, PhD Thesis, M.I.T.,
+1999
 
 
 

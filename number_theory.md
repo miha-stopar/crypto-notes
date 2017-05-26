@@ -235,11 +235,42 @@ Z_180 = Z_2 x Z_2 X Z_9 x Z_5
 Z_180 = Z_2 x Z_2 X Z_3 x Z_3 x Z_5
 ```
 
+## Primitive root modulo n
+
+A number g is a primitive root modulo n if g is a generator of the multiplicative group of integers modulo n - for every a from Z_n\*, there is an integer k such that g^k = a (mod n).
+
+Emil Artin conjectured (neither proven neither rejected yet) in 1927 that if a given integer g is not 0, 1, -1, or square, then there are infinitely many primes n such that g is a primitive root modulo n.
+
+Let's list some theorems given in Ireland and Rosen [3], section 4.1.
+
+Proposition (follows from Fermat's Little Theorem and the fact that a polynomial of deggree n has at most n distinct roots):
+`x^(p-1) - 1 = (x-1) * (x-2) * ... (x-p+1) (mod p)`
+
+Proposition:
+`If d|(p-1), then x^d = 1 (mod p) has exactly d solutions`
+
+Proof:
+```
+Let's say d*d1 = p-1. We would like to show that polynomial x^d - 1 divides x^(p-1) - 1, because if we show this we know x^d - 1 has d distinct zeros (as x^(p-1) - 1 has p-1 distinct zeros).
+x^(d*d1) - 1 = ((x^d)^(d1-1) + (x^d)^(d1-2) + ... + x^d + 1) * (x^d - 1) 
+```
+
+TODO
+
+
 ## Quadratic residue
 
 We say a from Z_n is quadratic residue (special type of power residue, see above) if there exists some x such that x^2 = a (mod n). Otherwise a is called quadratic nonresidue.
 
-Given N = p*q where p and q are two primes, it is difficult to find whether a is quadratic residue or nonresidue modulo N. 
+Let's say n = p_1^e_1 * ... * p_l^e_l. Because of CRT, we know that the congruence y = x^2 (mod n) is equivalent to the system y = x^2 (mod p_1^e_1), ..., y = x^2 (mod p_l^e_l).
+
+Thus, y is a quadratic reside mod n if and only if it is a quadratic residue mod all p_i^e_i.
+
+TODO (Ireland and Rosen 5.1.1)
+
+
+
+So given N = p*q where p and q are two primes, it is difficult to find whether a is quadratic residue or nonresidue modulo N (if you don't know the factorization, because if you do know you can use CRT and compute quadratic residue mod p as y^((p-1)/4)). 
 Quadratic residues mod p is cyclic (subgroup of a cyclic group).
 Note that QR_N where N is the product of two primes is also cyclic (see Cyclic groups above).
 
@@ -747,4 +778,5 @@ where y is from Z_n*.
 
 [1] C. P. Schnorr. Efficient Identification and Signatures for Smart Cards. In Crypto ’89, LNCS 435, pages 235–251. Springer-Verlag, Berlin, 1990.
 [2] P. Paillier, Public-key cryptosystems based on composite residuosity classes, Advances in Cryptology — EUROCRYPT ’99, LNCS, vol. 1592, Springer Verlag, 1999, pp. 223–239.
+[3] K. IRELAND AND M. ROSEN, A Classical Introduction to Modern Number Theory, Springer-Verlag, New York, 2nd edition, 1990.
 
