@@ -372,20 +372,77 @@ Let's say we have two families of random variables {U(x)} and {V(x)}. "Judge" is
 
 GMR [5] defined interaction proofs and zero-knowledge proofs, as well as showed that languages QR and QNR both have zero-knowledge proof (the first zero-knowledge protocols demonstrated for languages not known to be recognizable in probabilistic polynomial time).
 
-```
-QR = {(x, y); y is a quadratic residue mod x}
-QNR = {(x, y); y is a quadratic nonresidue mod x}
-```
-
 For some info about quadratic residues see [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md).
 
 Both, QR and QNR are in NP, and thus possess a classic proof (for instance, to prove membership in QNR, the prover just sends x's factorization).
 
+Before giving a perfectly zero-knowledge proof for QR and a statistically zero-knowledge proof for QNR, some definitions and facts:
+
+Fact1: Let x be a natural number and y from Z_x\*. Then, y is a quadratic residue mod x iff it is a quadratic residue mod all of the prime factors of x.
+
+Definition: 
+```
+Q_x(y) = 0 if y is a quadratic residue mod x
+Q_x(y) = 1 otherwise
+```
+
+Fact2: Given y and the prime factorization of x, Q_x(y) can be computed in time polynomial in |x|.
+
+Jacobi symbol: 
+Let x = p_1^l_1 * ... * p_k^l_k. Jacobi symbol is then:
+```
+(y/x) = (y/p_1)^k_1 * ... * (y/p_k)^k_l 
+where (y/p_i) is 1 if y is a quadratic residue mod p_i, and -1 otherwise
+```
+
+Fact3: (y/x) can be computed in time polynomial in |x|.
+```
+
+Jacobi symbol gives some information about whether y is quadratic residue mod x or not. If (y/x) = -1, then y is a quadratic nonresidue mod x and Q_x(y) = 1.
+
+However, when (y/x) = 1, no efficient solutions is known for computing Q_x(y).
+
+Definition: Quadratic residuosity problem is that of computing Q_x(y) on inputs x and y, where y is from Z_x\* and (y/x) = 1.
+
+```
+QR = {(x, y); x a natural number, y from Z_x\*, Q_x(y) = 0}
+QNR = {(x, y); x a natural number, y from Z_x\*, (y/x) = 1, Q_x(y) = 1}
+```
+
+Fact4: Let x be a natural number. Then, for all y such that Q_x(y) = 0, the number of solutions w from Z_x\* to w^2 = y (mod x) is the same (independent of y).
+
+Fact5: Let x be a natural number, and y, z from Z_x\*. Then:
+
+ * if Q_x(y) = Q_x(z) = 0, then Q_x(y*z) = 0
+ * if Q_x(y) != Q_x(z), then Q_x(y*z) = 1 
+
+Fact6: Given x, y, the Euclidean gcd algorithm allows us to compute in polynomial time whether or not y is from Z_x\*.
+
 ### Zero-knowledge proofs of quadratic residuosity
 
+Recall that QR = {(x, y); y is a quadratic residue mod x}, where x and y are presented in binary.
 
+Let's say the prover knows that y = y1^2 mod x.
+
+The proof about y being in QR goes as depicted in a diagram, but it needs to be run m-times (m is the length of x in binary form).
+
+![qr_zkp](https://raw.github.com/miha-stopar/crypto-notes/master/img/qr_zkp.png)
+
+This protocol is an interactive proof system for QR, because the probability that the verifier is convinced is at most (1/2)^m.
+
+To show that the protocol is zero knowledge, we show that for each given b and z, a simulator can generate u such that the transcript (u, b, z) is indistinguishable from the real transactions between the prover and verifier.
+
+A simulator computes:
+```
+u = z^2 * y^(-b)
+```
 
 ### Zero-knowledge proofs of quadratic nonresiduosity
+
+QNR = {(x, y); y is from Z_n\*, (y/x) = 1, Q_x(y) = 1}, where x and y are presented in binary.
+
+
+
 
 
 

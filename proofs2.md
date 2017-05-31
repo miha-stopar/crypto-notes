@@ -101,7 +101,7 @@ When party A wants to share a file to party B, it encrypts session key using B_p
 
 Now, what if party A (or any other party) loses its private key (A_priv)?
 
-Each session key s_f might be encrypted using T's public key (T_pub(s_f)) and sent to T. This means that T can decrypt all files and cannot be place in an untrusted domain (it plays the role of the trusted third party now).
+Each session key s_f might be encrypted using T's public key (T_pub(s_f)) and sent to T. This means that T can decrypt all files and cannot be placed in an untrusted domain (it plays the role of the trusted third party now).
 
 There were some techniques proposed how to prevent T from mass wiretapping, for example Encapsulated Key Escrow [2], however individual wiretapping is still possible.
 
@@ -420,7 +420,7 @@ Furthermore (and crucial for verifiable encryption), it can be shown that only o
 
 [1] M. Stadler, Publicly verifiable secret sharing, Advances in Cryptology — EUROCRYPT ’96, LNCS, vol. 1070, Springer Verlag, 1996, pp. 191–199.
 
-[2] M. Bellare and S. Goldwasser, Encapsulated key escrow, Preprint, 1996
+[2] M. Bellare and S. Goldwasser, Encapsulated key escrow, Preprint, 1996.
 
 [3] A. Young and M. Young, Auto-recoverable auto-certifiable cryptosystems., Advances in Cryptology — EUROCRYPT ’98, LNCS, vol. 1403, Springer Verlag, 1998, pp. 17–31.
 

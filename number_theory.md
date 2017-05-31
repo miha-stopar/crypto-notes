@@ -246,7 +246,7 @@ Let's list some theorems given in Ireland and Rosen [3], section 4.1.
 Proposition (follows from Fermat's Little Theorem and the fact that a polynomial of deggree n has at most n distinct roots):
 `x^(p-1) - 1 = (x-1) * (x-2) * ... (x-p+1) (mod p)`
 
-Proposition:
+Proposition (4.1.2 in Ireland and Rosen [3]):
 `If d|(p-1), then x^d = 1 (mod p) has exactly d solutions`
 
 Proof:
@@ -255,20 +255,23 @@ Let's say d*d1 = p-1. We would like to show that polynomial x^d - 1 divides x^(p
 x^(d*d1) - 1 = ((x^d)^(d1-1) + (x^d)^(d1-2) + ... + x^d + 1) * (x^d - 1) 
 ```
 
-TODO
-
+Proposition (Ireland and Rosen [4], section 4.1.3):
+n possesses primitive roots iff n is of the form 2, 4, p^a, or 2*p^a where p is an odd prime.
 
 ## Quadratic residue
 
 We say a from Z_n is quadratic residue (special type of power residue, see above) if there exists some x such that x^2 = a (mod n). Otherwise a is called quadratic nonresidue.
 
-Let's say n = p_1^e_1 * ... * p_l^e_l. Because of CRT, we know that the congruence y = x^2 (mod n) is equivalent to the system y = x^2 (mod p_1^e_1), ..., y = x^2 (mod p_l^e_l).
+Let's say n = p_1^e_1 * ... * p_l^e_l where p_i are odd primes. Because of CRT, we know that the congruence y = x^2 (mod n) is equivalent to the system y = x^2 (mod p_1^e_1), ..., y = x^2 (mod p_l^e_l).
 
 Thus, y is a quadratic reside mod n if and only if it is a quadratic residue mod all p_i^e_i.
 
-TODO (Ireland and Rosen 5.1.1)
+If n = 2^e * p_1^e_1 * ... * p_l^e_l, the above condition needs to hold and also:
 
+ * if e = 2, then x = 1 (mod 4)
+ * if e > 2, then x = 1 (mod 8)
 
+See Ireland and Rosen [3], section 5.1.1. 
 
 So given N = p*q where p and q are two primes, it is difficult to find whether a is quadratic residue or nonresidue modulo N (if you don't know the factorization, because if you do know you can use CRT and compute quadratic residue mod p as y^((p-1)/4)). 
 Quadratic residues mod p is cyclic (subgroup of a cyclic group).
@@ -612,7 +615,39 @@ If K1 is a subfield of K, then K1 and K have the same characteristic.
 
 ### How AES makes use of Galois fields
 
-Advanced Encryption Standard (AES) is a symmetric block cipher which makes use of GF(256) for some of its operations (SubBytes, MixColumns). For some explanation how AES works see ciphers.md.
+Advanced Encryption Standard (AES) is a symmetric block cipher which makes use of GF(256) for some of its operations (SubBytes, MixColumns). For some explanation how AES works see [ciphers.md](https://github.com/miha-stopar/crypto-notes/blob/master/ciphers.md).
+
+### How AES GCM uses GF(256)
+
+GCM uses a special function GHASH to provide authentication. For some info on GHASH, see 
+[attacks.md](https://github.com/miha-stopar/crypto-notes/blob/master/attacks.md)).
+
+GHASH operates on 128-bit blocks, where each block represents a polynomial of 127 degree (or less). That means that multiplication of two blocks is Galois multiplication in GF(128). Addition is xor because we are in GF(2). For the same reason subtraction is the same as addition.
+
+The irreducible polynomial used in GCM is `r = x^128 + x^7 + x^2 + x + 1`. 
+After addition of two polynomials, no reduction is needed because the resulting polynomial is smalller than 2^128.
+When multiplying polynomials p and q, the reduction is simple because of the choice of the polynomial. 
+
+Let's say p is of a degree 1 (polynomial p(x) = x). The resulting polynomial res = p * q is then of a degree 127 (in this case no reduction is needed) or 128. In the latter case, we can write res = p * q:
+
+```
+res = 1 * r + rem
+```
+
+So the reduction means simply subtracting r: `rem = res - r`.
+
+For an arbitrary `p1(x) = a_127 * x^127 + ... + a_1 * x + a_0`, we multiply p1(x) * q(x) as:
+
+```
+z = 0, v = q
+for i = 0 to 127 do:
+    if a_i == 1:
+	z = z xor v
+    v = v * p
+return z
+```
+
+Polynomial v runs through the values q, x * q, x^2 * q, ...
 
 # Problems without efficient solutions
 
