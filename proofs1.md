@@ -396,7 +396,8 @@ where (y/p_i) is 1 if y is a quadratic residue mod p_i, and -1 otherwise
 ```
 
 Fact3: (y/x) can be computed in time polynomial in |x|.
-```
+
+Fact3 is due to the rules like: if a = b (mod n), then (a/n) = (b/n). Note that no factorization of n is required.
 
 Jacobi symbol gives some information about whether y is quadratic residue mod x or not. If (y/x) = -1, then y is a quadratic nonresidue mod x and Q_x(y) = 1.
 
@@ -441,7 +442,13 @@ u = z^2 * y^(-b)
 
 QNR = {(x, y); y is from Z_n\*, (y/x) = 1, Q_x(y) = 1}, where x and y are presented in binary.
 
+Zero-knowledge proof for QNR is trickier than for QR (proving that Q_x(y) = 0), since we don't have any such information as the root of y at hand.
 
+The basic idea of the protocol is that the verifier generates at random elements w of two types: w = r^2 mod x (type 1) and w = r^2 * y mod x (type 2), and sends these elements to the prover.
+
+The prover knows the factorization of x and can for each w compute wheter it is QNR or not. If y is from QNR, he will be thus able to distinguish between type 1 and type 2. If y is from QR, all w will be from QR and the prover will not be able to distinguish.
+
+However, the danger is that the verifier generates elements w differently than specified by the protocol. The correct behaviour can be enforced by complicating the protocol in a way that the verifier convinces the prover that he knows either a square root of w or a square root of w * y^(-1) mod x, without giving the prover any information.
 
 
 
