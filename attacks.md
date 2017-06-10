@@ -656,7 +656,7 @@ g1(X) = A1_1 * X^(m+n+1) + ... + A1_m* * X^(n+2) + C1_1 * X^(n+1) + ... + C1_n* 
 g2(X) = A2_1 * X^(m+n+1) + ... + A2_m* * X^(n+2) + C2_1 * X^(n+1) + ... + C2_n* * X^2 + (len(A2) || len(C2)) * X + Enc_k(J_0) + T2
 ```
 
-It holds: g1(H) = g2(H) = 0. Let's define now g(X) = g1(X) + g2(X) (remember, this is xor). Note that Enc_k(J_0) which is not known to us, gets cancelled by xor operation. It holds g(H) = 0 and we know all coefficients of the polynomial. Now we factor the polynomial g to find its roots and we have candidates for authentication key H (in practice usually relatively short).
+It holds: g1(H) = g2(H) = 0. Let's define now g(X) = g1(X) + g2(X) (remember, this is xor). Note that Enc_k(J_0) which is not known to us, gets cancelled by xor operation. It holds g(H) = 0 and we know all coefficients of the polynomial. Now we factor the polynomial g to find its roots and we have a list of candidates for authentication key H (in practice usually relatively short).
 
 
 

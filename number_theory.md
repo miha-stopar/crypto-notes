@@ -273,6 +273,17 @@ If n = 2^e * p_1^e_1 * ... * p_l^e_l, the above condition needs to hold and also
 
 See Ireland and Rosen [3], section 5.1.1. 
 
+It can be quickly shown that if a is quadratic residue modulo p^k, then it is also quadratic residue modulo p^j, for each j > k. Let's prove by induction:
+
+```
+x^2 = a (mod p^k)
+Let's move x from Z_(p^k)* into Z_(p^(k+1))*: x + l*p^k for some l
+x^2 = t * p^k + a
+Let's observe (x + l*p^k)^2 modulo p^(k+1):
+(x + l*p^k)^2 = x^2 + 2*x*l*p^k + l^2*p^(2*k) = t * p^k + a + 2*x*l*p^k = p^k * (t + 2*x*l) + a
+We can find l such that t + 2*x*l is a multiplier of p. Thus, we can find l such that (x + l*p^k)^2 = a (mod p^(k+1))
+```
+
 So given N = p*q where p and q are two primes, it is difficult to find whether a is quadratic residue or nonresidue modulo N (if you don't know the factorization, because if you do know you can use CRT and compute quadratic residue mod p as y^((p-1)/4)). 
 Quadratic residues mod p is cyclic (subgroup of a cyclic group).
 Note that QR_N where N is the product of two primes is also cyclic (see Cyclic groups above).

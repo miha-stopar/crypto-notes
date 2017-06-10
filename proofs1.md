@@ -360,7 +360,7 @@ Naturally, these results started a line of research how to improve the efficienc
 
 A variant on the notion of interactive proofs was introduced by Brassard, Chaum, and Crepau [7], who relaxed the soundness condition so that it only refers to feasible ways of trying to fool the verifier (instead of all possible ways). Protocols that satisfy the computational-soundness condition are called **arguments**.
 
-## Famous GMR [5] and (statistical) zero-knowledge proof for QR and QNR
+## Famous GMR [5] and zero-knowledge proof for QR and (statistical) QNR
 
 In [5] three notions of indistinguishability have been defined: equality, statistical indistinguishability, computational indistinguishability (hence PZK, SZK, CZK).
 
@@ -378,7 +378,7 @@ Both, QR and QNR are in NP, and thus possess a classic proof (for instance, to p
 
 Before giving a perfectly zero-knowledge proof for QR and a statistically zero-knowledge proof for QNR, some definitions and facts:
 
-Fact1: Let x be a natural number and y from Z_x\*. Then, y is a quadratic residue mod x iff it is a quadratic residue mod all of the prime factors of x.
+Fact 1: Let x be a natural number and y from Z_x\*. Then, y is a quadratic residue mod x iff it is a quadratic residue mod all of the prime factors of x.
 
 Definition: 
 ```
@@ -386,7 +386,7 @@ Q_x(y) = 0 if y is a quadratic residue mod x
 Q_x(y) = 1 otherwise
 ```
 
-Fact2: Given y and the prime factorization of x, Q_x(y) can be computed in time polynomial in |x|.
+Fact 2: Given y and the prime factorization of x, Q_x(y) can be computed in time polynomial in |x|.
 
 Jacobi symbol: 
 Let x = p_1^l_1 * ... * p_k^l_k. Jacobi symbol is then:
@@ -395,9 +395,9 @@ Let x = p_1^l_1 * ... * p_k^l_k. Jacobi symbol is then:
 where (y/p_i) is 1 if y is a quadratic residue mod p_i, and -1 otherwise
 ```
 
-Fact3: (y/x) can be computed in time polynomial in |x|.
+Fact 3: (y/x) can be computed in time polynomial in |x|.
 
-Fact3 is due to the rules like: if a = b (mod n), then (a/n) = (b/n). Note that no factorization of n is required.
+Fact 3 is due to the rules like: if a = b (mod n), then (a/n) = (b/n). Note that no factorization of n is required.
 
 Jacobi symbol gives some information about whether y is quadratic residue mod x or not. If (y/x) = -1, then y is a quadratic nonresidue mod x and Q_x(y) = 1.
 
@@ -410,14 +410,14 @@ QR = {(x, y); x a natural number, y from Z_x\*, Q_x(y) = 0}
 QNR = {(x, y); x a natural number, y from Z_x\*, (y/x) = 1, Q_x(y) = 1}
 ```
 
-Fact4: Let x be a natural number. Then, for all y such that Q_x(y) = 0, the number of solutions w from Z_x\* to w^2 = y (mod x) is the same (independent of y).
+Fact 4: Let x be a natural number. Then, for all y such that Q_x(y) = 0, the number of solutions w from Z_x\* to w^2 = y (mod x) is the same (independent of y).
 
-Fact5: Let x be a natural number, and y, z from Z_x\*. Then:
+Fact 5: Let x be a natural number, and y, z from Z_x\*. Then:
 
  * if Q_x(y) = Q_x(z) = 0, then Q_x(y*z) = 0
  * if Q_x(y) != Q_x(z), then Q_x(y*z) = 1 
 
-Fact6: Given x, y, the Euclidean gcd algorithm allows us to compute in polynomial time whether or not y is from Z_x\*.
+Fact 6: Given x, y, the Euclidean gcd algorithm allows us to compute in polynomial time whether or not y is from Z_x\*.
 
 ### Zero-knowledge proofs of quadratic residuosity
 
@@ -429,7 +429,7 @@ The proof about y being in QR goes as depicted in a diagram, but it needs to be 
 
 ![qr_zkp](https://raw.github.com/miha-stopar/crypto-notes/master/img/qr_zkp.png)
 
-This protocol is an interactive proof system for QR, because the probability that the verifier is convinced is at most (1/2)^m.
+This protocol is an interactive proof system for QR, because when y is not from QR the probability that the verifier is convinced is at most (1/2)^m.
 
 To show that the protocol is zero knowledge, we show that for each given b and z, a simulator can generate u such that the transcript (u, b, z) is indistinguishable from the real transactions between the prover and verifier.
 
@@ -437,6 +437,8 @@ A simulator computes:
 ```
 u = z^2 * y^(-b)
 ```
+
+Note that if the prover would always know the value of b in advance, that would mean that he would prepare either a message z = r^2 * y^(-1) % N (when b = 1), either r^2 % N (when b = 0), and always convince a verifier.
 
 ### Zero-knowledge proofs of quadratic nonresiduosity
 
@@ -446,7 +448,7 @@ Zero-knowledge proof for QNR is trickier than for QR (proving that Q_x(y) = 0), 
 
 The basic idea of the protocol is that the verifier generates at random elements w of two types: w = r^2 mod x (type 1) and w = r^2 * y mod x (type 2), and sends these elements to the prover.
 
-The prover knows the factorization of x and can for each w compute wheter it is QNR or not. If y is from QNR, he will be thus able to distinguish between type 1 and type 2. If y is from QR, all w will be from QR and the prover will not be able to distinguish.
+The prover knows the factorization of x and can for each w compute whether it is QNR or not. If y is from QNR, he will be thus able to distinguish between type 1 and type 2. If y is from QR, all w will be from QR and the prover will not be able to distinguish.
 
 However, the danger is that the verifier generates elements w differently than specified by the protocol. The correct behaviour can be enforced by complicating the protocol in a way that the verifier convinces the prover that he knows either a square root of w or a square root of w * y^(-1) mod x, without giving the prover any information.
 
