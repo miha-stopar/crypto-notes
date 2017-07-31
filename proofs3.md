@@ -25,6 +25,8 @@ g1^(y+alpha) = A' * h1(c-beta)
 G2^(y+alpha) = B' * H2(c-beta)
 ```
 
+Also, hash needs to be checked (whether the second value in transcript is computed out of A' and B').
+
 # Pseudonym systems [2]
 
 Lysyanskaya et al. presented in 1999 a pseudonym system [2] which allow users to interact with multiple organizations anonymously, using pseudonyms. There were similar systems (for example Chaum [3]) proposed before, but they did not protect the system against dishonest users who collectively use their pseudonyms and credentials (they share the identity). Also, previous systems relied heavily on a trusted center.
@@ -59,7 +61,7 @@ Organization O's public key is (g, h1, h2) where h1=g^s1, h2=g^s2.
 
 ![nym credential_issue](https://raw.github.com/miha-stopar/crypto-notes/master/img/nym_credential_issue.png)
 
-Note that the organization never sees the transcripts and as the transcripts are blind, the organization cannot link transcripts and users.
+Note that the organization never sees the transcripts and it cannot link transcripts and users.
 
 ## Transferring a credential to another organization
 

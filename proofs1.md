@@ -446,13 +446,36 @@ QNR = {(x, y); y is from Z_n\*, (y/x) = 1, Q_x(y) = 1}, where x and y are presen
 
 Zero-knowledge proof for QNR is trickier than for QR (proving that Q_x(y) = 0), since we don't have any such information as the root of y at hand.
 
-The basic idea of the protocol is that the verifier generates at random elements w of two types: w = r^2 mod x (type 1) and w = r^2 * y mod x (type 2), and sends these elements to the prover.
+The basic idea of the protocol is that the verifier generates at random elements w of two types: w = r^2 mod x (type 1) and w = r^2 * y mod x (type 2), and sends these elements to the prover. This needs to be repeated m times.
 
-The prover knows the factorization of x and can for each w compute whether it is QNR or not. If y is from QNR, he will be thus able to distinguish between type 1 and type 2. If y is from QR, all w will be from QR and the prover will not be able to distinguish.
+The prover knows the factorization of x and can for each w compute whether it is QNR or not. If y is from QNR, he will be thus able to distinguish between type 1 and type 2. If y is from QR, all w will be from QR and the prover will not be able to distinguish between type 1 and type 2.
 
-However, the danger is that the verifier generates elements w differently than specified by the protocol. The correct behaviour can be enforced by complicating the protocol in a way that the verifier convinces the prover that he knows either a square root of w or a square root of w * y^(-1) mod x, without giving the prover any information.
+However, the danger is that the verifier generates elements w differently than specified by the protocol. The approach is thus sufficient for a proof system, but not for a zero-knowledge proof.
 
+The correct behaviour can be enforced by complicating the protocol in a way that the verifier convinces the prover that he knows whether w is of type 1 or of type 2. This can be achieved by convincing the prover that he knows either a square root of w or a square root of w * y^(-1) mod x, without giving the prover any information.
 
+For each w (there are m rounds) the verifier needs to prove that he knows the type of w. Thus, for each w the verifier chooses m random r1, r2 from Z_x\* and bit_j from {0, 1}.
+
+```
+a_i = r1^2
+b_i = r2^2 * y
+```
+
+If bit_j = 0, he sets a pair (a_i, b_i); if bit_j = 1, he sets a pair (b_i, a_i). The verifier then sends the pairs and w to the prover.
+
+Prover sends to the verifier m-long random bit vector i = (i_1, i_2, ..., i_m).
+
+If b = 1 (means w is of type 2: w = r^2 * y), the verifier returns a square root of w * r2^2 * y (which is r * r2 * y). If b = 0, the verifier returns a square root of w * r1^2 (which is r * r1). Let's denote this output as v_j.
+
+Prover checks whether v_j^2 = w * a_i or v_j^2 = w * b_i.
+
+That means if b = 0 (w = r^2), the verifier sent r1^2, ..., rm^2 to the prover, and in the next step he sent out r1 * r, proving that he knows the square root of w.
+
+If b = 1 (w = r^2 * y), the verifier sent r2^2 * y to the prover, and in the next step he sent r2 * r * y, proving that he knows the square root of w * b_j, which means w is of type 2.
+
+Because a_i and b_i are in random order in a pair, the prover does not know which type the verifier proved.
+
+However, the verifier might cheat when choosing pairs. This is when vector i comes into a play - when i_j = 0, the verifier returns (r1, r2), otherwise as above. When i_j = 0, the prover checks whether (r1^2, r2^2 * y) is the pair he earlier received (the order in pair might be different).
 
 
 
