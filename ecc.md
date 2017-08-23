@@ -49,7 +49,7 @@ Then, a discriminant is `-16(4*a^3 + 27*b^2)`.
 A nonzero discriminant algebraically means that a right-hand side of the equation has three distinct roots. Geometrically it means that the elliptic curve is smooth - there are no points at which the curve has two or more distinct tangent lines.
 
 ## Elliptic curve cryptography
-#
+
 For cryptographic purposes an elliptic curve consists of the points satisfying the above equation (simplified Weierstrass) along with a point at infinity.
 
 Let us see an elliptic curve in sage:
@@ -152,6 +152,19 @@ y3 = - y1 - k*(x3-x1)
 ```
 
 However, there are some special cases (images from 2 to 4), for example where P = Q, which are covered in images 2 - 4.
+
+For P = Q, the slope of tangent line at P is computed. Let us say E(x, y) = x^3 + a * x + b and P = (x1, y1). The slope is then:
+
+```
+lambda = [∂E/∂X / ∂E/∂Y](x1, y1) = (3 * x1^2 + a) / (2 * y1)
+```
+
+The point is:
+
+```
+x3 = lambda^2 - 2 * x1
+y3 = (x1 - x3) * lambda - y1
+```
 
 ## How to speed up ECC operations
 
@@ -270,6 +283,14 @@ From Jacobian to affine:
 
 It turns out the addition of two points in Jacobian coordiantes can be done without modular inversion and is thus much faster as in affine coordinates. Naturally, at the end we have to transform the result back to affine coordinates (which involves modular inversion), but in elliptic curve cryptography the points have to usually be added many times (we have to calculate for example m*Q = Q + ... + Q) and we need to transform to affine coordinates only after last addition.
 
+## Choosing groups and hashing problem
+
+Let E be an elliptic curve over a field K. Every point on E generates (using group operation as above) a cyclic group G. Elliptic curve cryptography is using points in E(K) instead of some F\* for some finite field K, however it needs to be ensured that randomly chosen points and hashed points lie in G, not in all E(K) (see a discussion in [1]).
+
+Cryptographic schemes in F\* for some finite field F operate within a subgroup G of a particular order r, so elements chosen at random and hashed to must have order r or a factor or r. To ensure this, after choosing or hashing to some element x from F\*, to obtain an element from G, x is exponentiated by n/r where n = #F\*. Similarly, in elliptic curve cryptography, P from E(K) is multiplied by n/r where n = #E(K).
+
+If n = #E(K), r is prime that divides n, and r^2 does not divide n, we know there is exactly one subgroup G of E(K) of order r. When a random group element of G is required, we choose a random point of E(K) and multiply it by n/r.When hashing to a point of G, we first hash it to a point in E(K) and then multiply it by n/r.
+
 ## Elliptic Curve Discrete Logarithm Problem (ECDLP)
 
 The security of elliptic curve cryptosystems relies on the difficulty of ECDLP:
@@ -373,4 +394,6 @@ The value n has to be prime, otherwise we might end up with a point h*P having a
 
 Elliptic curve cryptograph allows to use key pairs where the lengths of both (public and private) keys are relatively small.
 
+
+[1] Lynn, Ben. On the implementation of pairing-based cryptosystems. Diss. Stanford University, 2007.
 

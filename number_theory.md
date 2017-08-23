@@ -312,14 +312,16 @@ Exactly half of Z_p\* are quadratic residues. Why: x^2 = (-x)^2 (mod p) and if w
 QR_p = 1^2, 2^2, ..., ((p-1)/2)^2
 ```
 
-To compute x from x^2 = a (mod p) (when it exists):
+To compute x from x^2 = a (mod p) when (p+1)/4 is integer:
 
 ```
 x_1 = a^((p+1)/4)
 x_2 = -a^((p+1)/4)
 ```
 
-See Rabin encryption in [provable_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/provable_security.md). When a^((p-1)/2) = 1, it means a^((p+1)/2) = a ...
+When (p+1)/4 is not integer, Tonelli-Shanks algorithm can be used. The basic idea is to find odd t for which a^(t+1) = a - in this case a^((t+1)/2) is square root of a. How we choose candidates for t? First, we choose such that p-1 = 2^s * t. If a^(t+1) != a, we choose t1 such that t - 1 = 2^s1 * t1 ...
+
+See Rabin encryption in [provable_security.md](https://github.com/miha-stopar/crypto-notes/blob/master/provable_security.md) which is based on quadratic residues.
 
 ### Quadratic residues when N is product of two safe primes
 

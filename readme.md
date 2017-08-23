@@ -1,16 +1,5 @@
 # Crypto notes
 
-I started taking these notes when doing Dan Boneh crypto course on Coursera and when solving Matasano challenges. Both are highly recommended. While trying to learn some more crypto I am gradually adding further content.
-
-Resources I sometimes use:
- 
- * [Handbook of applied cryptography](http://cacr.uwaterloo.ca/hac/) by Alfred J. Menezes, Paul C. van Oorschot and Scott A. Vanstone
- * [Guide to Elliptic Curve Cryptography](http://cacr.uwaterloo.ca/ecc/) by Darrel Hankerson, Alfred Menezes, and Scott Vanstone
- * [A Graduate Course in Applied Cryptography](https://crypto.stanford.edu/~dabo/cryptobook/draft_0_2.pdf) by Dan Boneh and Victor Shoup
- * [A computational Introduction to Number Theory and Algebra](http://www.shoup.net/ntb/ntb-v2.pdf) by Victor Shoup
-
-## Content
-
 Some basic number theory and its applications in cryptography:
 [number_theory.md](https://github.com/miha-stopar/crypto-notes/blob/master/number_theory.md).
 

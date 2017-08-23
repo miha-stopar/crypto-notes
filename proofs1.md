@@ -406,8 +406,8 @@ However, when (y/x) = 1, no efficient solutions is known for computing Q_x(y).
 Definition: Quadratic residuosity problem is that of computing Q_x(y) on inputs x and y, where y is from Z_x\* and (y/x) = 1.
 
 ```
-QR = {(x, y); x a natural number, y from Z_x\*, Q_x(y) = 0}
-QNR = {(x, y); x a natural number, y from Z_x\*, (y/x) = 1, Q_x(y) = 1}
+QR = {(x, y); x a natural number, y from Z_x*, Q_x(y) = 0}
+QNR = {(x, y); x a natural number, y from Z_x*, (y/x) = 1, Q_x(y) = 1}
 ```
 
 Fact 4: Let x be a natural number. Then, for all y such that Q_x(y) = 0, the number of solutions w from Z_x\* to w^2 = y (mod x) is the same (independent of y).
@@ -476,6 +476,9 @@ If b = 1 (w = r^2 * y), the verifier sent r2^2 * y to the prover, and in the nex
 Because a_i and b_i are in random order in a pair, the prover does not know which type the verifier proved.
 
 However, the verifier might cheat when choosing pairs. This is when vector i comes into a play - when i_j = 0, the verifier returns (r1, r2), otherwise as above. When i_j = 0, the prover checks whether (r1^2, r2^2 * y) is the pair he earlier received (the order in pair might be different).
+
+### Proofs of partial knowledge
+
 
 
 
