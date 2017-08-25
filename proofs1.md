@@ -479,7 +479,24 @@ However, the verifier might cheat when choosing pairs. This is when vector i com
 
 ### Proofs of partial knowledge
 
+We have a1, b1, a2, b2 in a group G = <a1> = <a2>. We want to prove that either we know secret1 such that a1^secret1 = b1 or a2^secret2 = b2. This is a proof of partial knowledge and it was presented in [11].
 
+It is actually a Schnorr protocol for the secret we know and a fake Schnorr protocol for the secret we don't know, both executed in parallel.
+
+WLOG let's say that we know secret 1 such that a1^secret1 = b1.
+We choose random r1, c2, z2 smaller than order of G. Number r1 is used as normally in Schnorr in the first step. Number c2 acts as a challenge (that we know) for the fake Schnorr. Number z2 is the second message for the fake Schnorr.
+
+In fake Schnorr for the first message we send x2 = a2^z2 / b2^c2. When verifier receives the second message (containing also c2 and z2), he can verify that a2^z2 = x2 * b2^c2.
+
+But how do we force verifier to use challenge c2? The trick is the following - when verifer sends a challenge c, prover computes c1 = c xor c2.
+
+Prover then sends c1, z1, c2, z2 (but order needs to be random, for example we must not always send fake Schnorr proof after the normal Schnorr proof) where c1, z1 is challenge and proof for the normal Schnorr, and c2, z2 is proof for the fake Schnorr.
+
+The interactions are thus: 
+
+ * -> x1, x2
+ * <- c
+ * -> c1, z1, c2, z2
 
 
 
@@ -507,5 +524,5 @@ Germany, November 4-8, 2013, pages 955–966, 2013.
 [10] S. Vadhan, A Study of Statistical Zero Knowledge Proofs, PhD Thesis, M.I.T.,
 1999
 
-
+[11] Cramer, Ronald, Ivan Damgård, and Berry Schoenmakers. "Proofs of partial knowledge and simplified design of witness hiding protocols." Advances in Cryptology—CRYPTO’94. Springer Berlin/Heidelberg, 1994.
 
