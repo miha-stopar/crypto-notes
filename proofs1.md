@@ -479,7 +479,7 @@ However, the verifier might cheat when choosing pairs. This is when vector i com
 
 ### Proofs of partial knowledge
 
-We have a1, b1, a2, b2 in a group G = <a1> = <a2>. We want to prove that either we know secret1 such that a1^secret1 = b1 or a2^secret2 = b2. This is a proof of partial knowledge and it was presented in [11].
+We have a1, b1, a2, b2 in a group `G = <a1> = <a2>`. We want to prove that either we know secret1 such that a1^secret1 = b1 or a2^secret2 = b2. This is a proof of partial knowledge and it was presented in [11].
 
 It is actually a Schnorr protocol for the secret we know and a fake Schnorr protocol for the secret we don't know, both executed in parallel.
 
@@ -492,11 +492,37 @@ But how do we force verifier to use challenge c2? The trick is the following - w
 
 Prover then sends c1, z1, c2, z2 (but order needs to be random, for example we must not always send fake Schnorr proof after the normal Schnorr proof) where c1, z1 is challenge and proof for the normal Schnorr, and c2, z2 is proof for the fake Schnorr.
 
-The interactions are thus: 
+The interactions are: 
 
  * -> x1, x2
  * <- c
  * -> c1, z1, c2, z2
+
+### Proofs for bit commitments 
+
+Honest verifier zero knowledge proof that a commitment contains 0 or 1 value (meaning that in 0 or 1 is hidden in the "envelope") was presented in [12].
+
+We have a function f(x) = x^q mod N where N = p1 * p2; p1, p2 are primes of bit length l; q is prime; GCD(q, (p1-1)*(p2-1)) = 1.
+
+Clearly, under the usual RSA assumption, it is difficult to compute the preimage of y for some y from Im(f). 
+
+Later, for a commitment, we will need to be able to prove that y is from Im(f). Also, for f we will need a property that it is difficult to find a preimage of y^i for each i < q (given that we have y) - in [12] this property is called q-one-way.
+
+How do we prove that y is from Im(f)? If q > N, f is surjective (because GCD(q, (p1-1)*(p2-1)) = 1). If q < N, a zero-knowledge proof must be provided that y is a q-th power modulo N (this will be done using generalized Schnorr protocol).
+
+Is it really difficult to compute preimage of y^i for i < q? Let's say we can find z such that z^q = y^i (omitting modulo N for brevity). We can find a, b such that a*i + b*q = 1 (because i < q and q prime).
+
+```
+y^(a*i) * y^(b*q) = y
+z^(q*a) * y^(b*q) = y
+(z^a * y^b)^q = y
+```
+
+So we find a preimage of y which is supposed to be difficult.
+
+
+
+
 
 
 
@@ -526,3 +552,4 @@ Germany, November 4-8, 2013, pages 955–966, 2013.
 
 [11] Cramer, Ronald, Ivan Damgård, and Berry Schoenmakers. "Proofs of partial knowledge and simplified design of witness hiding protocols." Advances in Cryptology—CRYPTO’94. Springer Berlin/Heidelberg, 1994.
 
+[12] Cramer, Ronald, and Ivan Damgård. "Zero-knowledge proofs for finite field arithmetic, or: Can zero-knowledge be for free?." Advances in Cryptology—CRYPTO'98. Springer Berlin/Heidelberg, 1998.
