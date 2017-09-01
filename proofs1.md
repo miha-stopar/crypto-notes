@@ -520,7 +520,32 @@ z^(q*a) * y^(b*q) = y
 
 So we find a preimage of y which is supposed to be difficult.
 
+Now that we have q-one-way function f: H -> G, we can define a commitment to integer a where 0 <= a < q:
 
+```
+commit(r, a) = y^a * f(r) where r is random from H
+```
+
+Hiding property: It can be shown that a commitment function has a distribution independent from the value committed to, namely the uniform distribution over Im(f) - note that the verifier needs to prove that he knows the preimage of y: f(x) = y, this means y^a * f(r) = f(x^a * r).
+
+Binding property: let's say somebody can find a, r, a1, r1 such that y^a * f(r) = y^a1 * f(r1). Then:
+
+```
+y^(a-a1) = f(r1) * f^(-1)(r)
+y^(a-a1) = f(r1) * f^(-1)(r)
+y^(a-a1) = f(r1) * f^(r^(-1))
+y^(a-a1) = f(r1 * r^(-1))
+```
+
+The last line is in contradiction with q-one-wayness.
+
+How can it be shown that y is f image of some x using zero-knowledge proof? By generalized Schnorr:
+
+![q-one-way protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/q-one-way_protocol.png)
+
+This protocol can be used to show that a commitment C contains 0 by using u = C. That means a prover proves that he knows v such that f(v) = y^0 * v^q mod N = C. By using u = C * y^(-1) it can be shown that a commitment C contains 1.
+
+By using [11] it can be proved that a commitment contains either 0 or 1.
 
 
 
