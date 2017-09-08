@@ -498,7 +498,25 @@ The interactions are:
  * <- c
  * -> c1, z1, c2, z2
 
+### Commitment schemes based on group homomorphisms
+
+Cramer and Damgard [12] proposed commitment schemes based on group homomorphisms. These schemes have some nice properties:
+
+ * Given a commitment A containing a and commitment B containing b, verifier can on his own compute a commitment containing a + b mod q.
+ * It can be proved that a commitment contains 0 or 1 (bit commitments).
+ * prover can convince verifier in honest verifier zero-knowledge that he knows how to open a set of given commitments A, B, C to reveal values a, b, c, for which c = a * b mod q. That means prover can also prove that he knows how to open a single commitment A.
+
+Let's have a look at RSA based one-way homomorphisms and how to make a commitments scheme based on it.
+
+RSA based one-way homomorphism f is defined as f(x) = x^q mod N, where N = p1 * p2, N is of bit length l; p1, p2 are two different primes; q is prime and q > N; GCD(q, (p1-1)*(p2-1)) = 1.
+
+We want to have q > N and GCD(q, (p1-1)*(p2-1)) = 1 to f being surjective. Also, the second condition is needed to q being a valid RSA exponent. If f is surjective, it is easy to check whether y is from Im(f) - we just need to check whether gcd(y, N) = 1 (that means whether y is from Z_N\*).
+
+
+
 ### Proofs for bit commitments 
+
+TODO: fix
 
 Honest verifier zero knowledge proof that a commitment contains 0 or 1 value (meaning that in 0 or 1 is hidden in the "envelope") was presented in [12].
 
