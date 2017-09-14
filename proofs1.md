@@ -510,23 +510,9 @@ Let's have a look at RSA based one-way homomorphisms and how to make a commitmen
 
 RSA based one-way homomorphism f is defined as f(x) = x^q mod N, where N = p1 * p2, N is of bit length l; p1, p2 are two different primes; q is prime and q > N; GCD(q, (p1-1)*(p2-1)) = 1.
 
-We want to have q > N and GCD(q, (p1-1)*(p2-1)) = 1 to f being surjective. Also, the second condition is needed to q being a valid RSA exponent. If f is surjective, it is easy to check whether y is from Im(f) - we just need to check whether gcd(y, N) = 1 (that means whether y is from Z_N\*).
+We want to have q prime and q > N to f being surjective. Also, because GCD(q, (p1-1)*(p2-1)) = 1, q is a valid RSA exponent. If f is surjective, it is easy to check whether y is from Im(f) - we just need to check whether gcd(y, N) = 1 (that means whether y is from Z_N\*).
 
-
-
-### Proofs for bit commitments 
-
-TODO: fix
-
-Honest verifier zero knowledge proof that a commitment contains 0 or 1 value (meaning that in 0 or 1 is hidden in the "envelope") was presented in [12].
-
-We have a function f(x) = x^q mod N where N = p1 * p2; p1, p2 are primes of bit length l; q is prime; GCD(q, (p1-1)*(p2-1)) = 1.
-
-Clearly, under the usual RSA assumption, it is difficult to compute the preimage of y for some y from Im(f). 
-
-Later, for a commitment, we will need to be able to prove that y is from Im(f). Also, for f we will need a property that it is difficult to find a preimage of y^i for each i < q (given that we have y) - in [12] this property is called q-one-way.
-
-How do we prove that y is from Im(f)? If q > N, f is surjective (because GCD(q, (p1-1)*(p2-1)) = 1). If q < N, a zero-knowledge proof must be provided that y is a q-th power modulo N (this will be done using generalized Schnorr protocol).
+Homomorphism f has a property that it is difficult to find a preimage of y^i for each i < q (given that we have y) - in [12] this property is called q-one-way.
 
 Is it really difficult to compute preimage of y^i for i < q? Let's say we can find z such that z^q = y^i (omitting modulo N for brevity). We can find a, b such that a*i + b*q = 1 (because i < q and q prime).
 
@@ -536,15 +522,17 @@ z^(q*a) * y^(b*q) = y
 (z^a * y^b)^q = y
 ```
 
-So we find a preimage of y which is supposed to be difficult.
+So we found a preimage of y which is supposed to be difficult.
 
-Now that we have q-one-way function f: H -> G, we can define a commitment to integer a where 0 <= a < q:
+Commitment is defined as:
 
 ```
-commit(r, a) = y^a * f(r) where r is random from H
+commit(r, a) = y^a * f(r) mod N = y^a * r^q mod N, where a < q and r from Z_n*
 ```
 
-Hiding property: It can be shown that a commitment function has a distribution independent from the value committed to, namely the uniform distribution over Im(f) - note that the verifier needs to prove that he knows the preimage of y: f(x) = y, this means y^a * f(r) = f(x^a * r).
+Let's check the hiding and binding properties:
+
+Hiding property: commit is hiding because the distribution is independent of a, namely the uniform distribution over Z_N\*. This is because r is chosen uniformly, f(r) is a 1-1 mapping and thus f(r) is uniform. Finally, multiplication by the constant y is also 1-1 and thus uniform.
 
 Binding property: let's say somebody can find a, r, a1, r1 such that y^a * f(r) = y^a1 * f(r1). Then:
 
@@ -557,14 +545,15 @@ y^(a-a1) = f(r1 * r^(-1))
 
 The last line is in contradiction with q-one-wayness.
 
-How can it be shown that y is f image of some x using zero-knowledge proof? By generalized Schnorr:
+Note that other functions (instead of f) can be used as well, but they need to be q-one-way homomrphisms. It is essential that y is from Im(f), so that the cosets y * Im(f), y^2 * Im(f), ... are all distinct and it is hard to tell the difference between random elements in distinct cosets. 
+
+For a general homomorphism f it can be shown that y is f image of some x using zero-knowledge proof? By generalized Schnorr:
 
 ![q-one-way protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/q-one-way_protocol.png)
 
 This protocol can be used to show that a commitment C contains 0 by using u = C. That means a prover proves that he knows v such that f(v) = y^0 * v^q mod N = C. By using u = C * y^(-1) it can be shown that a commitment C contains 1.
 
 By using [11] it can be proved that a commitment contains either 0 or 1.
-
 
 
 
