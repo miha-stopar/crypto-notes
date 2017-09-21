@@ -269,19 +269,48 @@ This works because a^p = a (mod p) when p is primer (Fermat's little theorem).
 
 To calculate k = (y2-y1)/(x2-x1) we need to calculate modular inverse of (x2-x1) which is then multiplied by (y2-y1). Modular inversion is computationally expensive and for this reason the affine coordinates are usually transformed into projective or Jacobian coordinates.
 
-Conversion to Jacobian coordinates can be done as follows. 
+Conversion to Jacobian coordinates can be done as follows. Let's first introduce an equivalence relation ~ on the set K^3\{(0,0,0)}:
 
-From affine to Jacobian:
-(x, y) -> (x, y, 1) 
+```
+(x1, y1, z1) ~ (x2, y2, z2) if x1 = lambda^c * x2, y1 = lambda^d * y2, z1 = lambda * z2 for some lambda from K*
+```
 
-The Jacobian point (x, y, 1) is an equivalence class which contains all points (l^2*x, l^3*y, l) for integers l.
+The equivalence class is called a projective point.
 
-The point at infinity is (0, 1, 0).
+We have P(x, y) = y^2 - x^3 - a * x^2 - b. We are interested in (x, y) such that P(x, y) = 0. 
 
-From Jacobian to affine:
-(x, y, z) -> (x/z^2, y/z^3)
+Now we would like to have P(x, y, z) such that if P(x1, y1, z1) = 0, then P(x2, y2, z2) = 0 for all (x2, y2, z2) that are equivalent to (x1, y1, z1). And also that P(x, y, 1) = 0 if P(x, y) = 0.
 
-It turns out the addition of two points in Jacobian coordiantes can be done without modular inversion and is thus much faster as in affine coordinates. Naturally, at the end we have to transform the result back to affine coordinates (which involves modular inversion), but in elliptic curve cryptography the points have to usually be added many times (we have to calculate for example m*Q = Q + ... + Q) and we need to transform to affine coordinates only after last addition.
+We get this by (x, y) -> (x/(z^c), y/(z^d)). For c = 1, d = 1:
+
+```
+y^2 * z = x^3 + a * x^2 * z + b * z^3
+```
+
+Example: y^2 = x^3 + a * x + b and c = 2, d = 3.
+After transformation we get:
+
+```
+y^2 = x^3 + a * x * z^4 + b * z^6
+```
+
+Remember, point doubling is:
+
+```
+x3 = ((3*x1^2 + a)/(2*y1))^2 - 2*x1
+y3 = ((3*x1^2 + a)/(2*y1))(x1-x3) - y1
+```
+
+Now we move the equations into projective coordinates:
+
+```
+x3/(z3^2) = ... = ((3*x1^2 + a * z1^4)^2 - 8 * x1 * y1^2) / (4 * y1^2 * z1^2)
+y3/(z3^3) = ... (in the denominators there are y1, z1, z1^2, z1^3)
+```
+
+If we choose z3 = 2 * y1 * z1, we obtain formulas for x3 and y3 without any inversions.
+
+Thus, doubling the point (and also addition of two points) in Jacobian coordiantes can be done without modular inversion and is thus much faster as in affine coordinates. Naturally, at the end we have to transform the result back to affine coordinates (which involves modular inversion), but in elliptic curve cryptography the points have to usually be added many times (we have to calculate for example m*Q = Q + ... + Q) and we need to transform to affine coordinates only after last addition.
 
 ## Choosing groups and hashing problem
 

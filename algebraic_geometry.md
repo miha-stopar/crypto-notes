@@ -1,4 +1,4 @@
-Again, these are notes and sketches, not exact definitions and proofs (well, it turns out I am mostly copy-pasting as there is little you can omit). My goal is to acquire some knowledge about math behind ECC and pairing-based cryptography. I started with [2], then went to [1] to get algebraic geometry basics needed for [2], but then again I switched to [4] which has a broader introduction into algebraic geometry than [2]. I plan to go back to [2] once I finish A part of [4].
+Again, these are notes and sketches, not exact definitions and proofs (well, for this particular topic it turned out I mostly do copy-pasting of the crucial definitions and theorems as there is little you can omit or shorten). My goal is to acquire some knowledge about math behind ECC and pairing-based cryptography. I started with [2], then went to [1] to get algebraic geometry basics needed for [2], but then again I switched to [4] and [5] where a broader introduction into algebraic geometry is given (than in [2]). I plan to go back to [2] once I finish A part of [4].
 
 Note: An algebraic closure of K will be here denoted as K~ instead of the usual K with a line over it.
 
@@ -88,12 +88,28 @@ Theorem A.1.1.2 (Hilbert's Nullstellensatz): Let I be an ideal of the ring k~[X_
 
 Lemma A.1.1.1 says that there is a natural bijection between algebraic sets and reduced ideals (ideals that are equal to their own radical).
 
+Definition: We define the Zariski topology on A^n by taking the open subsets to be the complements of the algebraic sets. This is a topology, because as seen above the intersection of two open sets is open, and the union of any family of open sets is open. Furthermore, the empty set and the whole space are both open.
+
+Note: Topology is defined by specifying the open sets. Let X be a set. If T is a family of sets with the following properties, it is called a topology:
+
+ * X and {} are in T
+ * Any (possibly infinite) union of sets in T is in T
+ * The intersection of any finite number of elements of T is in T
+
+Example: Let us consider the Zariski topology on the affine line A^1. Every ideal in A = k[x] is principal, so every algebraic set is the set of zeros of a single polynomial. Since k is algebraically closed, every nonzero polynomial f(x) can be written f(x) = c*(x-a1) * ... * (x-an). Then Z(f) = {a1,...,an}. Thus the algebraic sets in A^1 are finite subsets (including the empty set) and the whole space (corresponding to f = 0). The open sets are the empty set and the complements of finite subsets.
+
+Definition: A nonempty subset Y of a topological space X is irreducible if it cannot be expressed as the union of two proper subsets, each one of which is closed in Y.
+
+Example: A^1 is irreducible, because its only proper closed subsets are finite, yet it is infinite.
+
 Definition: An affine variety is an irreducible algebraic subset of some A^n.
 
 Lemma A.1.1.3:
 
  * An algebraic set V is irreducible if and only if its ideal I_V is a prime ideal.
  * An algebraic set is a finite union of varieties. If none of the varieties is contained in another one, then this composition is unique.
+
+Note: An affine algebraic variety is an irreducible closed subset of A^n.
 
 Example A.1.1.4: (Affine hypersurfaces) Let P be from k~[X_1,...,X_n] and V = Z(P) be the algebraic set defined by P. Suppose that P = P_1^m1 *** P_r^m_r is the decomposition of P into irreducible factors, and set V_i = Z(P_i). Then the V_i's are the irreducible components of V. Each V_i is a variety and V = V_1 ∪ ... ∪ V_r and V_i is not contained in V_j for i != j.
 
@@ -186,6 +202,62 @@ This map is isomorphism and thus U_i is isomorphic to A^n. Hyperplane x_i = 0 is
 ```
 P^n = A^n ∪ P^(n-1) = ... = A^n ∪ ... ∪ A^1 ∪ A^0  
 ```
+
+## Algebraic maps and local rings
+
+Definition: Let X be a variety and x1 a point on X. A function f: X -> k~ is regular at x1 if there exists an open affine neighborhood U ⊂ X of x1, say U ⊂ A^n, and two polynomials P, Q from k~[x_1,...,x_n] such that Q(x1) != 0 and f(x) = P(x)/Q(x) for all x from U. The function is regular on X if it is regular at every point of X. The ring of regular functions on X is denoted by O(X).
+
+Note that the property of being regular is open. If f is regular at x, then it is regular at every point in some neughborhood at x.
+
+Definition: Let X be a variety and Y ⊂ X a subvariety. The local ring of X along Y, denoted by O_(Y,X), is the set of pairs (U, f), were U is an open subset of X with U ∩ Y != {} and f from O(U) is a regular function on U, and where we identify two pairs (U1, f1) = (U2, f2) if f1 = f2 on U1 ∩ U2. The ring O_(Y,X) is a local ring, its unique maximal ideal being given by:
+
+```
+M_(Y,X) = {f from O_(Y,X); f(x) = 0 for all x from Y}
+```
+
+Definition: Let X be a variety. The function field of X, denoted by k~(X), is defined to be O_(X,X), the local ring of X along X (note that f from k~(X) is not a function defined at every point of X).
+
+Definition: A map phi: X -> Y between varieties is a morphism if it is continuous, and if for every open set U ⊂ Y and every regular function on U, the function phi(f) is regular on phi^(-1)(U). A map is regular at a point x if it is a morhpism on some open neughborhood of x.
+
+It can be shown that f is regular at x if there is an affine neighborhood U ⊂ A^m of x in X and an affine neighborhood V ⊂ A^n of phi(x) in Y such that phi sends U into V and such that phi can be defined on U by n polynomials in m variables.
+
+Definition: A rational map from a variety X to a vaiety Y is a map that is a morphism on some nonempty subset of X. A birational map is a rational map that has a rational inverse.
+
+Theorem A.1.2.1: Let V be an affine variety. Then O(V) is isomorphic to k~[V] (remember: O(V) is a ring of regular functions on V and k~[V] = k~[X_1,...,X_n]/I_V).
+
+Theorem A.1.2.2: A regular function on a projective variety is constant.
+
+Theorem A.1.2.3: The image of a projective variety by a morphism is a projective variety.
+
+## Dimension
+
+Definition: The dimension of a variety V defined over k~ is the transcendence degree of its function field k~(V) over k~. The dimension of an algebraic set is the maximum of the dimensions of its irreducible components.
+
+Remember: The transcendence degree of an extension field K over a field F is the smallest number elements of K which are not algebraic over F, but needed to generate K.
+
+Both, A^n and P^n have dimension n. The dimension of a hypersurface in A^n or P^n is n-1.
+
+Example: The dimension of A^1 is 1, because the only irreducible closed subsets of A^1 are the whole space and single points.
+
+Definition: The height of a prime ideal p in a ring A is the supremum of all n such that there exists a chaing of distinct prime ideals p_0 ⊂ ... ⊂ p_n = p. The Krull dimension of the ring A is the supremum of the heights of its prime ideals.
+
+Theorem A.1.3.2:
+
+ * Let V be an affine algebraic set. Then dim(V) = Krulldim(k~[V]).
+ * Let V be an affine variety and let p be a prime ideal in k~[V]. Then: height(p) + Krulldim(k~[V]/p) = Krulldim(k~[V]).
+ * Let W be a subvariety of V. Then: Krulldim(O_(W,V)) = dim(V) - dim(W).
+
+Corollary A.1.3.3: Let V be a variety, and let W be a closed algebraic subset of V. If W != V, then dim W < dim V.
+
+Proposition A.1.3.4: let v be an affine variety of dimension l in A^, and let Z be a hypersurface in A^n. Then either V is contained in Z, or else all of the components of V ∩ W have dimension exactly l-1 (note that V ∩ W may consist of zero components!).
+
+Theorem A.1.3.5: Let V and W be affine varieties in A^n of dimensions l and m, respectively. Then every component of V ∩ W has dimension at least l + m - n.
+
+Theorem A.1.3.6: Let V and W be projective varieties in P^n of dimensions l and m, respectively. Then every component of V ∩ W has dimension at least l + m - n >= 0. Furthermore, if l + m - n >= 0, then V ∩ W is not empty.
+
+
+
+
 
 
 
@@ -361,4 +433,6 @@ It can be quickly checked that V1 has no singular points and V2 has a singular p
 [3] Cohen, Henri, et al., eds. Handbook of elliptic and hyperelliptic curve cryptography. CRC press, 2005.
 
 [4] Hindry, Marc, and Joseph H. Silverman. Diophantine geometry: an introduction. Vol. 201. Springer Science & Business Media, 2013.
+
+[5] Hartshorne, Robin. Algebraic geometry. Vol. 52. Springer Science & Business Media, 2013.
 
