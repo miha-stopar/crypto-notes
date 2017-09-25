@@ -1,8 +1,8 @@
-Again, these are notes and sketches, not exact definitions and proofs (well, for this particular topic it turned out I mostly do copy-pasting of the crucial definitions and theorems as there is little you can omit or shorten). My goal is to acquire some knowledge about math behind ECC and pairing-based cryptography. I started with [2], then went to [1] to get algebraic geometry basics needed for [2], but then again I switched to [4] and [5] where a broader introduction into algebraic geometry is given (than in [2]). I plan to go back to [2] once I finish A part of [4].
+The idea is to get some mathematical background for elliptic curve and pairing-based cryptography. Notes taken mostly from Diophantine geometry [4] by Hindry and Silverman, Hartshorne [5], Fulton [1], and Shafarevich [6].
 
 Note: An algebraic closure of K will be here denoted as K~ instead of the usual K with a line over it.
 
-# [4]
+# Algebraic geometry
 
 The following notation will be used:
 
@@ -119,6 +119,10 @@ Definition: Let V be an affine subvariety of A^n. The affine coordinate ring of 
 k~[V] = k~[X_1,...,X_n]/I_V
 ```
 
+Let's denote with F(V, k) all functions from V to k (this is ring in a usual way: (f + g)(x) = f(x) + g(x) and (f*g)(x) = f(x) * g(x)). We say f from F(V, k) is polynomial function if there exists a polynomial F from k[X1,...,Xn] such that F(a1,...,an) = f(a1,...,an) for all (a1,...,an) from V.
+
+If we observe F, G from k~[V] which are equivalent, we know that F - G from I(V). That means F - G vanishes on V. Thus, F and G are the same on V. That means coordinate ring can be seen as all polynomials which are different on V.
+
 Definition: Projective n-space P^n is the set of lines through the origin in A^(n+1). In symbols:
 
 ```
@@ -207,7 +211,7 @@ P^n = A^n ∪ P^(n-1) = ... = A^n ∪ ... ∪ A^1 ∪ A^0
 
 Definition: Let X be a variety and x1 a point on X. A function f: X -> k~ is regular at x1 if there exists an open affine neighborhood U ⊂ X of x1, say U ⊂ A^n, and two polynomials P, Q from k~[x_1,...,x_n] such that Q(x1) != 0 and f(x) = P(x)/Q(x) for all x from U. The function is regular on X if it is regular at every point of X. The ring of regular functions on X is denoted by O(X).
 
-Note that the property of being regular is open. If f is regular at x, then it is regular at every point in some neughborhood at x.
+jote that the property of being regular is open. If f is regular at x, then it is regular at every point in some neughborhood at x.
 
 Definition: Let X be a variety and Y ⊂ X a subvariety. The local ring of X along Y, denoted by O_(Y,X), is the set of pairs (U, f), were U is an open subset of X with U ∩ Y != {} and f from O(U) is a regular function on U, and where we identify two pairs (U1, f1) = (U2, f2) if f1 = f2 on U1 ∩ U2. The ring O_(Y,X) is a local ring, its unique maximal ideal being given by:
 
@@ -215,7 +219,7 @@ Definition: Let X be a variety and Y ⊂ X a subvariety. The local ring of X alo
 M_(Y,X) = {f from O_(Y,X); f(x) = 0 for all x from Y}
 ```
 
-Definition: Let X be a variety. The function field of X, denoted by k~(X), is defined to be O_(X,X), the local ring of X along X (note that f from k~(X) is not a function defined at every point of X).
+Definition: Let X be a variety. The function field of X (or field of rational functions on X), denoted by k~(X), is defined to be O_(X,X), the local ring of X along X (note that f from k~(X) is not a function defined at every point of X).
 
 Definition: A map phi: X -> Y between varieties is a morphism if it is continuous, and if for every open set U ⊂ Y and every regular function on U, the function phi(f) is regular on phi^(-1)(U). A map is regular at a point x if it is a morhpism on some open neughborhood of x.
 
@@ -229,17 +233,57 @@ Theorem A.1.2.2: A regular function on a projective variety is constant.
 
 Theorem A.1.2.3: The image of a projective variety by a morphism is a projective variety.
 
+### Motivation for function field (or field of rational functions)
+
+Shafarevich [6] gives an example of a curve (in section 1.2) which can be expressed as rational functions of one parameter:
+
+```
+y^2 = x^2 + x^3
+```
+
+![rational_curve](https://raw.github.com/miha-stopar/crypto-notes/master/img/rational_curve.png)
+
+The parametrization can be obtained by observing that each line (x, tx) intersects curve in exactly one point:
+
+```
+x = t^2 - 1
+y = t * (t^2 - 1)
+```
+
+We say that an irreducible algebraic curve X defined by f(x, y) = 0 is rational if there exist two rational functions phi(t) and psi(t), at least one nonconstant, such that:
+
+```
+f(phi(t), ksi(t)) = 0,
+```
+
+as an identity in t.
+
+This is beneficial, because if we all coefficients of phi and psi are rational, and we take a rational t0, then (phi(t0), ksi(t0)) is rational. Such parametrization can give as all rational solutions for example for the equation y^2 = x^2 + x^3 if we run t through all rational values.
+
+In more generality, if phi and psi belong to some subfield k0 of k and t0 from k0, then the coordinates of the point (phi(t0), psi(t0)) also belong to k0.
+
+Let's continue with irreducible curve (from above) given by f(x, y) = y^2 - x^2 - x^3. Consider rational functions u(x, y) = p(x, y) / q(x, y), where p and q are polynomials with coefficients in k such that the denominator q(x, y) is not divisible by f(x, y). We say that such a function u(x, y) is a rational function defined on X; and two rational functions p(x,y)/q(x,y) and p1(x,y)/q1(x,y) defined on X are equal on X if the polynomial p(x,y)*q1(x,y) - q(x,y)*p1(x,y) is divisible by f(x,y) (this is because we know that for (x,y) on X it is f(x,y) = 0 and also the polynomial p(x,y)*q1(x,y) - q(x,y)*p1(x,y) is 0 on X, so f divides this polynomial).
+
+Rational functions on X (up to equality on X) form a field. This field is called the function field or field of rational functions of X, and denoted by k(X).
+
+TODO
+
+
+
 ## Dimension
 
 Definition: The dimension of a variety V defined over k~ is the transcendence degree of its function field k~(V) over k~. The dimension of an algebraic set is the maximum of the dimensions of its irreducible components.
 
 Remember: The transcendence degree of an extension field K over a field F is the smallest number elements of K which are not algebraic over F, but needed to generate K.
 
+From Hartshorne:
+Definition: If X is a topological space, we define the dimension of X to be the supremum of all integers n such that there exists a chain Z_0 ⊂ Z_1 ⊂ ... ⊂ Z_n of distinct irreducible closed subsets of X. We define the dimension of an affine variety to be its dimension as a topological space.
+
 Both, A^n and P^n have dimension n. The dimension of a hypersurface in A^n or P^n is n-1.
 
 Example: The dimension of A^1 is 1, because the only irreducible closed subsets of A^1 are the whole space and single points.
 
-Definition: The height of a prime ideal p in a ring A is the supremum of all n such that there exists a chaing of distinct prime ideals p_0 ⊂ ... ⊂ p_n = p. The Krull dimension of the ring A is the supremum of the heights of its prime ideals.
+Definition: The height of a prime ideal p in a ring A is the supremum of all n such that there exists a chain of distinct prime ideals p_0 ⊂ ... ⊂ p_n = p. The Krull dimension of the ring A is the supremum of the heights of its prime ideals.
 
 Theorem A.1.3.2:
 
@@ -254,6 +298,24 @@ Proposition A.1.3.4: let v be an affine variety of dimension l in A^, and let Z 
 Theorem A.1.3.5: Let V and W be affine varieties in A^n of dimensions l and m, respectively. Then every component of V ∩ W has dimension at least l + m - n.
 
 Theorem A.1.3.6: Let V and W be projective varieties in P^n of dimensions l and m, respectively. Then every component of V ∩ W has dimension at least l + m - n >= 0. Furthermore, if l + m - n >= 0, then V ∩ W is not empty.
+
+## Tangent spaces and differentials
+
+Classical differential calculus defined in algebraic manner is needed to apply concepts like smoothness, tangent spaces, and differentials.
+
+Let V be an affine variety defined by the equations:
+
+```
+f1(x1,...xn) = ... = fm(x1,...,xn) = 0
+```
+
+A natural way to define the tangent space to V at the point P = (a1,...,an) is:
+
+```
+(dfj/dx1)(P)(x1 - a1) + ... + (dfj/dxm)(P)(xn-an) for all 1 <= j <= m
+```
+
+However, to have a definition that is independent of the particular equations for V, tangent space needs to be defined differently.
 
 
 
@@ -436,3 +498,4 @@ It can be quickly checked that V1 has no singular points and V2 has a singular p
 
 [5] Hartshorne, Robin. Algebraic geometry. Vol. 52. Springer Science & Business Media, 2013.
 
+[6] Shafarevich, Igorʹ Rostislavovich, and Kurt Augustus Hirsch. Basic algebraic geometry. Vol. 2. Berlin: Springer-Verlag, 1994.
