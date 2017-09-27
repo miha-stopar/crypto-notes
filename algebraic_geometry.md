@@ -14,6 +14,14 @@ G_k = Gal(k~/k): Galois group of k~ over k
 
 Although the goal is to study fields k of arithmetic interest, such as Q, Q_p, F_p, geometric properties are best expressed over algebraically closed fields. Why algebraic closure? If for example we consider x^2 + y^2 + 1 = 0 as giving a curve defined over Q, we can see that there are no points on the curve in Q. To "see" the curve, we must look at all the points with coordinates in Q~.
 
+Only algebraically closed fields will be considered also to avoid the following problem (see Shafarevich [6], section 1.1). As k[X, Y] is a unique factorisation domain, any polynomial f has a unique factorisation f = f1^k1 * ... * fr^kr as a product of irreducible factors fi. Then the algebraic curve X given by f = 0 is the union of the curves X_i given by fi = 0. A curve is irreducible if its equation is an irreducible polynomial. In certain cases, these notions are not well defined. For example if k = R then we should call the point (0, 0) a "curve", since it is defined by the equation x^2 + y^2 = 0. However, it is also defined by the equation x^4 + y^4 = 0following problem (see Shafarevich [6], section 1.1). As k[X, Y] is a unique factorisation domain, any polynomial f has a unique factorisation f = f1^k1 * ... * fr^kr as a product of irreducible factors fi. Then the algebraic curve X given by f = 0 is the union of the curves X_i given by fi = 0. A curve is irreducible if its equation is an irreducible polynomial. In certain cases, these notions are not well defined. For example if k = R then we should call the point (0, 0) a "curve", since it is defined by the equation x^2 + y^2 = 0. However, it is also defined by the equation x^4 + y^4 = 0.
+
+This is not a problem in algebraically closed fields.
+
+Lemma (see Proposition 2 in Fulton notes): Let k be an arbitrary field, f from k[x,y] an irreducible polynomial, and g from k[x,y] an arbitrary polynomial. If g is not divisible by f then the system of equations f(x,y) = g(x,y) = 0 has only a finite number of solutions.
+
+An algebraically closed field k is infinite; and if f is not a constant, the curve with equation f(x,y) = 0 has infinitely many points. Because of this, it follows from the lemma that an irreducible polynomial f(x,y) is uniquely determined, up to a constant multiple, by the curve f(x,y) = 0.
+
 ## Afine and projective varities
 
 Definition: Affine n-space (over k), which we denote by A^n, is the set:
@@ -233,7 +241,7 @@ Theorem A.1.2.2: A regular function on a projective variety is constant.
 
 Theorem A.1.2.3: The image of a projective variety by a morphism is a projective variety.
 
-### Motivation for function field (or field of rational functions)
+### Motivation for function field (and regular functions)
 
 Shafarevich [6] gives an example of a curve (in section 1.2) which can be expressed as rational functions of one parameter:
 
@@ -266,9 +274,31 @@ Let's continue with irreducible curve (from above) given by f(x, y) = y^2 - x^2 
 
 Rational functions on X (up to equality on X) form a field. This field is called the function field or field of rational functions of X, and denoted by k(X).
 
-TODO
+A rational function u(x,y) = p(x,y)/q(x,y) is defined at all points of X where q(x,y) != 0. By assumption q is not divisible by f, it can be proved that there are only finitely many points of X at which u(x,y) is not defined. Thus we can also consider k(X) as functions on X, but defined everywhere except at a finite set.
 
+It can happen that a rational function u has two different expressions u = p/q and u = p1/q1, and that for some point (a, b) from X we have q(a,b) = 0 but q1(a,b) != 0. If u has an expression u = p/q with q(P) != 0, then we say that u is regular at P.
 
+Every element of k(X) can obviously be written as rational function of x and y; now x, y are algebraically dependent (because f(x,y) = 0). It is easy to check from this that k(X) has transcendence degree 1 over k.
+
+### Motivation for rational maps
+
+Let X and Y be two irreducible algebraic plane curves, and u, v from k(X). The map phi(P) = (u(P), v(P)) is defined at all points P of X where both u and v are defined; it is called a rational map from X to Y if phi(P) is on Y for every P from X at which phi is defined.
+
+For example a rational parametrisation of a rational curve X is a rational map of the line to X.
+
+A rational map phi: X -> Y is birational if phi has a rational inverse. 
+
+Birational equivalance is a fundamental equivalence relation in algebraic geometry, and we usually classify algebraic curves up to birational equivalence. We have seen that the rational curves are exactly the curves birational to the line.
+
+Let X and Y be two irreducible algebraic plane curves that are birational, and suppose that the maps between them are given by:
+
+```
+(u,v) = (phi(x,y), ksi(x,y)) and (x,y) = (ksi(u,v), eta(u,v))
+```
+
+We can establish a relation between the function fields k(X) and k(Y). We define a map k(X) -> k(Y) such that w(x,y) is mapped to (ksi(u,v), eta(u,v)), viewed as a rational function on Y. This is isomorphism between k(X) and k(Y). It holds: two curves are birational iff their rational function fields are isomorphic.
+
+We see that hte problem of classifying algebraic curves up to birational equivalence is a geometric aspect of the natural algebraic problem of classifying finitely generated extension fields of k of transcendence degree 1 up to isomorphism. Also, it turns out any finite transcendence degree extension has a geometric interpretation.
 
 ## Dimension
 
@@ -325,7 +355,7 @@ However, to have a definition that is independent of the particular equations fo
 
 
 
-# [1]
+# Notes from Fulton [1]
 
 First the correspondence between algebraic sets in affine and projective space and ideals in polynomial rings needs to be explored.
 
