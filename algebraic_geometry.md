@@ -300,6 +300,29 @@ We can establish a relation between the function fields k(X) and k(Y). We define
 
 We see that hte problem of classifying algebraic curves up to birational equivalence is a geometric aspect of the natural algebraic problem of classifying finitely generated extension fields of k of transcendence degree 1 up to isomorphism. Also, it turns out any finite transcendence degree extension has a geometric interpretation.
 
+## Closed subsets of affine space
+
+From Shafarevich [6], section 2.1: there have been changing views on the basic object of study in algebraic geometry: projective or quasiprojective varieties, abstract algebraic varieties, schemes or algebraic spaces.
+
+The definition of a closed set was given above. Any open set U where x ∈ U is called a neighbourhood of x. The intersection of all the closed subsets of X containing a given subset M ⊂ X, is closed. It is called the closure of M and here denoted by M~ (standard notation use line over M). A subset M is dense in X if X = M~.
+
+### Regular functions on a closed subset
+
+Let X be a closed set in the affine space A^n over the field k.
+
+Definition: A function f defined on X with values in k is regular if there exists a polynomial F(T) with coefficients in k such that f(x) = F(x) for all x from X.
+
+The definition of a coordinate ring K[X] for a variety X was given above.
+
+Examples of coordinate rings:
+
+(Shafarevich) Example 1.9: Let X ⊂ A^2 be given by the equation x * y = 1. Then K[X] = k[x, 1/x], and it consists of all the rational functions in x of the form p(x)/x^n with p(x) a polynomial and n >= 0. (Note that k[x,y]/(x*y - 1) isomorphic k[x, 1/x])
+
+
+
+TODO
+
+
 ## Dimension
 
 Definition: The dimension of a variety V defined over k~ is the transcendence degree of its function field k~(V) over k~. The dimension of an algebraic set is the maximum of the dimensions of its irreducible components.
@@ -348,7 +371,7 @@ This contradicts the irreducibility of the curve.
 
 If k = R and P is a nonsingular point of the curve with equation f(x,y) = 0, then by the implicit function theorem we can write y as a function of x in some neighbourhood of P. Substituting this expression for y, this represents any rational function on the curve as a function of x near P.
 
-Theorem 1.1: At any nonsingular point P of an irreducible algebraic curve, there exists a regular function t that vanishes at P and such that every rational function u that is not identically 0 on the curve can be written in the form:
+(Shafarevich) Theorem 1.1: At any nonsingular point P of an irreducible algebraic curve, there exists a regular function t that vanishes at P and such that every rational function u that is not identically 0 on the curve can be written in the form:
 
 ```
 u = t^k * v
@@ -370,8 +393,54 @@ By the Euler theorem on homogeneous functions we know:
 (dF/dx) * x + (dF/dy) * y + (dF/dz) * z = n * F
 ```
 
-TODO
+And in point P (=(a,b,1)):
 
+```
+(dF/dx)(P) * a + (dF/dy)(P) * b + (dF/dz)(P) * 1 = n * F
+```
+
+Now let's use to get the equation of the tangent in homogeneous coordinates:
+
+```
+(dF/dx)(P)(x-a) + (dF/dy)(P)(y-b) = 0
+(dF/dx)(P) * x - (dF/dx)(P) * a + (dF/dy)(P) * y - (dF/dy)(P) * b  = 0
+(dF/dx)(P) * x - (dF/dx)(P) * a + (dF/dy)(P) * y - (dF/dy)(P) * b  = 0
+(dF/dx)(P) * x + (dF/dy)(P) * y + (dF/dz)(P)  = 0
+```
+
+### Rational function A^2 -> A^2 into map P^2 -> P^2
+
+Substituting x = ksi/zeta, y = eta/zeta and clearing denominators, we can write a rational function f = p(x,y)/q(x,y) on A^2 in the form P(ksi, eta, zeta)/Q(ksi, eta, zeta), where P and Q are homogeneous polynomials of the same degree.
+
+Given a rational map phi: A^2 -> A^2 defined by (x,y) -> (u(x,y), v(x,y)), we first rewrite it as above:
+
+```
+U(ksi, eta, zeta)/R(ksi, eta, zeta)
+V(ksi, eta, zeta)/S(ksi, eta, zeta)
+```
+
+where U, V, R, S are homogeneous polynomials, with deg U = deg R and deg V = deg S. Next we put it over a common denominator: (A/C, B/C), with deg A = deg B = deg C.
+
+```
+(ksi, eta, zeta) -> (A(ksi, eta, zeta)/C(ksi, eta, zeta), B(ksi, eta, zeta)/C(ksi, eta, zeta))
+```
+
+Finally, into homogeneous coordinates:
+
+```
+(ksi, eta, zeta) -> (A(ksi, eta, zeta), B(ksi, eta, zeta), C(ksi, eta, zeta))
+```
+
+where A, B, C are homogeneous polynomials of the same degree. Now phi is naturally a rational map P^2 -> P^2. The map is regular at a point P if one of A, B, C does not vanish on P. Studying properties related to points P in the affine set A^2, say, we can divide each of A, B, C, where n is their common degree, and write the map in the form (x,y) -> (u(x,y), v(x,y), w(x,y)), where u, v and w are polynomials. This map is regular at P if the 3 polynomials do not vanish simultaneously at P.
+
+(Shafarevich) Theorem 1.2: A rational map from a projective plane curve C to P^2 is regular at every nonsingular point of C.
+
+Proof: Suppose that the nonsingular point P is in the affine A^2 with coordinates denoted by x, y. We write the map as above in the form (x, y) -> (u_0, u_1, u_2), where u_i are polynomials. Due to the Theorem 1.1, we can write u_i = t^k_i * v_i, where t is a local (uniformizing) parameter, v_i(P) != 0 and k_i >= 0. Suppose that k_0 is the smallest of k_i. Then the same map can be written in the form (x,y) -> (v_0, t^(k_1 - k_0) * v_1, t^(k_2 - k_0) * v_2), with k_1 - k_0 >= 0, k_2 - k_0 >= 0, and v_0(P) != 0. Thus the map is regular at P.
+
+
+
+
+TODO
 
 
 
@@ -546,7 +615,7 @@ A ring satisfying the conditions of the lemma is called a local ring. We have se
 Proposition 4: Let r be a domain that is not a field. Then the following are equivalent:
 
  * R is Noetherian and local, and the maximal ideal is principal.
- * There is an irreducible element r in R such that every nonzero z from R may be written uniquely in the form z = u * t^n, u a unit in R, n a nonnegative integere.
+ * There is an irreducible element r in R such that every nonzero z from R may be written uniquely in the form z = u * t^n, u a unit in R, n a nonnegative integer.
 
 Proof. (1) implies (2): Let's m be a maximal ideal and t its generator. Suppose u * t^m = v * t^n. Then u * t^(m-n) = v is a unit and thus m = n (since t is a non-unit). That means the expression of any z = u * t^n is unique. Now we need to show that such an expression exists for z. If it is unit, it is done. If is a non-unit, then z = z1 * t (as t is a generator). If z1 is a unit, it is done. If not, we write z1 = z2 * t. We continue this way and we argue that this process eventually stops. It stops because the union of ideals (z1) ⊂ (z2) ⊂ (z3) ... is finitely generated (R is Noetherian).
 (2) implies (1): m = (t) is the set of non-units. The only ideals in R are the principal ideals (t^n), n a nonegative integer, so R is a PID.
