@@ -318,6 +318,38 @@ Examples of coordinate rings:
 
 (Shafarevich) Example 1.9: Let X ⊂ A^2 be given by the equation x * y = 1. Then K[X] = k[x, 1/x], and it consists of all the rational functions in x of the form p(x)/x^n with p(x) a polynomial and n >= 0. (Note that k[x,y]/(x*y - 1) isomorphic k[x, 1/x])
 
+### Regular maps
+
+X, Y closed subsets in A^n.
+
+Definition: A map f: X -> Y is regular if there exists m regular functions f_1,...,f_m on X such that f(x) = (f_1(x),...,f_m(x)) for all x from X.
+
+(Shafarevich) Example 1.13: The projection map (x,y) -> x defines a regular map of the curve defined by x*y = 1 to A^1.
+
+(Shafarevich) Example 1.15: The map f(t) = (t^2, t^3) is a regular map of the line A^1 to the curve given by y^2 = x^3.
+
+### How regular map acts on the ring of regular functions on a closed set
+
+If we have f: X -> Y an arbitrary map. Then we can associate with every function u on Y a function v on X by setting: 
+
+```
+v(x) = u(f(x))
+```
+
+We set v = f\*(u), and call it the pullback of u. We have a map f\* from functions on Y to functions on X. If f is regular, then f\* takes regular functions on Y to regular functions on X. Moreover, regular maps can be characterized as the maps that take regular functions into regular functions.
+
+If f is regular then the pullback of functions defines a map f\*: k[Y] -> k[X]. It follows that f\* is a homomrphism of k-algebras.
+
+Definition: A regular map f: X -> Y of closed sets is an isomorphism if it has an inverse, that is, if there exists a regular map g: Y -> X such that f = g^(-1).
+
+(Shafarevich) Example 1.17: The generalised parabola, defined by the equation y = x^k is isomorphic to the line, and the maps f(x,y) = x and g(t) = (t, t^k) define an isomorphism.
+
+(Shafarevich) Example 1.18: The projection f(x,y) = x of the hyperbola x*y = 1 to the x-axis is not an isomorphism, since the map is not a one-to-one correspondence: the hyperbola does not contain any point (x,y) for which f(x,y) = 0.
+
+(Shafarevich) Example 1.19: The map f(t) = (t^2, t^3) of the line to the curve defined by y^2 = x^3 is easily seen to be a one-to-one correspondence.
+
+Thus, the question is what are the notions and properties of closed sets invariant under isomorphism. The system of equations defining a set is not a notion of this kind - two sets X and Y can be isomorphic although given by different systems of equations in different spaces A^n. An intrinsic definition of a closed set independent of its realisation in some affine space is actually given by something called a scheme.
+
 
 
 TODO

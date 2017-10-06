@@ -1,4 +1,4 @@
-# Discrete logarithm equality 
+# Proof of discrete logarithm equality 
 
 We have Schnorr group G_q and elements g1, h1, g2, h2. Prover knows a secret x such that:
 
@@ -76,6 +76,18 @@ Organization then checks whether both transcripts are valid.
 
 Note that the credential does not contain (a, b) in plain and thus the organization that verifies the credential cannot know the user's nym for the organization that issued a credential (this is why gamma is used in generation of the transcript).
 
+# Proof of knowledge of a representation [6]
+
+Let G be a finite cyclic group of prime order q and let g_1,...,g_k be generators of G (primality of q is actually not a necessary condition).
+
+Tuple (x_1,...,x_k) is called a representation of y with respect to g_1,...,g_k when:
+
+```
+y = g_1^x_1 * ... * g_k^x_k
+```
+
+Proof is the generalization of Schnorr protocol. The prover chooses random r_1,...,r_k from Z_q, computes t = g_1^r_1 * ... * g_k^r_k, and sends t to the verifier. The verifier picks a random challenge c and sends it to the prover. The prover computes s_i = r_i - c * x_i mod q, and sends all s_i to the verifier. Verifier checks whether t = y^c * g_1^s_1 * ... * g_k^s_k.
+
 # Non-transferable anonymous credentials [4]
 
 While [2] discourage users from sharing their pseudonyms and credentials using PKI-assured non-transferability (sharing a credential implies also sharing a particular, valuable secret key from outside the system), Camenisch-Lysyanskaya [4] proposed a system which uses all-or-nothing non-transferability which does not require having some external valuable secret key. Here, sharing one pseudonym or credential implies sharing all of the user's other credentials and pseudonyms in the system.
@@ -94,4 +106,5 @@ While [2] discourage users from sharing their pseudonyms and credentials using P
 
 [5] Ran Canetti, Moses Charikar, Ravi Kumar, Sridhar Rajagopalan, Amit Sahai, and Andrew Tomkins. Non-transferable anonymous credentials. Manuscript, 1998. Revision in submission, 1999.
 
+[6] S. Brands. An efficient off-line electronic cash system based on the representation problem. Technical Report CS-R9323, CWI, Apr. 1993.
 
