@@ -386,8 +386,45 @@ How rational maps act on rational functions on a closed set. Let phi: X -> Y be 
 
 Definition: A rational map phi: X -> Y is birational if phi has an inverse rational map ksi: Y -> X, that is, phi(X) is dense in Y and ksi(Y) in X, and ksi(phi(x)) = phi(ksi(x)) where defined.
 
+## Finite maps
 
+(From Shafarevich 5.3)
 
+Let B be a ring, and A a subring containing the identitity element of B. We say that an element b from B is integral over A if it satisfies an equation:
+
+```
+b^k + a_1 * b^(k-1) + ... + a_k = 0 with a_i from A
+```
+
+B is integral over A if every element b from B is integral over A. Let X and Y be affine varieties and f: X -> Y a regular map such that f(X) is dense in Y. Then f\* defines an isomorphic inclusion k[Y] -> k[X]. We view k[Y] as a subring of k[X] by means of f\*.
+
+Definition: f is a finite map if k[X] is integral over k[Y].
+
+The composite of two finite maps is again finite.
+
+If f is a finite map then any point y from Y has at most a finite number of inverse images. Indeed, suppose that X is a subset of A^n and let t_1,...,t_n be the coordinates of A^n viewed as functions on X. It is enough to prove that any coordinate t_i takes only a finite number of values on the set f^(-1)(y). Let's observe a polynomial p(x) = x_i from k[X]. By definition, it can be written as:
+
+```
+p(x)^k + p(x)^(k-1) * r_1(x) + ... + r_k(x) = 0 where r_i from isomorphic inclusion of k[Y] in k[X]
+```
+
+This can be rewritten as:
+
+```
+x_i^k + x_i^(k-1) * a_1(y) + ... + a_r(y) = 0 where r_i(x) = a_i(f(x))
+```
+
+We can see that there can be only k different values for x_i. Thus, there is only a finite number of points x from X for which f(x) = y.
+
+(Shafarevich) Theorem 1.12: A finite map is surjective.
+
+Corollary: A finite map takes closed sets to closed sets.
+
+(Shafarevich) Theorem 1.13: If f: X -> Y is a regular map of affine varieties, and every point x from Y has an affine neighbourhood U (x is in U) such that V = f^(-1)(U) is affine and f: V -> U is finite, then f itself is finite.
+
+### Noether normalisation
+
+(Shafarevich) Theorem 1.17: For an irreducible projective variety X there exists a finite map phi: X -> P^m to a projective space.
 
 
 ## Dimension
