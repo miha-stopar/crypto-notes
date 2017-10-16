@@ -1,4 +1,4 @@
-The idea is to get some mathematical background for elliptic curve and pairing-based cryptography. Notes taken mostly from Diophantine geometry [4] by Hindry and Silverman, Hartshorne [5], Fulton [1], and Shafarevich [6].
+
 
 Note: An algebraic closure of K will be here denoted as K~ instead of the usual K with a line over it.
 
@@ -426,12 +426,17 @@ Corollary: A finite map takes closed sets to closed sets.
 
 (Shafarevich) Theorem 1.17: For an irreducible projective variety X there exists a finite map phi: X -> P^m to a projective space.
 
-
 ## Dimension
+
+(Shafarevich 6.1)
+
+If there exists a finite map X -> Y then it is natural to suppose that X and Y have the same dimension. Since by Noether normalisation, any projective or affine variety X has a finite map to some P^m or A^m, it is natural to take m as the definition of the dimension of X. But might there not exist two finite maps f: X -> A^m and g : X -> A^n with m != n? Suppose X is irreducible. Then the finiteness of a regular map f: X -> A^m implies that k(X) is a finite extension of the field f\*(k(A^m)), which is in turn isomorphic to k(t_1,...,t_m). Hence k(X) has transcendence degree m over k; this gives a characterisation of the number m independent of the choice of the finite map and gives motivation for the definition of the dimension.
 
 Definition: The dimension of a variety V defined over k~ is the transcendence degree of its function field k~(V) over k~. The dimension of an algebraic set is the maximum of the dimensions of its irreducible components.
 
 Remember: The transcendence degree of an extension field K over a field F is the smallest number elements of K which are not algebraic over F, but needed to generate K.
+
+Note that if X is an irreducible variety and U subset of X is open then k(U) = k(X), and hence dim U = dim X.
 
 From Hartshorne:
 Definition: If X is a topological space, we define the dimension of X to be the supremum of all integers n such that there exists a chain Z_0 ⊂ Z_1 ⊂ ... ⊂ Z_n of distinct irreducible closed subsets of X. We define the dimension of an affine variety to be its dimension as a topological space.
@@ -541,12 +546,13 @@ where A, B, C are homogeneous polynomials of the same degree. Now phi is natural
 
 Proof: Suppose that the nonsingular point P is in the affine A^2 with coordinates denoted by x, y. We write the map as above in the form (x, y) -> (u_0, u_1, u_2), where u_i are polynomials. Due to the Theorem 1.1, we can write u_i = t^k_i * v_i, where t is a local (uniformizing) parameter, v_i(P) != 0 and k_i >= 0. Suppose that k_0 is the smallest of k_i. Then the same map can be written in the form (x,y) -> (v_0, t^(k_1 - k_0) * v_1, t^(k_2 - k_0) * v_2), with k_1 - k_0 >= 0, k_2 - k_0 >= 0, and v_0(P) != 0. Thus the map is regular at P.
 
+## Local ring of a point
 
+(Shafarevich: Chapter 2, 1.1) 
 
+The basic local variant of a point x of a variety is its local ring O_x, the ring consisting of all functions f from k(X) that are regular at x. If X is irreducible, O_x is the subring of the function field k(X) consisting of all functions f from k(X) that are regular at x (that means O_X consists of fractions f/g with f, g from k[X] and g(x) != 0).
 
-TODO
-
-
+See Fulton [1], section 2.4 for definition of local rings.
 
 ### Tangent space
 
@@ -564,8 +570,31 @@ A natural way to define the tangent space to V at the point P = (a1,...,an) is:
 
 However, to have a definition that is independent of the particular equations for V, tangent space needs to be defined differently.
 
+(Shafarevich 1.2):
 
+We will define the tangent space to an affine variety X at a point x as the set of all lines through x tangent to X. To define tangency of a line L ⊂ A^n to a variety X ⊂ A^n, suppose that the coordinate system in A^n is chosen so that x = (0,...,0) = 0. Then L = {t * a; t from k}, where a != 0 is a fixed point. To study an intersection of L and X, suppose that X is given by F_1 = ... = F_m = 0 with I(X) = (F_1,...,F_m).
 
+The points on intersection are F_1(t*a) = ... = F_m(t*a) = 0. This is a system of one variable. The points on intersection are exactly the common roots of these polynomials, that means the roots of highest common factor of these polynomials. Suppose that:
+
+```
+f(t) = hcf(F_1(t*a),...,F_m(t*a)) = c * (t-alpha_1)^k_1 * ... * (t-alpha_l)^k_l
+```
+
+The values t = alpha_i correspond to the points of intersection of L with X. A root alpha_i has an associated multiplicity k_i, that is naturally interpreted as the multiplicity of intersection of L with X. Since 0 is the intersection, one of the roots of f(t) is 0.
+
+(Shafarevich) Definition 2.1: The intersection multiplicity of a line L with a variety X at 0 is the multiplicity of t = 0 as root of the polynomial f(t) = hcf(F_1(t*a),...,F_m(t*a)).
+
+Note that f(t) = hcf{F(t*a); F from I(X)}, thus independent of the choice of the generators of I(X).
+
+(Shafarevich) Definition 2.2: A line L is a tangent to X at 0 if it has intersection multiplicity >= 2 with X at 0.
+
+Let's check the conditions for L to be tangent to X. Since 0 is on X, the constant term of F_i is 0 for all i. Let's say L_i is the linear term of F_i. Thus: F_i = L_i + G_i, where G_i has only terms of degree >= 2. We can see that the condition for tangency is:
+
+```
+L_1 = ... = L_m = 0
+```
+
+(Shafarevich) Definition 2.3: The geometric locus of points on lines tangent to X at x is called the tangent space to X at x. It is denoted by theta_(X,x) or theta_x.
 
 
 
