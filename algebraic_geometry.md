@@ -465,6 +465,34 @@ Theorem A.1.3.6: Let V and W be projective varieties in P^n of dimensions l and 
 
 Classical differential calculus defined in algebraic manner is needed to apply concepts like smoothness, tangent spaces, and differentials.
 
+### Intuition behind Implicit Function Theorem
+
+Let's say we have curve defined by E(x,y) = 0. How can we get a tangent in some (a, b) on a curve. Let's use Taylor expansion on E(x,y) and neglect higher order terms:
+
+```
+E(x,y) = E(a,b) + (d/dx)E(a,b) * (x-a) + (d/dy)E(a,b) * (y-b)
+E(x,y) = (d/dx)E(x,y) * delta(x) + (d/dy)E(x,y) * delta(y) where delta() means a small change
+```
+
+The tangent in (a,b) is thus (because E(a,b) = 0):
+
+```
+(d/dx)E(a,b) * (x-a) + (d/dy)E(a,b) * (y-b) = 0
+```
+
+and the slope is:
+
+```
+delta(y)/delta(x) = (y-b)/(x-a) = - (d/dx)E(x,y)/(d/dy)E(x,y)
+```
+
+Another view: N = ((d/dx)E, (d/dy)E) is a normal vector. The tangent is orthogonal to the normal and thus:
+
+```
+N(a,b) * ((x,y) - (a,b)) = 0
+(d/dx)E(a,b) * (x-a) + (d/dy)E(a,b) * (y-b) = 0
+```
+
 ### Singular and nonsingular points
 
 From coordinate geometry: a point P is a singular point or singularity of the curve defined by f(x,y) = 0 if (df/dx)(P) = (df/dy)(P) = f(P) = 0. A cuve all of whose points are nonsingular is nonsingular or smooth.
@@ -595,6 +623,27 @@ L_1 = ... = L_m = 0
 ```
 
 (Shafarevich) Definition 2.3: The geometric locus of points on lines tangent to X at x is called the tangent space to X at x. It is denoted by theta_(X,x) or theta_x.
+
+If F(T_1,...,T_N) is a polynomial and x = (x_1,...,x_N) a point, then F has a Taylor series expansion:
+
+```
+F(T) = F(x) + (d/dT)F(x) * (x - T) + ...
+```
+
+where:
+
+```
+(d/dT)F(x) * (x - T) = (d/dT_1)F(x) * (x_1 - T_1) + ... + (d/dT_N)F(x) * (x_N - T_N)
+
+```
+
+The condition of tangency above can be rewritten:
+
+```
+(d/dT)F_1 = ... = (d/dT)F_m = 0
+```
+
+
 
 
 
