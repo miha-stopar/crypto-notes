@@ -44,6 +44,46 @@ Decommitter simply reveals (x', r' = r + (x - x')/a). It holds:
 (g^x' * h^r') % p = (g^x' * h^r * h^((x-x')/a)) % p = (g^x' * h^r * g^(x-x')) % p = g^x * h^r = c 
 ```
 
+## Fujisaki-Okamoto commitments [13]
+
+Verifier V generates safe primes P and Q: P = 2*p +1, Q = 2*q + 1 where p, q are different primes. V then find at random g_p of order p in G_p and g_q or order q in G_q, where G_p, G_q are subgroups of order p,q in Z_P\*, Z_Q\* respectively. V then computes b_0 via CRT:
+
+```
+b_0 = g_p mod P
+b_0 = g_q mod Q
+```
+
+Note that b_0 is generator of G_(p*q).
+
+V generates random alpha from Z_(p*q)\* and sets b_1 = b_0^alpha mod N.
+
+Commitment is:
+
+```
+BC(x, r) = b_0^x * b_1^r mod N where x < N and r < 2^m * N where k is security parameter.
+```
+
+### Sketch of a proof for binding
+
+Miller's lemma [14]: Let's N = p * q and lambda(N) = (p-1) * (q-1) (the Carmichael function). On input (N, L) where L is a multiple of lambda(N), N can be factorized with non-negligible probability. Note that lambda(N) = (p-1) * (q-1).
+
+Let's say we can can find (r1, s1) and (r2, s2) such that:
+
+```
+b_0^s1 * b_1^r1 = b_0^s2 * b_1^r2 mod N
+b_0^(s1 - s2) * b_1^(r1 - r2) = 1 mod N
+```
+
+Thus, we are able to find (r, s) such that: 
+
+```
+b_0^s * b_1^r = 1 mod N
+b_0^(s + alpha * r) = 1 mod N
+
+```
+
+The order of b_0 is p*q, thus p*q | (s + alpha * r). In our case lambda(N) = (P - 1) * (Q - 1) = 4 * p * q. If we take 4*(s + alpha * r), we have L from Miller's lemma and we can factorize N.
+
 # Zero-knowledge proofs
 
 Zero-knowledge proof is an interactive proof where verifier learns nothing beyond the correctness of the statement being proved. Zero-knowledge proofs can be used to enforce the proper behavior of the verifier.
@@ -585,3 +625,8 @@ Germany, November 4-8, 2013, pages 955–966, 2013.
 [11] Cramer, Ronald, Ivan Damgård, and Berry Schoenmakers. "Proofs of partial knowledge and simplified design of witness hiding protocols." Advances in Cryptology—CRYPTO’94. Springer Berlin/Heidelberg, 1994.
 
 [12] Cramer, Ronald, and Ivan Damgård. "Zero-knowledge proofs for finite field arithmetic, or: Can zero-knowledge be for free?." Advances in Cryptology—CRYPTO'98. Springer Berlin/Heidelberg, 1998.
+
+[13] Fujisaki, Eiichiro, and Tatsuaki Okamoto. "Statistical zero knowledge protocols to prove modular polynomial relations." Advances in Cryptology-CRYPTO'97: 17th Annual International Cryptology Conference, Santa Barbara, California, USA, August 1997. Proceedings. Springer Berlin/Heidelberg, 1997.
+
+[14] Miller, Gary L. "Riemann's hypothesis and tests for primality." Journal of computer and system sciences 13.3 (1976): 300-317.
+

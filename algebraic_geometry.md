@@ -633,17 +633,13 @@ F(T) = F(x) + (d/dT)F(x) * (x - T) + ...
 where:
 
 ```
-(d/dT)F(x) * (x - T) = (d/dT_1)F(x) * (x_1 - T_1) + ... + (d/dT_N)F(x) * (x_N - T_N)
+d_x(F) = (d/dT)F(x) * (T - x) = (d/dT_1)F(x) * (T_1 - x_1) + ... + (d/dT_N)F(x) * (T_N - x_N)
 
 ```
 
-The condition of tangency above can be rewritten:
+This is called differencial of F at x.
 
-```
-(d/dT)F_1 = ... = (d/dT)F_m = 0
-```
-
-
+Let's observe d_x: k[X] -> theta_x*, where theta_x* is the space of linear forms on theta_x.
 
 
 
