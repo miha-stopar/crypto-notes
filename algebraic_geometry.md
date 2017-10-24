@@ -639,8 +639,52 @@ d_x(F) = (d/dT)F(x) * (T - x) = (d/dT_1)F(x) * (T_1 - x_1) + ... + (d/dT_N)F(x) 
 
 This is called differencial of F at x.
 
-Let's observe d_x: k[X] -> theta_x*, where theta_x* is the space of linear forms on theta_x.
+We can write the condition for tangency as:
 
+```
+d_x(F_1) = ... = d_x(F_m) = 0
+```
+
+which is (let's say x = 0):
+
+```
+(d/dT1)F_1 * T_1 + ... + (d/dTn)F_1 * T_n = ... = (d/dT1)F_m * T_1 + ... + (d/dTn)F_m * T_n = 0
+```
+
+That means every vector in tangent space can be written:
+
+```
+a_1 * d_x(F_1) + ... + a_m * d_x(F_m) = 0 for some a_i from k
+```
+
+Let's observe d_x.
+
+Let's observe a tridimensional case and a variety V defined by two polynomials F1 and F2. We observe a tangent in point P (0,0,0) (if P not (0,0,0) we can move coordinates to P be in (0,0,0)). The tangent space is:
+
+```
+(d/dx)F1(0,0,0) * x + (d/dy)F1(0,0,0) * y + (d/dz)F1(0,0,0) * z = (d/dx)F2(0,0,0) * x + (d/dy)F2(0,0,0) * y + (d/dz)F2(0,0,0) * z = 0
+```
+
+This is a subspace in k^3, denoted by theta_P. Let's observe functions from k[V] which map (0,0,0) into 0 (denoted by m_P). A function g from m_P is induced by some G from k[x,y,z]. By map d_P (differencial at P = (0,0,0):
+
+```
+d_P(G) = (d/dx)G(0,0,0) * x + (d/dy)G(0,0,0) * y + (d/dz)G(0,0,0) * z
+```
+
+We observe d_P: m_P -> (k^3)\* where (k^3)\* is dual space of k^3 (the space of linear functionals). Actually, we restrict (k^3)\* to theta_P\*.
+
+We want to prove that m_P/m_P^2 is isomorphic to theta_P\*. We observe homomorphism d_P from m_P to theta_P\*. If we take (a,b,c) from theta_P\*, we can quickly find g from m_P such that d_P(g) = (a,b,c) (meaning a * x + b * y + c * z). We observe G(x,y,z) = a*x + b*y + c*z: G(0,0,0) = 0 and d_P(G) = a*x + b*y + c*z. So d_P is surjective.
+
+Now we want to prove that ker(d_P) = m_P^2. If this holds, m_P/m_P^2 is isomorphic to theta_P. Let's take g (and its counterpart G - see above) from m_P, such that d_P(g) = 0. That means (it can be shown that d_x(g) = d_x(G)) that d_P(G) is 0 on theta_P (it can be != 0 elsewhere), so it can be written as:
+
+```
+d_P(G) = a_1 * d_P(F_1) + a_2 * d_P(F_2)
+
+```
+
+Let's define G1 = G - a_1 * F_1 + a_2 *F_2. G1 has no terms of degree 0 or 1 and G_1 = G = g on X, thus g from m_P^2.
+
+## Divisors
 
 
 
