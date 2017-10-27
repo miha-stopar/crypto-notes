@@ -374,9 +374,17 @@ Proof: For every x from X exists f_x, g_x from k[X] such that phi = f_x/g_x and 
 
 If phi is a rational function on a closed set X, it can be proved that the set of points at which phi is regular is nonempty and open. The first assertion follows since phi can be written as f/g where g is not from I(X) and is this g(x) != 0 at least for one x from X - at points x for which g(x) != 0, phi is regular. Why is this set open? Note that phi can be regular at some points for which g(x) != 0 does not hold, since there might be exist a rational function f_i/g_i = f and g_i(x) != 0 (because k[X] might not be UFD). Let's observe all f_i/g_i. For any g_i the set of points g_i(x) != 0 is open. If we take the union of these sets U, it is open as well. This open set is called the domain of definition of phi.
 
-It can be quickly proven that for any finite set of rational functions, the set of points where all are regular is again nonempty and open. Thus for any finite set of rational functions, there is some nonempty open set on which they are all defined and can be compared. 
+It can be quickly proven that for any finite set of rational functions, the set of points where all are regular is again nonempty and open. 
 
-This is useful because a rational function phi from k(X) is uniquely determined if it is specified on some nonempty open subset U ⊂ X.
+Thus for any finite set of rational functions, there is some nonempty open set on which they are all defined and can be compared. This is useful because a rational function phi from k(X) is uniquely determined if it is specified on some nonempty open subset U ⊂ X.
+
+That means if on some nonempty open subset U two rational functions are equal, then they are equal on the whole X. Because if f1/g1 = f2/g2 on U, then f = f1*g2 - f2*g1 is zero on U. If we define V1 = {x; f(x) = 0}, V1 is closed and it contains U, thus X = V1 ∪ (X-U) which is a contradiction.
+
+Note that for an algebraic subset V the following conditions are equivalent:
+
+ * V is irreducible
+ * any two open nonempty subsets U1, U2 of V have a nonempty intersection (otherwise V would be union of two proper closed subsets)
+ * every open subset U of V is dense in V (if there would be a proper closed subset V1 of V which would contain U, then V = (V1 ∪ (V-U))
 
 ## Rational maps
 
@@ -692,7 +700,7 @@ Let's define G1 = G - a_1 * F_1 + a_2 *F_2. G1 has no terms of degree 0 or 1 and
 
 A polynomial in one variable is uniquely determined up to a constant factor by specifying its roots and their multiplicities. A rational function phi(x) = f(x)/g(x) with f, g from k[A^1] is determined by the zeros of f and g. To distinguish the roots of g from those of f, we take their multiplicities with a minus sign.
 
-Similarly, we would like to specify a rational function on an arbitrary algebraic variety.
+Similarly, we would like to specify a rational function on an arbitrary algebraic variety. 
 
 ### Again about dimension
 
@@ -704,10 +712,19 @@ Let W be a subvariety of a variety V. The codimension of W in V is:
 codim_V(W) = dim(V) - dim(W)
 ```
 
+(Shafarevich) Theorem 1.22: If a form F is not 0 on an irreducible projective variety X then X_F (subvariety where F = 0) has a dimension dim(X) - 1.
 
+According to the theorem on the dimension of intersection, the set of points at which a regular function is 0 has a codimension 1. Thus the object we associate with a function is a collection of irreducible codimension 1 subvarieties, together with assigned multiplicities (positive and negative).
 
+### Divisor of a function
 
+(Shafarevich) Definition: Let X be an irreducible variety. A collection of irreducible closed subvarieties C_1,...,C_r of codimension 1 in X with assigned integer multiplicities k_1,...,k_r will be called a divisor on X. A divisor is written:
 
+```
+D = k_1 * C_1 + ... + k_r * C_r
+```
+
+If all k_i >= 0 and at least one k_i > 0, we say that D is effective. An irreducible codimension 1 subvariety C_i taken with multiplicity 1 is called a prime divisor. If all k_i != 0 then the variety C_1 ∪ ... ∪ C_r is called the support of D and denoted by Supp D.
 
 # Notes from Fulton [1]
 
