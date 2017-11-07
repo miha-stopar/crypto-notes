@@ -34,7 +34,54 @@ The third techniqu is using sigma_psi_plus-WS protocol, which is a variant of th
 
 ![sigma_psi_protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/sigma_psi_protocol.png)
 
-TODO: start with 4.1, page 63
+C = C(k) will denote a challenge set, k is security parameter.
+
+Sigma_psi protocol for homomorphisms with a finite domain is described in a diagram above. It is generalization of Schnorr for arbitrary homomorphisms.
+
+The sigma_psi protocol on a diagram is not defined for homomorphisms psi: G -> H with an infinite domain, such as exponetiation homomorphisms psi_E: Z^l -> H. The reason is that in the first step of the prover's computation the choice of a uniform random element from the infinite domain is not possible. However, for exponentiation homomorphismus we can restrict the domain of psi_E to a finite subset G of the domain Z^l. But one needs to be careful in order for the resulting protocol to be (honest-verifier) zero-knowledge. We need to introduce two finite subsets G, G1 of Z^l.
+
+For i = 1,...,l we let:
+
+```
+delta_x_i = delta_x_i(k)
+xc_i = xc_i(k)
+```
+
+Given a sequence of challenge sets C(k) we define:
+
+```
+gamma = max({abs(c): c from C(k)})
+```
+
+Using an auxiliary security parameter k_s = poly(k) we define:
+
+```
+G = {xc_1 - delta_x_1, xc_1 + delta_x_1} x ... x {xc_l - delta_x_l, xc_l + delta_x_l}
+G1 = {-2^k_s * gamma * delta_x_1, 2^k_s * gamma * delta_x_1} x ... x {-2^k_s * gamma * delta_x_l, 2^k_s * gamma * delta_x_l}
+```
+
+We define:
+
+```
+x = (x_1,...,x_l)
+xc = (xc_1,...,xc_l)
+```
+
+![sigma_psi_infinite_protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/sigma_psi_infinite_protocol.png)
+
+Sigma_psi protocol for exponentiation homomorphisms with infinite domain is depicted above.
+
+Theorem:
+
+* sigma_psi_protocol for homomorphisms with a finite domain is honest-verifier zero-knowledge, and if for the challenge set C(k) we have |C(k)| <= poly(k), then it is zero-knowledge
+
+* sigma_psi protocol for exponetiation homomorphisms is statistical honest-verifier zero-knowledge, and if for the challenge set C(k) we have |C(k)| <= poly(k), then it is statistical zero-knowledge
+
+
+
+
+
+TODO: start with 4.1, page 65
 
 
 
