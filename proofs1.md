@@ -105,7 +105,7 @@ The prover posseses unlimited computational resources, but cannot be trusted. Th
 
 For the interactive proof two requirements need to hold:
 
- * completeness: if the string belongs to a language, the honest verifier (the one that follows the protocol properly) can be convinced of this fact by un untrusted prover
+ * completeness: if the string belongs to a language, the honest verifier (the one that follows the protocol properly) can be convinced of this fact by untrusted prover
  * soundness: if the string does not belong to the language, no prover can convince the honest verifier that it belongs, except with some small probability
 
 Zero knowledge proof is an interactive proof with the additional property that the verifier learns nothing but the correctness of the statement (that the string belongs to the language).
@@ -152,9 +152,11 @@ Schnorr's protocol is however honest-verifier zero knowledge (below more about t
 
 Zero-knowledge property can be shown by the existance of a simulator with which we can simulate acceptable protocol runs without knowing the actual language statement.
 
-This can be done for Schnorr protocol if t is small (there are no many possible challenges c). Here again, a rewinding technique is used. We choose y1, try to guess c1, compute x1 = g^y1 * t^(-c1). If we now send x1 to the verifier and get c1 (for which there is a high probability, because the space for challenges is small), the transcript (x1, c1, y1) will be accepted. If we didn't correctly guess c1, we rewind to the beginning. That means we provide a new x1 (now we know the challenge c1) and send a new x1 to the verifier. Verifier will respond with the same challenge c1 (rewinding).
+This can be done for Schnorr protocol if there are no many possible challenges c. Here again, a rewinding technique is used. We choose y1, try to guess c1, compute x1 = g^y1 * t^(-c1). If we now send x1 to the verifier and get c1 (for which there is a high probability, because the space for challenges is small), the transcript (x1, c1, y1) will be accepted. If we didn't correctly guess c1, we rewind to the beginning. That means we provide a new x1 (now we know the challenge c1) and send a new x1 to the verifier. Verifier will respond with the same challenge c1 (rewinding).
 
-So, we can simulate acceptable runs without knowing s (s is secret, we know only t = g^s % p). However, this strategy does not work when the verifier is dishonest. Instead of choosing a random challenge, a verifier can choose a challenge c based on the input x - in this case the simulator cannot apply the strategy described above. Schnorr protocol is thus honest-verifier zero-knowledge. But it can be made a fully zero-knowledge by using commitment scheme.
+Thus Schnorr protocol is perfect zero-knowledge when the challenge space is small. But if the challenge space is small, the prover needs to run the protocol many times to convince the verifier. However it can be proved that it is honest-verifier zero-knowledge for when the challenge space is large. When verifier is honest, the challenges c are chosen randomly and the simulator can be pretty much the same as above, but we let the simulator choose random c (no need for guessing).
+
+So, we can simulate acceptable runs without knowing s (s is secret, we know only t = g^s % p). If the verifier is dishonest he could (instead of choosing a random challenge) choose a challenge c based for example on the input x and there is no known simulator which could simulate such transcripts. Schnorr protocol is thus honest-verifier zero-knowledge. But it can be made a fully zero-knowledge by using commitment scheme.
 
 We don't know whether Schnorr protocol is zero-knowledge (whether verifier could extract some information about s after having a number of transcripts). However, a description how to make sigma protocols by using commitment scheme to be zero-knowledge is given below.
 

@@ -77,6 +77,11 @@ Theorem:
 
 * sigma_psi protocol for exponetiation homomorphisms is statistical honest-verifier zero-knowledge, and if for the challenge set C(k) we have |C(k)| <= poly(k), then it is statistical zero-knowledge
 
+The first part is discussed in the description of Schnorr protocol in [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
+
+For the second part we first prove the honest-verifier zero-knowledge property. We choose random c1 from C, random s1 from G1, set t1 = sigma_psi_(s1 + c1 * xc) * y^(-c1), and outputs (t1, c1, s1). TODO
+
+
 
 
 
