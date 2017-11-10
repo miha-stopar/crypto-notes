@@ -12,7 +12,9 @@ In a proof of knowledge for a homomorphism, a prover demonstrates knowledge of a
 
 All efficient zero-knowledge proofs of knowledge for homomorphisms are instance of the same protocol, which we will denote here as sigma_psi protocol. Well known example is Schnorr protocol (see [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
 
-However, sigma_psi protocol is not efficient for all homomorphisms. It is efficient for example for Schnorr protocol, however for some homomorphisms, like exponentiation homomorphisms in hidden order groups (psi(x_1,...,x_n) = h_1^x_1 * ... * h_n^x_n), it is not. Exponetiation homomorhisms play an important role in applied cryptography (anonymous credentials, signatures, group signatures, voting systems, e-cash, multi-party computations), thus efficient zero-knowledge proofs are very desirable. In [1], efficient zero-knowledge proofs of knowledge for exponentiation homomorphisms in hidden order groups are designed.
+However, sigma_psi protocol is not efficient for all homomorphisms. It is efficient for example for Schnorr protocol, however for some homomorphisms, like exponentiation homomorphisms in hidden order groups (psi(x_1,...,x_n) = h_1^x_1 * ... * h_n^x_n), it is not. This is because in a hidden order group it is hard to compute a non-zero multiple of a random group element.
+
+Exponetiation homomorhisms play an important role in applied cryptography (anonymous credentials, signatures, group signatures, voting systems, e-cash, multi-party computations), thus efficient zero-knowledge proofs are very desirable. In [1], efficient zero-knowledge proofs of knowledge for exponentiation homomorphisms in hidden order groups are designed.
 
 ## Efficiency limitations of sigma_psi protocols
 
@@ -38,13 +40,11 @@ C = C(k) will denote a challenge set, k is security parameter.
 
 Sigma_psi protocol for homomorphisms with a finite domain is described in a diagram above. It is generalization of Schnorr for arbitrary homomorphisms.
 
-The sigma_psi protocol on a diagram is not defined for homomorphisms psi: G -> H with an infinite domain, such as exponetiation homomorphisms psi_E: Z^l -> H. The reason is that in the first step of the prover's computation the choice of a uniform random element from the infinite domain is not possible. However, for exponentiation homomorphismus we can restrict the domain of psi_E to a finite subset G of the domain Z^l. But one needs to be careful in order for the resulting protocol to be (honest-verifier) zero-knowledge. We need to introduce two finite subsets G, G1 of Z^l.
-
-For i = 1,...,l we let:
+The sigma_psi protocol on a diagram is not defined for homomorphisms psi: G -> H with an infinite domain, such as exponetiation homomorphisms psi_E: Z^l -> H. The reason is that in the first step of the prover's computation the choice of a uniform random element from the infinite domain is not possible. However, for exponentiation homomorphismus we can restrict the domain of psi_E to a finite subset G of the domain Z^l. But one needs to be careful in order for the resulting protocol to be (honest-verifier) zero-knowledge. We need to introduce two finite subsets G, G1 of Z^l. Let's do only for l = 1.
 
 ```
-delta_x_i = delta_x_i(k)
-xc_i = xc_i(k)
+delta_x = delta_x(k)
+xc = xc(k)
 ```
 
 Given a sequence of challenge sets C(k) we define:
@@ -56,15 +56,8 @@ gamma = max({abs(c): c from C(k)})
 Using an auxiliary security parameter k_s = poly(k) we define:
 
 ```
-G = {xc_1 - delta_x_1, xc_1 + delta_x_1} x ... x {xc_l - delta_x_l, xc_l + delta_x_l}
-G1 = {-2^k_s * gamma * delta_x_1, 2^k_s * gamma * delta_x_1} x ... x {-2^k_s * gamma * delta_x_l, 2^k_s * gamma * delta_x_l}
-```
-
-We define:
-
-```
-x = (x_1,...,x_l)
-xc = (xc_1,...,xc_l)
+G = {xc - delta_x, xc + delta_x} 
+G1 = {-2^k_s * gamma * delta_x, 2^k_s * gamma * delta_x}
 ```
 
 ![sigma_psi_infinite_protocol](https://raw.github.com/miha-stopar/crypto-notes/master/img/sigma_psi_infinite_protocol.png)
@@ -79,14 +72,38 @@ Theorem:
 
 The first part is discussed in the description of Schnorr protocol in [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
 
-For the second part we first prove the honest-verifier zero-knowledge property. We choose random c1 from C, random s1 from G1, set t1 = sigma_psi_(s1 + c1 * xc) * y^(-c1), and outputs (t1, c1, s1). TODO
+For the second part we first prove the honest-verifier zero-knowledge property. We choose random c1 from C, random s1 from G1, set t1 = sigma_psi(s1)*sigma_psi(x)^(-c1)*sigma_psi(xc)^c1, and outputs (t1, c1, s1). We know that t1 is determined with s1, so we can only check that the transcripts (c, s) and (c1, s1) have statistically indistinguishable distributions. Because the verifier is assumed to be honest: c and c1 are equally distributed. We need to check s and s1.
+
+We know that s is uniformly distributed in {-2^k_s * gamma * delta_x + c*(x-delta_x), 2^k_s * gamma * delta_x + c*(x-delta_x)} and s1 is distributed uniformly in G. The probability that s is outside G is less than 1/2^k_s. Thus the proof is honest-verifier statistical zero-knowledge.
+
+The for perfect zero-knowledge is a combination of the above and the approach of proving that Schnorr is zero-knowledge for small challenge space.
+
+## Proof of knowledge property
+
+We discuss for which homomorphisms sigma_psi protocol is a proof of knowledge. For sigma_psi protocol we can extract pseudo-preimage of y (that means w such that psi(w) = y^v). This is pseudo-preimage extractability.
+
+For knowledge extractor we first use pseudo-preimage extractor and then solve the pseudo-preimage (PP) problem: given a pseudo-preimage (v, w), compute x such that psi(x) = y.
+
+Note that for homomorphism psi: G -> H and y from H, if (v, w) is a pseudo-preimage of y and gcd(v, |y|) = 1, then y = psi(v^(-1) * w).
+
+Let's see why: 
+
+```
+y^v = psi(w)
+gcd(v, |y|) = 1 => v * v^(-1) = 1 (mod |y|)
+y^(v*v^(-1)) = y^(k*|y| + 1) = y
+y = psi(w)^v^(-1) = psi(w * v^(-1))
+```
+
+Note that we need to know |y| to compute preimage.
+
+When pseudo-preimage (PP) problem is solvable, we have a knowledge extractor for sigma_psi protocol.
 
 
 
 
 
-
-TODO: start with 4.1, page 65
+TODO: start with 4.1, page 69
 
 
 
