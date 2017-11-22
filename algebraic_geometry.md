@@ -64,7 +64,7 @@ Let's instantiate an affine space of dimension 2 over rational field using Sage 
 sage: A2 = AffineSpace(2, QQ, 'x, y')
 sage: A2
 Affine Space of dimension 2 over Rational Field
-sage: A2.coordinate_ring.inject_variables()
+sage: A2.coordinate_ring().inject_variables()
 Defining x, y
 sage: V = A2.subscheme([x^2+y^2-1])
 sage: V

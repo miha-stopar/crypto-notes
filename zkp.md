@@ -1,3 +1,43 @@
+# ZKPs
+
+Some more info is in [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
+
+There are two crucial properties about ZKPs:
+
+ * proof of knowledge - there exists an algorithm which can extract the knowledge if prover is used as a black-box and can be rewinded
+ * zero knowledge - there exists a simulator which can simulate accepting transcripts which cannot be distinguished from the transcripts with a real verifier
+
+In Schnorr protocol the extractor goes like:
+
+ * prover outputs g^r
+ * simulator chooses challenge c1
+ * prover returns z1 = r + c1 * secret
+ * prover is rewinded so that it returns the same g^r and the protocol is repeated - the messages are g^r, c2, z2 = r + c2 * secret
+
+Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known).
+
+Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA).
+
+
+In Schnorr protocol the simulator for proving the zero-knowledge property:
+
+ * simulator chooses random c from challenge space and random z, it outputs transcript (g^z * (g^s)^(-c), c, z) which is accepting
+
+However, these outputs cannot be distinguished from a real conversation between prover and verifier only if there challenges are chosen randomly as well - that means we trust verifier that it chooses challenges randomly. This kind of ZKP is called honest-verifier ZKP.
+
+If we want to make Schnorr protocol to be ZKP (maybe it is anyway, but it is not known for sure), we can limit the challenges space to be small and execute protocol many times. In this case we can provide a simulator:
+
+ * simulator chooses random c from challenge space and random z, it output the same transcript as above - if verifier accepts, the transcript is ok, otherwise simulator rewinds back the verifier and chooses other random c and provide the transcript - it repeats until the transcript is accepted (it won't take long as the challenge space is small). 
+Because the knowledge error is 1/2 (if challenges space is {0, 1}), the protocol needs to be repeated multiple times.
+
+An alternative to executing protocol many times with small challenges is approach proposed by Damgard [2] - here instead of g^r a commitment to it is sent and thus verifier cannot choose challenge based on the first message (challenge is thus chosen randomly).
+
+
+
+
+
+
+
 # Zero-knowledge proofs of knowledge for homomorphisms using sigma_psi protocols
 
 Most of the notes taken from [1].
@@ -103,7 +143,7 @@ When pseudo-preimage (PP) problem is solvable, we have a knowledge extractor for
 
 
 
-TODO: start with 4.1, page 69
+TODO: 129
 
 
 

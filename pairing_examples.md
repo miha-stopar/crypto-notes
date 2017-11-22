@@ -96,6 +96,7 @@ Because -1 is not quadratic residue in F_59 (there is no solution for x^2 % 59 =
 
 
 
+
 [1] Lynn, Ben. On the implementation of pairing-based cryptosystems. Diss. Stanford University, 2007.
 
 

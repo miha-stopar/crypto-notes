@@ -146,7 +146,7 @@ There is also a notion of honest-verifier zero knowledge protocol which means th
 
 Soundness can be demonstrated by an existance of a knowledge extractor algorithm which can extract the secret from a prover. The intuition behind is - if a prover can convince the verifier that she knows the secret without actually knowing it, then no algorithm could extract the secret from a prover.
 
-The Schnorr's protocol is sound because there exists an algorithm which extracs a secret from a prover. If prover sends x to the verifier and then follows the protocol two times (obtains two challenges c_1 and c_2) and returns proper y for both cases (y_1 = r + s\*c_1 and y_2 = r + s\*c_2), this means that x = g^(y_1)*t^(-c_1) = g^(y_2)*t^(-c2) from where it follows s = (y_2 - y_1)/(c_2 - c_1) - prover knows a secret s. This is called rewinding.
+The Schnorr's protocol is sound because there exists an algorithm which extracts a secret from a prover. If prover sends x to the verifier and then follows the protocol two times (obtains two challenges c_1 and c_2) and returns proper y for both cases (y_1 = r + s\*c_1 and y_2 = r + s\*c_2), this means that x = g^(y_1)*t^(-c_1) = g^(y_2)*t^(-c2) from where it follows s = (y_2 - y_1)/(c_2 - c_1) - prover knows a secret s. This is called rewinding.
 
 Schnorr's protocol is however honest-verifier zero knowledge (below more about this), it is not known if it is zero knowledge.
 
