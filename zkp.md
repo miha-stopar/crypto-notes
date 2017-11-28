@@ -1,10 +1,10 @@
 # ZKPs
 
-Some more info is in [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
+This tries to be a synopsis of ZKPs. Some more info (but also more scattered and not really organized) is in [proofs1.md](https://github.com/miha-stopar/crypto-notes/blob/master/proofs1.md).
 
 There are two crucial properties about ZKPs:
 
- * proof of knowledge - there exists an algorithm which can extract the knowledge if prover is used as a black-box and can be rewinded
+ * proof of knowledge - there exists an algorithm which can extract the knowledge if the prover is used as a black-box and can be rewinded
  * zero knowledge - there exists a simulator which can simulate accepting transcripts which cannot be distinguished from the transcripts with a real verifier
 
 In Schnorr protocol the extractor goes like:
@@ -12,9 +12,9 @@ In Schnorr protocol the extractor goes like:
  * prover outputs g^r
  * simulator chooses challenge c1
  * prover returns z1 = r + c1 * secret
- * prover is rewinded so that it returns the same g^r and the protocol is repeated - the messages are g^r, c2, z2 = r + c2 * secret
+ * prover is rewinded so that it returns the same g^r and the protocol is repeated
 
-Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known).
+Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known or if (c1-c2) divides (z1-z2)). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1). The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
 
 Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA).
 

@@ -146,9 +146,32 @@ There is also a notion of honest-verifier zero knowledge protocol which means th
 
 Soundness can be demonstrated by an existance of a knowledge extractor algorithm which can extract the secret from a prover. The intuition behind is - if a prover can convince the verifier that she knows the secret without actually knowing it, then no algorithm could extract the secret from a prover.
 
-The Schnorr's protocol is sound because there exists an algorithm which extracts a secret from a prover. If prover sends x to the verifier and then follows the protocol two times (obtains two challenges c_1 and c_2) and returns proper y for both cases (y_1 = r + s\*c_1 and y_2 = r + s\*c_2), this means that x = g^(y_1)*t^(-c_1) = g^(y_2)*t^(-c2) from where it follows s = (y_2 - y_1)/(c_2 - c_1) - prover knows a secret s. This is called rewinding.
+The Schnorr's protocol is sound because there exists an algorithm which extracts a secret from a prover if prover is used as a black-box. 
 
-Schnorr's protocol is however honest-verifier zero knowledge (below more about this), it is not known if it is zero knowledge.
+If the protocol is executed two times and prover is rewinded between the two executions so that it sends the same first message, then if both executions were sucessful (y1 and y2 sent by a prover in the last step were verified), the algorithm can compute the secret.
+
+The algorithm (extractor) has c1, c2 and y1, y2:
+
+```
+g^y1 = g^r * (g^s)^c1
+g^y2 = g^r * (g^s)^c2
+```
+
+It holds:
+
+```
+g^(y1-y2) = g^(s*(c1-c2))
+```
+
+And thus:
+
+```
+s = (y1-y2) * (c1-c2)_inv
+```
+
+Note that the prover might use some trick with y1 and y2 to convince the verifier that it knows the secret, however the reasoning above shows that the prover actually knows the secret if it is able to succesffully run the protocol two times.
+
+Schnorr's protocol is honest-verifier zero knowledge (below more about this), it is not known if it is zero knowledge.
 
 Zero-knowledge property can be shown by the existance of a simulator with which we can simulate acceptable protocol runs without knowing the actual language statement.
 

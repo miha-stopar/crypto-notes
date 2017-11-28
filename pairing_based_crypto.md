@@ -2,6 +2,12 @@
 
 Notes mostly taken from [1] and [2].
 
+The following notation will be used:
+
+```
+k~: an algebraic closure of k
+```
+
 ## Bilinear pairing or bilinear map
 
 Let G_1, G_2 be two cyclic groups of the same prime order n. Let us view G_1 as an additive group with identity ∞ and G_2 as a multiplicative group with identity 1. Let P be a generator of G_1.
@@ -126,6 +132,12 @@ Let's have an elliptic curve E: Y^2 = X^3 + A*X + B and a rational function of t
 div(f) = sum_(all points P of E) n_P * [P] where n_P is multiplicity at point P (poles have negative multiplicity)
 ```
 
+More generally, we define a divisor on E to be any formal sum:
+
+```
+D = sum_(P from E) n_P * [P] with n_P from Z and n_P = 0 for all but finitely many P
+```
+
 We further define a degree and sum of a divisor:
 
 ```
@@ -191,7 +203,64 @@ What about poles (zeros of function y * z)? At (4 : 0 : 1) the uniformizing para
 div(g) = 2 * (0 : 1 : 0) + 2 * (0 : 12 : 1) - (4 : 0 : 1) - (10 : 0 : 1) - (12 : 0 : 1) - (0 : 1 : 0)
 ```
 
+Theorem:
 
+ * Let f and f1 be rational functions on E. If div(f) = div(f1), then there is a nonzero constant c such that f = c * f1.
+ * Let D = sum_(P from E) n_P * [P] be a divisor on E. Then D is the divisor of a rational function on E iff: `deg(D) = 0 and sum(D) = 0`.
+
+## Weil pairing
+
+The set of points of order m (torsion points):
+
+```
+E[m] = {P from E: m * P = 0}
+```
+
+It holds (Silverman [8] Corollary III.6.4): Let E be an elliptic curve over F_p and assume that p does not divide m. Then there exists a value of k such that:
+
+```
+E(F_p^(j*k))[m] = Z_m x Z_m for all j >= 1
+```
+
+If m is prime and if K is a field, then we may view E[m] as a 2-dimensionl vector space over Z_m. Even if m is not prime, there is still {P1, P2} such that each P from E[m] can be written P = a * P1 + b * P2 where a, b are unique from Z_m.
+
+
+Weil pairing takes as input a pair of points P, Q from E[m] and gives as output an m-th root of unity. Let's denote mi_m = {x from K~; x^m = 1}.
+
+```
+e_m : E[m] x E[m] -> mi_m
+```
+
+Weil pairing is a major tool in the study of elliptic curves - it can be for example used to prove Hasse's theorem on the number of points on an elliptic curve over a finite field.
+
+Definition (see for example section 5.8.3 in [5]): Let be P, Q from E[m]. Let f_P and f_Q be rational functions on E satisfying:
+
+```
+div(f_P) = m * [P] - m * [0]
+div(f_Q) = m * [Q] - m * [0]
+```
+
+The Weil pairing of P and Q is the quantity:
+
+```
+e_m(P, Q) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
+```
+
+where S from E is any point satisfying S not from {0, P, -Q, P-Q}.
+
+Now, is Weil pairing well-defined - that means independent from the choice of f_P, f_Q and auxiliary point S? 
+
+We can see that it is independent of the choice of f_P and f_Q because the rational functions on elliptic curve (see Theorem above) are by divisor defined up to a constant and in the Weil pairing the constants cancel each other out.
+
+We can see that it is independent of the choice of S if have a look at the pairing as the function of S and compute its divisor:
+
+```
+F(S) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
+```
+
+It turns out the divisor is 0 and from the Theorem it follows, F(S) is constant.
+
+Theorem (Washington [9], Theorem 11.2): Let E be an elliptic curve. Let D be a divisor on E with deg(E) = 0. Then there is a function f on E with div(f) = D iff sum(D) = 0.
 
 
 
@@ -212,5 +281,9 @@ div(g) = 2 * (0 : 1 : 0) + 2 * (0 : 12 : 1) - (4 : 0 : 1) - (10 : 0 : 1) - (12 :
 
 [6] Fulton, William. "Algebraic curves." An Introduction to Algebraic Geom (2008): 54.
 
-[7] Shafarevich, Igorʹ Rostislavovich, and Kurt Augustus Hirsch. Basic algebraic geometry. Vol. 2. Berlin: Springer-Verlag, 1994.
+[7] Shafarevich, Igor Rostislavovich, and Kurt Augustus Hirsch. Basic algebraic geometry. Vol. 2. Berlin: Springer-Verlag, 1994.
+
+[8] Silverman, Joseph H. The arithmetic of elliptic curves. Vol. 106. Springer Science & Business Media, 2009.
+
+[9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
 
