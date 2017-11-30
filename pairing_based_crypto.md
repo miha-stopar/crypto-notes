@@ -203,10 +203,45 @@ What about poles (zeros of function y * z)? At (4 : 0 : 1) the uniformizing para
 div(g) = 2 * (0 : 1 : 0) + 2 * (0 : 12 : 1) - (4 : 0 : 1) - (10 : 0 : 1) - (12 : 0 : 1) - (0 : 1 : 0)
 ```
 
+Proposition (Washington [9], Proposition 11.1): Let E be an elliptic curve and let f a function on E that is not identically 0. Then:
+
+* f has only finitely many zeros and poles
+* deg(div(f)) = 0
+* if f has no zeros or poles (so div(f) = 0), then f is a constant.
+
+Proof: Fulton 97
+
+
+
 Theorem:
 
  * Let f and f1 be rational functions on E. If div(f) = div(f1), then there is a nonzero constant c such that f = c * f1.
  * Let D = sum_(P from E) n_P * [P] be a divisor on E. Then D is the divisor of a rational function on E iff: `deg(D) = 0 and sum(D) = 0`.
+
+
+
+
+The divisors of degree 0 form an important subgroup of Div(E), denoted Div^0(E). The function sum gives a surjective homomorphism:
+
+```
+sum: Div^0(E) -> E(K~)
+```
+
+It is surjective, because for each P from E(K~), we have an element from Div^0(E) such that:
+
+```
+sum([P] - [0]) = P
+```
+
+Divisor of a rational function is called a principal divisor.
+
+Lemma (Washington [9], Lemma 11.3): Let P, Q be from E(K~) and a function h on E exists such that `div(h) = [P] - [Q]`. Then P = Q.
+
+Proof: Suppose P != Q.
+
+
+
+
 
 ## Weil pairing
 
@@ -260,7 +295,6 @@ F(S) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
 
 It turns out the divisor is 0 and from the Theorem it follows, F(S) is constant.
 
-Theorem (Washington [9], Theorem 11.2): Let E be an elliptic curve. Let D be a divisor on E with deg(E) = 0. Then there is a function f on E with div(f) = D iff sum(D) = 0.
 
 
 
@@ -286,4 +320,6 @@ Theorem (Washington [9], Theorem 11.2): Let E be an elliptic curve. Let D be a d
 [8] Silverman, Joseph H. The arithmetic of elliptic curves. Vol. 106. Springer Science & Business Media, 2009.
 
 [9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
+
+[10] Fulton, William. "Algebraic curves." An Introduction to Algebraic Geom (2008): 54.
 

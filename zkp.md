@@ -14,10 +14,9 @@ In Schnorr protocol the extractor goes like:
  * prover returns z1 = r + c1 * secret
  * prover is rewinded so that it returns the same g^r and the protocol is repeated
 
-Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known or if (c1-c2) divides (z1-z2)). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1). The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
+Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known or if (c1-c2) divides (z1-z2)). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
 
-Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA).
-
+Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA) without using binary challenges.
 
 In Schnorr protocol the simulator for proving the zero-knowledge property:
 
@@ -32,7 +31,15 @@ Because the knowledge error is 1/2 (if challenges space is {0, 1}), the protocol
 
 An alternative to executing protocol many times with small challenges is approach proposed by Damgard [2] - here instead of g^r a commitment to it is sent and thus verifier cannot choose challenge based on the first message (challenge is thus chosen randomly).
 
+## Proof of knowledge in hidden order groups
 
+Let's say we have n = p * q, a product of two distinct safe primes. Thus, p = 2*p1 + 1 and q = 2*q1 + 1 where p1, q1 are two distinct primes. Z_n\* is of order 4*p1*q1, QR_n is of order p1*q1.
+
+Let's choose g from QR_N and some random alpha < p1*q1, and h = g^alpha mod n. Fujisaki and Damgard [3] proposed the following commitment scheme:
+
+```
+commit(x) = g^x * h^r mod n where r random < 
+```
 
 
 
@@ -40,12 +47,12 @@ An alternative to executing protocol many times with small challenges is approac
 
 # Zero-knowledge proofs of knowledge for homomorphisms using sigma_psi protocols
 
-Most of the notes taken from [1].
+Most of the notes taken from [1]. The thesis proposes proofs of knowledge in hidden order groups (because Damgard-Fujisaki is only demonstration of a knowledge, not proof of knowledge).
 
 Proofs of knowledge of a preimage under a homomorphism are a key building block in many constructions in applied cryptography. Essentially all constructions in applied (public key) cryptography are based on group homomorphisms. These are mappings psi: G -> H, where the domain is the group (G, +) and the co-domain is the group (H, *), such that:
 
 ```
-psi(x1 + x2) = psi(x1) * psi(x2
+psi(x1 + x2) = psi(x1) * psi(x2)
 ```
 
 In a proof of knowledge for a homomorphism, a prover demonstrates knowledge of a preimage x of y under psi (i.e., y = psi(x)). A proof of knowledge for a homomorphism is zero-knowledge, if a verifier learns nothing about a preimage of y under psi. If a prover succeeds in getting the verifier to accept with a probability larger than some threshold probability (the knowledge error), then the verifier can be asserted that the prover knows a solution (preimage). Knowing a solution means that an algorithm (the knowledge extractor) exists that, given the prover as a black-box, computes the desired solution.
@@ -151,4 +158,6 @@ TODO: 129
 [1] Bangerter, Endre. Efficient zero knowledge proofs of knowledge for homomorphisms. Diss. Ruhr University Bochum, 2005.
 
 [2] Ivan Damgard. Efficient concurrent zero-knowledge in the auxiliary string model. In Bart Preneel, editor, Advances in Cryptology — EUROCRYPT 2000, volume 1807 of Lecture Notes in Computer Science, pages 431–444. Springer Verlag, 2000.
+
+[3] Ivan Damgard and Eiichiro Fujisaki. An integer commitment scheme based on groups with hidden order. In Advances in Cryptology — ASIACRYPT 2002, volume 2501 of LNCS. Springer, 2002.
 

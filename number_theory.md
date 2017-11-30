@@ -334,7 +334,7 @@ See Rabin encryption in [provable_security.md](https://github.com/miha-stopar/cr
 Let p = 2 * p1 + 1, q = 2 * q1 +1, and N = p * q where p, p1, q, q1 are all primes (p and q are safe primes).
 
 How can we get a generator g of QR_N?
-The order of Z_N* is 4 * p1 * q1, the order of QR_N is 2 * p1 * q1. So we are searching for an element of order 2 * p1 * q1.
+The order of Z_N* is 4 * p1 * q1, the order of QR_N is p1 * q1. So we are searching for an element of order p1 * q1.
 
 It turns out we can quickly get a generator: we choose a random a from Z_n* and check that a != 0 (mod p), a != 1 (mod p), a != -1 (mod p), and a != 0 (mod q), a != 1 (mod q), a != -1 (mod q). 
 If the conditions are not met we try another random a. When we get a for which the conditions hold, we define generator g = a^2 (mod n).
@@ -343,12 +343,7 @@ Why? We need to know that if a = 0 (mod p), then a = 0 (mod n) (this follows fro
 
 If a = 1 (mod p) or a = -1 (mod p), then a^2 = 1 (mod p). So, a^2 = 1 (mod n) (again CRT). This is also not a generator.
 
-So the conditions above rule out the wrong candidates. But are all the other elements generators?
-
-The elements in QR_N have one of the following orders: 2, p1, q1, 2 * p1, 2 * q1.
-If a is of order 2 (a^2 = 1 (mod n)), then a = 1 (mod n) or a = -1 (mod n), but we ruled out these elements (actually we ruled out elements for which a = 1 (mod p) ..., but due to ring isomorphis ...).
-If a is of order p1 (a^p1 = 1 (mod n)), then a^p1 = 1 (mod q) and q-1 divides p1 (little Fermat). However, q-1 = 2 * q1 and we know that q1 and p1 are primes, so q-1 cannot divide p1. 
-We do similarly for other orders and thus show that the only elements that are not ruled out, are of order 2 * p1 * q1.
+So the conditions above rule out the wrong candidates.
 
 To compute x from x^2 = a (mod N) CRT can be used:
 

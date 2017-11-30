@@ -1,4 +1,4 @@
-# Elliptic curves
+# Intorduction to the elliptic curve cryptography
 
 ## Weierstrass equation
 
