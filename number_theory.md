@@ -334,23 +334,7 @@ See Rabin encryption in [provable_security.md](https://github.com/miha-stopar/cr
 Let p = 2 * p1 + 1, q = 2 * q1 +1, and N = p * q where p, p1, q, q1 are all primes (p and q are safe primes).
 
 How can we get a generator g of QR_N?
-The order of Z_N* is 4 * p1 * q1, the order of QR_N is p1 * q1. So we are searching for an element of order p1 * q1.
-
-It turns out we can quickly get a generator: we choose a random a from Z_n* and check that a != 0 (mod p), a != 1 (mod p), a != -1 (mod p), and a != 0 (mod q), a != 1 (mod q), a != -1 (mod q). 
-If the conditions are not met we try another random a. When we get a for which the conditions hold, we define generator g = a^2 (mod n).
-
-Why? We need to know that if a = 0 (mod p), then a = 0 (mod n) (this follows from CRT or in other words: ring isomorphism maps zero to zero), so a^2 = 0 (mod n) and this is not a generator.  
-
-If a = 1 (mod p) or a = -1 (mod p), then a^2 = 1 (mod p). So, a^2 = 1 (mod n) (again CRT). This is also not a generator.
-
-So the conditions above rule out the wrong candidates.
-
-To compute x from x^2 = a (mod N) CRT can be used:
-
-```
-x^2 = a (mod p)
-x^2 = a (mod q)
-```
+The order of Z_N* is 4 * p1 * q1, the order of QR_N is p1 * q1. So we are searching for an element of order p1 * q1. We choose random element a from Z_N\*, compute g = a^2 % N to get an element from QR_N. Now we need to check whether the order of g is p1 or q1 - if yes, we choose another a, otherwise we have a generator of QR_N.
 
 ## Schnorr group
 
