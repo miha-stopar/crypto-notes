@@ -205,13 +205,11 @@ div(g) = 2 * (0 : 1 : 0) + 2 * (0 : 12 : 1) - (4 : 0 : 1) - (10 : 0 : 1) - (12 :
 
 Proposition (Washington [9], Proposition 11.1): Let E be an elliptic curve and let f a function on E that is not identically 0. Then:
 
-* f has only finitely many zeros and poles
+* f has only finitely many zeros and poles (and the number of zeros and poles is the same)
 * deg(div(f)) = 0
 * if f has no zeros or poles (so div(f) = 0), then f is a constant.
 
 Proof: Fulton 97
-
-
 
 Theorem:
 
@@ -221,7 +219,7 @@ Theorem:
 
 
 
-The divisors of degree 0 form an important subgroup of Div(E), denoted Div^0(E). The function sum gives a surjective homomorphism:
+The divisors of degree 0 form an important subgroup of Div(E), denoted Div^0(E). The function sum gives a surjective homomorphism from divisors of order 0 to the points on elliptic curve:
 
 ```
 sum: Div^0(E) -> E(K~)
@@ -237,7 +235,81 @@ Divisor of a rational function is called a principal divisor.
 
 Lemma (Washington [9], Lemma 11.3): Let P, Q be from E(K~) and a function h on E exists such that `div(h) = [P] - [Q]`. Then P = Q.
 
-Proof: Suppose P != Q.
+Proof (sketch):
+Lemma says that functions on E cannot have simple poles (because from the theorem above we know that rational functions on E have the same number of zeros and poles).
+
+Let's say we have function f which does not have a pole or zero at Q. We can construct a function that is a function of h and has the same divisor as f:
+
+```
+g(x, y) = ∏_(R on E) (h(x,y) - h(R))^ord_R(f)
+```
+
+Note that for all R on E that are not pole or zero of f, the factor in a product is 1. Each factor (where f has zero or pole in R) has a pole in Q and zero in R. We can see that the div(f) = div(g) because the poles in Q cancel each other out (because f has the same number of zeros and poles).
+
+From the theorem above we know that f = g * c for some constant c. That means that f is a function of h, actually it means that every rational function on E that does not have a pole or zero at Q is a function of h (can be expressed with h).
+
+When f has a pole or zero at Q, we observe function f \* h^ord_Q(f). This function has no zero or pole at Q, so we can apply once again the reasoning above and again f is an expression of h. So all functions on E are function of h which leads to a contradiction.
+
+Theorem (Washington [9] Theorem 11.2): Let D be a divisor on E and deg(D) = 0. Then there is a function f on E such that div(f) = D iff sum(D) = 0.
+
+Proof:
+
+We first show that [P1] + [P2] can be replaced by [P1 + P2] + [0] + div(g) for some function g:
+
+There is a line a*x + b*y + c = 0 where P1, P2, P3 lie (P3 is -P1-P2). Let's say P3 = (x3, y3).
+
+```
+div(a*x + b*y + c) = [P1] + [P2] + [P3] - 3[0]
+div(x-x3) = [P3] + [-P3] - 2[0]
+div((a*x + b*y + c)/(x-x3)) = div(a*x + b*y + c) - div(x-x3) = [P1] + [P2] - [P1 + P2] - [0]
+[P1] + [P2] = [P1 + P2] + [0] +  div((a*x + b*y + c)/(x-x3))
+```
+
+So g = (a*x + b*y + c)/(x-x3). Note that sum(div(g)) = 0.
+
+```
+[P1] + [P2] = [P1 + P2] + [0] + div(g)
+```
+
+Thus by induction the sum of all the terms in D with positive coefficients equals a single symbol [P] plus a multiple of [0] plus the divisor of a functions. Similarly for the terms with negative coefficients. Therefore:
+
+```
+D = [P] - [Q] + n * [0] + div(g1)
+```
+
+Since g1 is the quotient (note that div(a) + div(b) = div(a*b)) of products of functions g with sum(div(g)) = 0, we have sum(div(g1)) = 0.
+
+By the proposition above we know deg(div(g1) = 0, thus:
+
+```
+0 = deg(d) = 1 - 1 + n + 0 = n
+```
+
+So:
+
+```
+D = [P] - [Q] + div(g1)
+```
+
+Also:
+
+```
+sum(D) = P - Q + sum(div(g1)) = P - Q
+```
+
+If sum(D) = 0, then P = Q and D = div(g1). Conversely, if D = div(f) for some function f, then [P] - [Q] = div(f/g1). By lemma, we know P = Q.
+
+
+Corollary (Washington [9] Corollary 11.4): The map
+
+```
+sum: Div^0(E) / (principal divisors) -> E(K~)
+```
+
+is an isomorpism of groups.
+
+
+
 
 
 
