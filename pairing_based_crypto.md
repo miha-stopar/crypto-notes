@@ -178,7 +178,7 @@ g(x,y,z) = x^2 / (y * z)
 The zeros of p(x,y,z): (0 : 1 : 1), (0 : 12 : 1).
 The zeros of q(x,y,z): (4 : 0 : 1), (10 : 0 : 1), (12 : 0 : 1), (0 : 1 : 0).
 
-Note that (0 : 1 : 0) is point at infinity.
+Note that (0 : 1 : 0) is point at infinity. In these notes point at infinity is denoted simply as 0 (because it is a group unity).
 
 To know the divisor, we need to know the multiplicities (order) of these points. We need some [algebraic_geometry.md](https://github.com/miha-stopar/crypto-notes/blob/master/algebraic_geometry.md) here.
 
@@ -308,12 +308,47 @@ sum: Div^0(E) / (principal divisors) -> E(K~)
 
 is an isomorpism of groups.
 
+Example (Washington [9] Example 11.4): 
+The theorem above gives an algorithm for finding a function with a given divisor (of degree 0 and sum 0). Let's have an elliptic curve y^2 = x^3 + 4*x over F_11 and a divisor D = [(0,0)] + [(2,4)] + [(4,5)] + [(6,3)] - 4[0].
 
+It can quickly be checked that deg(D) = 0 and sum(D) = 0.
 
+```
+(0,0) + (2,4) = (2,7)
+[(0,0)] + [(2,4)] = [(2,7)] + [0] + div((2*x-y)/(x-2))
+```
 
+Thus:
 
+```
+D = [(2,7)] + [0] + div((2*x-y)/(x-2)) + [(4,5)] + [(6,3)] - 4*[0]
+D = [(2,7)] + div((2*x-y)/(x-2)) + [(4,5)] + [(6,3)] - 3*[0]
+```
 
+Further:
 
+```
+[(4,5)] + [(6,3)] = [(2,4)] + [0] + div((x+y+2)/(x-2))
+```
+
+Thus:
+
+```
+D = [(2,7)] + [(2,4)] + div((2*x-y)/(x-2)) + div((x+y+2)/(x-2)) - 2*[0]
+```
+
+We can see that:
+
+```
+div(x-2) = [(2,7)] + [(2,4)] - 2*[0]
+```
+
+Thus:
+
+```
+D = div((2*x-y)/(x-2)) + div((x+y+2)/(x-2)) + div(x-2)
+D = div((2*x-y) * (x+y+2) / (x-2))
+```
 
 ## Weil pairing
 
