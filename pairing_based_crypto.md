@@ -375,7 +375,7 @@ e_m : E[m] x E[m] -> mi_m
 
 Weil pairing is a major tool in the study of elliptic curves - it can be for example used to prove Hasse's theorem on the number of points on an elliptic curve over a finite field.
 
-Definition (see for example section 5.8.3 in [5]): Let be P, Q from E[m]. Let f_P and f_Q be rational functions on E satisfying:
+Definition (see for example section 5.8.3 in [5]): Let be P, Q from E[m]. Let f_P and f_Q be rational functions on E satisfying (we know due to the theorem above that such functions exist):
 
 ```
 div(f_P) = m * [P] - m * [0]
@@ -402,8 +402,102 @@ F(S) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
 
 It turns out the divisor is 0 and from the Theorem it follows, F(S) is constant.
 
+### Alternative definition of Weil pairing
 
+Let's choose T from E[n]. There exists function f such that:
 
+```
+div(f) = n[T] - n[0]
+```
+
+Let's choose T1 from E[n^2] such that n*T1 = T (that means n^2 * T1 = 0). There exists function g such that (because degree and sum are 0):
+
+```
+div(g) = sum_(R from E[n]) ([T1 + R] - [R])
+```
+
+Let's observe the function fn: P -> f(n*P). We can see that zeros of this function are P for which: n*P = T. These are T1 + R where R from E[n]. Thus:
+
+```
+div(fn) = n * sum_(R from E[n])([T1 + R]) - n * sum_(R from E[n])([R]) = div(g^n)
+```
+
+By multiplying f by a suitable constant, we may assume that:
+
+```
+fn = g^n
+```
+
+Let S be from E[n] and P from E[K~], then:
+
+```
+g(P+S)^n = f(n*(P+S)) = f(n*P) = g(P)^n
+```
+
+Therefore, g(P+S)/g(P) is from mi_n. It can be shown that g(P+S)/g(P) is independent of P.
+
+Weil pairing:
+
+```
+e_n(S, T) = g(P + S)/g(P)
+```
+
+### Weil pairing properties
+
+e_n is bilinear in each variable:
+
+```
+e_n(S1 + S2, T) = e_n(S1, T) * e_n(S2, T)
+e_n(S, T1 + T2) = e_n(S, T1) * e_n(S, T22)
+```
+
+for all S, S1, S2, T, T1, T2 from E[n].
+
+To prove linearity in the first variable (use P+S1 as P in the second factor):
+
+```
+e_n(S1, T) * e_n(S2, T) = (g(P + S1) / g(P)) * (g(P + S1 + S2) / g(P+S1)) = g(P + S1 + S2) / g(P)
+```
+
+For linearity in the second variable:
+
+```
+e_n(S, T1 + T2) = g3(P+S)/g3(P)
+e_n(S, T1) = g1(P+S)/g1(P)
+e_n(S, T2) = g2(P+S)/g2(P)
+T3 := T1 + T2
+```
+
+Let be f1, f2, f3 functions that corresponed to g1, g2, g3. That means f1(T1) = 0, f2(T2) = 0, f3(T3) = 0 and div(f1) = n[T1] - n[0] ...
+
+There exists function h such that:
+
+```
+div(h) = [T3] - [T1] - [T2] + [0]
+```
+
+It holds:
+
+```
+div(f3/(f1*f2)) = div(h^n)
+```
+
+So:
+
+```
+f3 = c * f1 * f2 * h^n where c is constant
+f3(n*P) = c * f1(n*P) * f2(n*P) * h(n*P)^n
+g3(P)^n = c * g1(P)^n * g2(P)^n * h(n*P)^n
+g3 = c * g1 * g2 * (h o n)
+```
+
+So:
+
+```
+e_n(S, T1 + T2) = (g3(P+S)/g3(P) = g1(P+S) * g2(P+S) * h(n * (P+S))) / (g3(P) * g1(P) * g2(P) * h(n*P)) = e_n(S, T1) * e_n(S, T2)
+```
+
+because n*S = 0.
 
 
 
