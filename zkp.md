@@ -7,14 +7,42 @@ There are two crucial properties about ZKPs:
  * proof of knowledge - there exists an algorithm which can extract the knowledge if the prover is used as a black-box and can be rewinded
  * zero knowledge - there exists a simulator which can simulate accepting transcripts which cannot be distinguished from the transcripts with a real verifier
 
-In Schnorr protocol the extractor goes like:
+In Schnorr protocol the extractor goes like (there is a secret s and publicy known h = g^s mod p):
 
- * prover outputs g^r
+ * prover outputs g^r mod p
  * simulator chooses challenge c1
- * prover returns z1 = r + c1 * secret
- * prover is rewinded so that it returns the same g^r and the protocol is repeated
+ * prover returns z1 = r + c1 * s mod q
+ * verifier checks whether g^z1 = g^r * (g^s)^c1 = g^r * h^c1
+ * prover is rewinded so that it returns the same g^r and the protocol is repeated (the verifier checks whether g^z2 = g^r * (g^s)^c2 = g^r * h^c2)
 
-Now the extractor can easily compute the secret: secret = (z1 - z2) * (c1 - c2)^(-1). But note that it needs to be able to compute the inverse of c1 - c2 (this can be done if the group order is known or if (c1-c2) divides (z1-z2)). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
+Now the extractor divides both equations:
+
+```
+g^(z2-z1) = h^(c2-c1)
+```
+
+and can easily compute the secret: s = (z1 - z2) * cdiff_inv where: 
+
+```
+cdiff_inv * (c1-c2) = 1 mod p
+cdiff_inv * (c1-c2) = k * order + 1 for some natural number k and order of Z_p* = p-1
+```
+
+Because:
+
+```
+g^((z2-z1)*cdiff_inv) = h^(k*order + 1) = 1^k * h = h
+```
+
+Whatever z1 and z2 the prover sent (potentially not of the form r + c*s), he obviously knows the value s for which g^s = h.
+
+But note that the extractor needs to be able to compute the inverse of cdiff_inv for which:
+
+```
+cdiff_inv * (c1-c2) = k * order + 1
+```
+
+For this group order needs to be known. Also, the extractor works if (c1-c2) divides (z1-z2), which is the case in Damgard-Fujisaki commitments (where order is not known). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
 
 Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA) without using binary challenges.
 
