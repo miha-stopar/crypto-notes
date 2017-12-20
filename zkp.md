@@ -21,28 +21,19 @@ Now the extractor divides both equations:
 g^(z2-z1) = h^(c2-c1)
 ```
 
-and can easily compute the secret: s = (z1 - z2) * cdiff_inv where: 
+Note that this is happening in Schnorr group which is cyclic with order q:
 
 ```
-cdiff_inv * (c1-c2) = 1 mod p
-cdiff_inv * (c1-c2) = k * order + 1 for some natural number k and order of Z_p* = p-1
+g^(z2-z1) = h^(c2-c1) = g^(s*(c2-c1))
+z2-z1 = s * (c2-c1) (mod q)
+cdiff_inv * (z2-z1) = s (mod q)
 ```
 
-Because:
+Extractor now knows the secret: s = cdiff_inv * (z2-z1).
 
-```
-g^((z2-z1)*cdiff_inv) = h^(k*order + 1) = 1^k * h = h
-```
+Whatever z1 and z2 the prover sent (potentially not of the form r + c*s), he obviously knows the value s for which g^s = h (mod p).
 
-Whatever z1 and z2 the prover sent (potentially not of the form r + c*s), he obviously knows the value s for which g^s = h.
-
-But note that the extractor needs to be able to compute the inverse of cdiff_inv for which:
-
-```
-cdiff_inv * (c1-c2) = k * order + 1
-```
-
-For this group order needs to be known. Also, the extractor works if (c1-c2) divides (z1-z2), which is the case in Damgard-Fujisaki commitments (where order is not known). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
+But note that the extractor needs to be able to compute cdiff_inv. For this the group order needs to be known (q in Schnorr group). Alternatively, the extractor works if (c1-c2) divides (z1-z2), which is the case in Damgard-Fujisaki commitments (where order is not known). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
 
 Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA) without using binary challenges.
 

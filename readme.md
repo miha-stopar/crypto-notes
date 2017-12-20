@@ -25,13 +25,22 @@ Brief descriptions of some of the attacks included in Matasano challenges (lengt
 [attacks.md](https://github.com/miha-stopar/crypto-notes/blob/master/attacks.md).
 
 Briefly about Elliptic Curves Cryptography (ECC) and how to speed up ECC operations:
-[ecc.md](https://github.com/miha-stopar/crypto-notes/blob/master/ecc.md).
+[ecc_intro.md](https://github.com/miha-stopar/crypto-notes/blob/master/ecc_intro.md).
+
+About math behind Elliptic Curves Cryptography:
+[ecc_math.md](https://github.com/miha-stopar/crypto-notes/blob/master/ecc_math.md).
 
 Some attacks on discrete logarithm (index calculus, Pohlig-Hellman, Pollard's rho):
 [dlog_attacks.md](https://github.com/miha-stopar/crypto-notes/blob/master/dlog_attacks.md).
 
-Briefly about pairing-based crypto:
+About algebraic geometry:
+[algebraic_geometry.md](https://github.com/miha-stopar/crypto-notes/blob/master/algebraic_geometry.md).
+
+About pairing-based crypto:
 [pairing_based_crypto.md](https://github.com/miha-stopar/crypto-notes/blob/master/pairing_based_crypto.md).
+
+Some examples related to pairing-based crypto:
+[pairing_examples.md](https://github.com/miha-stopar/crypto-notes/blob/master/pairing_examples.md).
 
 Ciphers (only AES for now):
 [ciphers.md](https://github.com/miha-stopar/crypto-notes/blob/master/ciphers.md).
