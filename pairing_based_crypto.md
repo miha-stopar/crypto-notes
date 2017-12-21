@@ -444,11 +444,13 @@ e_n(S, T) = g(P + S)/g(P)
 
 ### Weil pairing properties
 
+#### Bilinearity
+
 e_n is bilinear in each variable:
 
 ```
 e_n(S1 + S2, T) = e_n(S1, T) * e_n(S2, T)
-e_n(S, T1 + T2) = e_n(S, T1) * e_n(S, T22)
+e_n(S, T1 + T2) = e_n(S, T1) * e_n(S, T2)
 ```
 
 for all S, S1, S2, T, T1, T2 from E[n].
@@ -499,6 +501,49 @@ e_n(S, T1 + T2) = (g3(P+S)/g3(P) = g1(P+S) * g2(P+S) * h(n * (P+S))) / (g3(P) * 
 
 because n*S = 0.
 
+#### e_n(T, T) = 1 for all T from E[n]
+
+Let's define f_j as function: P -> f(P + j*T) and observe function ∏_(j=0,...,n-1) (f_j):
+
+```
+div(∏_(j=0,...,n-1) (f_j)) = Σ_(j=0,...,n-1) (n*[(1-j)*T] - n*[-j*T]) = 0 
+```
+
+because n*T = 0 and thus sum is 0 (degree is obviously 0). Thus this function is constant.
+
+Now let's define g_j: P -> g(P + j*T1) where n*T1 = T. It holds:
+
+```
+∏_(j=0,...,n-1) (g_j^n)) = ∏_(j=0,...,n-1) (f_j ◦ [n])) where [n] is a function P -> n*P
+```
+
+As the product of f_j is constant, the function on the right side is constant and thus the product of g_j^n is constant. So ∏_(j=0,...,n-1) (g_j) is constant as well and:
+
+```
+∏_(j=0,...,n-1) g(P + T1 + j*T1) = ∏_(j=0,...,n-1) g(P + j*T1)
+```
+
+After canceling the common terms:
+
+```
+g(P + n*T1) = g(P)
+g(P + T) = g(P)
+```
+
+#### e_n(T, S) = e_n(S, T)^(-1) for all S, T from E[n]
+
+```
+1 = e_n(T+S, T+S) = e_n(T, T) * e_n(T, S) * e_n(S, T) * e_n(S, S) = e_n(T, S) * e_n(S, T)
+```
+
+#### Nondegeneracy
+
+e_n is nondegenerate in each variable. This means that if e_n(S, T) = 1 for all T from E[n] then S = 0 and also that if e_n(S, T) = 1 for all S from E[n] then T = 0.
+
+Proof is more complex than for other properties. TODO
+
+
+
 
 
 
@@ -523,4 +568,6 @@ because n*S = 0.
 [9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
 
 [10] Fulton, William. "Algebraic curves." An Introduction to Algebraic Geom (2008): 54.
+
+[11] Enge, Andreas. "Bilinear pairings on elliptic curves." arXiv preprint arXiv:1301.5520 (2013).
 
