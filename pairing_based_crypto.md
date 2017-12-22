@@ -350,6 +350,98 @@ D = div((2*x-y)/(x-2)) + div((x+y+2)/(x-2)) + div(x-2)
 D = div((2*x-y) * (x+y+2) / (x-2))
 ```
 
+## Endomorphisms
+
+See Washington [9], section 2.9.
+
+By an endomorhpism of E, it is meant a homomorphism alpha: E(K~) -> E(K~) that is given by rational functions. So, alpha(P1 + P2) = alpha(P1) + alpha(P2), and there are rational functions R1(x,y), R2(x,y) with coefficients in K~ such that:
+
+```
+alpha(x,y) = (R1(x,y), R2(x,y))
+```
+
+Obviously, alpha(0) = 0 (point at infinity).
+
+Example: alpha(P) = 2*P. Then alpha(x,y) = (R1(x,y), R2(x,y)) where:
+
+```
+R1(x,y) = ((3*x^2 + A)/(2*y))^2 - 2*x
+R2(x,y) = ((3*x^2 + A)/(2*y)) * (3*x - ((3*x^2+A)/(2*y))^2) - y
+```
+
+We can actually simplify all rational functions on E to the form:
+
+```
+R(x,y) = (p1(x) + p2(x) * y) / (p3(x) + p4(x) * y)
+```
+
+This is because for all points on E: y^2 = x^3 + a*x + b, so we can replace all even powers of y by a polynomial in x, and replace any odd power of y by y times a polynomial in x.
+
+Moreover, we can multiply by (p3 - p4*y) and obtain:
+
+```
+R(x,y) = (q1(x) + q2(x) * y) / q3(x).
+```
+
+Since alpha is a homomorphism:
+
+```
+alpha(x, -y) = alpha(-(x,y)) = -alpha(x,y)
+```
+
+So:
+
+```
+R1(x,-y) = R1(x,y)
+R2(x,-y) = -R2(x,y)
+```
+
+If R1 and R2 are written in the form above (see R(x,y)), then q2(x) = 0 in R1, and q1(x) = 0 in R2:
+
+```
+alpha(x,y) = (r1(x), r2(x) * y) where r1(x), r2(x) are rational functions
+alpha(x,y) = (p1(x)/q1(x), (p2(x) * y) / q2(x))
+```
+
+It can be shown that when r1 is defined in x, then r2 is defined in x, so the rational function is not defined when q1(x) = 0 where r1 = p1/q1.
+
+The degree of alpha is defined as:
+
+```
+deg(alpha) = max{deg(p1), deg(q1)}
+```
+
+Define alpha != 0 to be a separable endomorphism if the derivative (d/dx)(r1) is not identically zero. This is equivalent to saying that at least one of (d/dx)(p1) and (d/dx)(q1) is not identically zero.
+
+In general, in characteristic p, the map alpha(Q) = p * Q has degree p^2 and is not separable.
+
+An important example of an endomorphism is the Frobenius map:
+
+```
+Phi_q(x,y) = (x^q, y^q)
+```
+
+TODO
+
+
+
+## Rational maps, isogenies and star equations
+
+The notes in this section are taken from [11] which is a self-contained (or as much as it can be) introduction to pairings.
+
+Let E, E1 be two elliptic curves over the same field K. A rational map alpha: E -> E1 is an element of E1(K(E)). Note that K(E) is a function field. An element of E1(K(E)) is (g, f) such that (g(x,y), f(x,y)) satisfy the Weierstrass equation for E1.
+
+Unless alpha is constant, it is surjective. If alpha(0) = 0, then alpha is in fact a group homomorphism, and it is called an isogeny. If E = E1, alpha is called an endomorphism. The endomorphisms that will be used frequently in what follows are multiplication by an integer n, denoted by [n].
+
+A non-constant rational map alpha: E -> E1 induces an injective homomorphism of function fields: alpha\*: K(E1) -> K(E), f1 -> f1 ◦ alpha. The degree of alpha is the degree of the extension [K(E) : alpha\*(K(E1))]. For instance deg([n]) = n^2. Note that the other way around would not work because alpha is not (necessarily) injective - actually that is the reason why there are more elements in K(E) than in alpha\*(K(E1)).
+
+TODO
+
+
+
+
+
+
 ## Weil pairing
 
 The set of points of order m (torsion points):
@@ -540,7 +632,7 @@ g(P + T) = g(P)
 
 e_n is nondegenerate in each variable. This means that if e_n(S, T) = 1 for all T from E[n] then S = 0 and also that if e_n(S, T) = 1 for all S from E[n] then T = 0.
 
-Proof is more complex than for other properties. TODO
+Proof is more complex than for other properties.
 
 
 
