@@ -428,6 +428,8 @@ In GF(p^n) elements are not numbers, but equivalence classes of polynomials whos
 
 How come GF(p^n) is then a field? For this to achieve the addition and multiplication need to be properly defined. We have to see GF(p^n) as a collection of p^n n-dimensional vectors. Each coordinate in a vector is from GF(p).
 
+A little bit more about mathematical background: GF(p^n) is a field extension of GF(p). If we have a look at the polynomial x^(p^n) - x and observe all its zeros, we get GF(p^n) (splitting field of a polynomial). We can see that x^(p^n) - x has p^n different zeros, because its derivative is p^n * x^(p^n - 1) - 1 = -1 (in case there would be a zero of order two or more, the derivative would not be a constant). So the zeros of x^(p^n) - x are GF(p^n).
+
 Let us see an example in GF(2^8) (fields of order 2^m are called binary fields or characteristic-two finite fields). The two elements 83 and 249 can be written as: 
 
 ```

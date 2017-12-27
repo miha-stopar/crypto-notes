@@ -421,7 +421,75 @@ An important example of an endomorphism is the Frobenius map:
 Phi_q(x,y) = (x^q, y^q)
 ```
 
+Lemma (Washington [9], Lemma 2.20): Let E be defined over F_q. Then Phi_q is an endomorphism of E of degree q and Phi_q is not separable.
+
+Proof: The map is given by rational functions (actually polynomials) and the degree is q. It can be quickly checked that it is a homomorhpism. Since q = 0 in F_q, the derivative of x^q is zero, therefore Phi_q is not separable.
+
+Proposition (Washington [9], Proposition 2.21): Let alpha != 0 be a separable endomorphism of an elliptic curve E. Then deg(alpha) = #Ker(alpha), where Ker(alpha) is the kernel of the homomorhpism alpha: E(K~) -> E(K~). If alpha is not separable, then deg(alpha) > #Ker(alpha).
+
+Proof:
+
+Let's write:
+
+```
+alpha(x,y) = (r1(x), y * r2(x)) with r1(x) = p(x)/q(x)
+```
+
+Then (d/dx)(r1) != 0 (because it is separable), so (d/dx)(p) * q - p * (d/dx)(q) != 0.
+
+Let S be the set of x from K~ such that (p * (d/dx)(q) - (d/dx)(p) * q) * q = 0.
+
+Let (a,b) be from E(K~) such that:
+
+ * a != 0, b != 0, (a,b) != 0 (point at inifinity)
+ * deg(p(x) - a * q(x)) = max{deg(p), deg(q)} = deg(alpha)
+ * a is not from r1(S)
+ * (a,b) is from alpha(E(K~))
+
+S is a finite set (since both factors of the polynomial are non-zero), so its image under alpha is finite.
+
+Note that the algebraic closure of F_q is ∪_{n=1,...,∞}F_q^n, so it is infinite. If F_q is of characteristic p, F_q~ = F_p~.
+
+The function r1(x) takes infinitely many distinct values as x runs through K~. Since, for each x, there is a point (x,y) from E(K~), we see that alpha(E(K~)) is an infinite set and such (a,b) exists.
+
+We need to show that there are exactly deg(alpha) points (x1,y1) from E(K~) such that alpha(x1,y1) = (a,b). So:
+
+```
+p(x1)/q(x1) = a
+y1 * r2(x1) = b
+```
+
+Since (a,b) != 0 (infinity), we must have q(x1) != 0. As mentioned above where r1 is defined, r2 is defined. Since b != 0 and y1 * r2(x1) = b, we have y1 = b/r2(x1). So x1 determines y1 and we only need to count values of x1.
+
+Thus we need to count the zeros of p(x) - a * q(x). This polynomial is by assumption of degree deg(alpha). We need to show that it does not have multiple roots.
+
+Suppose that (x0,y0) is a multiple root. Then:
+
+```
+p(x0) - a * q(x0) = 0
+(d/dx)(p)(x0) - a * (d/dx)(q)(x0) = 0
+```
+
+So:
+
+```
+a * p(x0) * (d/dx)(q)(x0) = a * (d/dx)(p)(x0) * q(x0)
+```
+
+So, x0 is from S, which is contrary to the assumption.
+
+Theorem (Washington [9], Theorem 2.22): Let E be an elliptic curve defined over a field K. Let alpha != 0 be an endomorphism of E. Then alpha E(K~) -> E(K~) is surjective.
+
+Proof: Let (a,b) be from E(K~). Since alpha(0) = 0, we may assume that (a,b) != 0. 
+
+Let's see first for the case when p(x) - a * q(x) is not a constant polynomial. The it exists x0 such that p(x0) - a * q(x0) = 0. Since p and q do not have common roots, q(x0) != 0. Now we take for y0 the square root of x^3 + A * x + B. It holds alpha(x0, y0) = (a,b) or alpha(x0, -y0) = (a,b).
+
+Let's now consider the case when p - a*q is constant. Since the kernel of alpha is finite, for a given x only a finite number of points can map to a point with this x. Because E(K~) is infinite and p(x)/q(x) is constant, that means that infinitely many points map into some x, which is a contradiction and means that such a does not exist (that means (a,b) is not in image of alpha). We can quickly show that at most one a exists such that p - a*q is constant. So there exists at most one element which is not the image of alpha. However, let's have (a1,b1) for which alpha(P1) = (a1,b1) and (a1,b1) + (a,b) != (a,+-b). Now there is P2 such that alpha(P2) = (a1,b1) + (a,b) and alpha(P2-P1) = (a,b), alpha(P1-P2) = (a,-b).
+
+
 TODO
+
+
 
 
 
