@@ -486,12 +486,41 @@ Let's see first for the case when p(x) - a * q(x) is not a constant polynomial. 
 
 Let's now consider the case when p - a*q is constant. Since the kernel of alpha is finite, for a given x only a finite number of points can map to a point with this x. Because E(K~) is infinite and p(x)/q(x) is constant, that means that infinitely many points map into some x, which is a contradiction and means that such a does not exist (that means (a,b) is not in image of alpha). We can quickly show that at most one a exists such that p - a*q is constant. So there exists at most one element which is not the image of alpha. However, let's have (a1,b1) for which alpha(P1) = (a1,b1) and (a1,b1) + (a,b) != (a,+-b). Now there is P2 such that alpha(P2) = (a1,b1) + (a,b) and alpha(P2-P1) = (a,b), alpha(P1-P2) = (a,-b).
 
+Lemma (Washington [9], Lemma 2.24): Let E be the elliptic curve y^2 = x^3 + A * x + B. Fix a point (u,v) on E. Write:
 
-TODO
+```
+(x,y) + (u,v) = (f(x,y), g(x,y))
+```
+
+where f(x,y) and g(x,y) are rational functions of x,y and y is regarded as a function of x satisfying dy/dx = (3*x^2 + A) / (2*y). Then:
+
+```
+(d/dx)(f(x,y))/g(x,y) = 1/y
+```
+
+Proof: Due to lengthy calculation the proof is omitted. Let's just note that:
+
+```
+2 * y * dy/dx = 3 * x^2 + A
+d/dx f(x,y) = (d/dx)(f) + (d/dy)(f) * (dy/dx)
+```
+
+Proposition (Washington [9], Proposition 2.28): Let E be an elliptic curve defined over a field K, and let n be a nonzero integer. Suppose that multiplication by n on E is given by:
+
+```
+n(x,y) = (R_n(x), y * S_n(x))
+```
+
+for all (x,y) from E(K~), where R_n and S_n are rational functions. Then:
+
+```
+(d/dx R_n(x)) / S_n(x) = n
+```
+ 
+Therefore, multiplication by n is separable iff n is not a multiple of the characteristic p of the field.
 
 
-
-
+Proposition (Washington [9], Proposition 2.29): Let E be an elliptic curve defined over F_q, where q is a power of the prime p. Let r and s be integers, not both 0. The endomorhpism r * Phi_q + s (where Phi_q is Frobenius endomorphism) is separable iff p does not divide s.
 
 ## Rational maps, isogenies and star equations
 
@@ -503,12 +532,86 @@ Unless alpha is constant, it is surjective. If alpha(0) = 0, then alpha is in fa
 
 A non-constant rational map alpha: E -> E1 induces an injective homomorphism of function fields: alpha\*: K(E1) -> K(E), f1 -> f1 ◦ alpha. The degree of alpha is the degree of the extension [K(E) : alpha\*(K(E1))]. For instance deg([n]) = n^2. Note that the other way around would not work because alpha is not (necessarily) injective - actually that is the reason why there are more elements in K(E) than in alpha\*(K(E1)).
 
-TODO
+For a point P from E and P1 from E1, there is an integer e_alpha(P), called ramification index, such that ord_P(alpha\*(f1)) = e_alpha(P) * ord_P1(f1) for any f1 from K(E1).
+
+When alpha is an isogeny, e_alpha(P) is independent of P. In this case we have deg(alpha) = e_alpha * $(ker(alpha)). If e_alpha = 1, alpha is called separable ([n] is separable if p does not divide n). If #(ker(alpha)) = 1, alpha is (up to isomorphisms) a power of the purely inseparable Frobenius endomorhpism (x,y) -> (x^q, y^q) of degree and ramification index q.
+
+The ramification index allows to define a homomorhpism alpha\*: Div(E1) -> Div(E) on divisors by:
+
+```
+alpha\*([P1]) = Σ_(P from alpha^(-1)(P1)) e_alpha(P)*[P]
+```
+
+in such a way that maps alpha\* on functions and divisors are compatible.
+
+Theorem (Upper star equation): If alpha: E -> E1 is a non-constant rational map and f1 from K(E1), then:
+
+```
+alpha\*(div(f1)) = div(alpha\*(f1))
+```
+
+For a lower star equation we need to refresh what is a field norm. Let's say we have a field K and its finite extension L. Let's choose alpha from L, then m_alpha: L -> L given by m_alpha(x) = alpha * x, is a K-linear transformation. For this linear transformation we can find a corresponding matrix. The norm N_(L/K)(alpha) is defined as the determinant of this linear transformation.
+
+If sigma_1(alpha), ... , sigma_n(alpha) are roots of minimal polynomial of alpha over K, then:
+
+```
+N_(L/K) = (Π_(j=1,...,n) sigma_j(alpha))^[L:K(alpha)]
+```
+
+where [L:K(alpha)] is a degree of an extension.
+
+Let's observe a map alpha_*: Div(E) -> Div(E1), defined as alpha_*([P]) = [alpha(P)].
+
+A corresponding map on function fields K(E) -> K(E1) can be defined by:
+
+```
+alpha_*(f) = (alpha\*)^(-1) (N_(K(E)/alpha\*(K(E1))) (f))
+```
+
+The map alpha_* is well-defined because the norm is an element of alpha\*(K(E1)), so a preimage exists. And because alpha\* is injective, so the preimage is unique.
+
+It holds:
+
+```
+N_(K(E)/alpha\*(K(E1))) (f) = (Π_(R from ker(alpha) (f ◦ tau_R)^e_alpha
+```
+
+where tau_R is translation by R.
+
+Theorem (Lower star equation): If alpha: E -> E1 is a non-constant rational map and f from K(E), then:
 
 
+```
+alpha_*(div(f)) = div(alpha_*(f))
+```
 
+## Weil reciprocity
 
+For D = Σ_(P) n_P * [P] we define support as a set supp(D) = {P; n_P != 0}.
 
+The evaluation of rational function f in divisor:
+
+```
+f(Σ_(P) n_P * [P]) = Π_(P) f(P)^n_P
+```
+
+To handle common points in the supports, the tame symbol of two functions f and g is defined as:
+
+```
+<f,g>_P = (-1)^(ord_P(f)*ord_P(g)) * (f^ord_P(g) / g^ord_P(f)) (P)
+```
+
+Theorem (Generalised Weil reciprocity): If f, g from K(E), then:
+
+```
+Π_(P from E(K~)) <f,g>_P = 1
+```
+
+In particular, if supp(f) ∩ supp(g) = {}, then:
+
+```
+f(div g) = g(div f)
+```
 
 ## Weil pairing
 
@@ -534,6 +637,10 @@ e_m : E[m] x E[m] -> mi_m
 ```
 
 Weil pairing is a major tool in the study of elliptic curves - it can be for example used to prove Hasse's theorem on the number of points on an elliptic curve over a finite field.
+
+There are three equivalent definitions of Weil pairing.
+
+### First definition of Weil pairing
 
 Definition (see for example section 5.8.3 in [5]): Let be P, Q from E[m]. Let f_P and f_Q be rational functions on E satisfying (we know due to the theorem above that such functions exist):
 
@@ -562,7 +669,7 @@ F(S) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
 
 It turns out the divisor is 0 and from the Theorem it follows, F(S) is constant.
 
-### Alternative definition of Weil pairing
+### Second definition of Weil pairing
 
 Let's choose T from E[n]. There exists function f such that:
 
@@ -690,7 +797,13 @@ g(P + n*T1) = g(P)
 g(P + T) = g(P)
 ```
 
-#### e_n(T, S) = e_n(S, T)^(-1) for all S, T from E[n]
+#### Alternation
+
+```
+e_n(T, S) = e_n(S, T)^(-1) for all S, T from E[n]
+```
+
+Proof:
 
 ```
 1 = e_n(T+S, T+S) = e_n(T, T) * e_n(T, S) * e_n(S, T) * e_n(S, S) = e_n(T, S) * e_n(S, T)
@@ -700,8 +813,35 @@ g(P + T) = g(P)
 
 e_n is nondegenerate in each variable. This means that if e_n(S, T) = 1 for all T from E[n] then S = 0 and also that if e_n(S, T) = 1 for all S from E[n] then T = 0.
 
-Proof is more complex than for other properties.
+Due to alternation it is enough to prove non-degeneracy with respect to the first argument.
 
+Let's say e_n(S, T) = 1 for all T. Then g(P+S) = g(P). Let's observe now the equation from above (lower star ... ):
+
+```
+N_(K(E)/alpha\*(K(E1))) (f) = (Π_(R from ker(alpha) (f ◦ tau_R)^e_alpha
+```
+
+If alpha is [n], we have ramification index e_alpha = 1 and #ker(alpha) = n. Due to g(P+S) = g(P), g ◦ tau_S = g. Thus:
+
+```
+N_(K(E)/alpha\*(K(E1))) (g) = g^n
+```
+
+So we have a function h such that g = h ◦ [n]. Also by definition of Weil pairing: g^n = f ◦ [n]. So
+
+```
+f ◦ [n] = (h ◦ [n])^n
+div(f ◦ [n]) = n * div(h ◦ [n])
+```
+
+By upper star equation:
+
+```
+div(f) = m * div(h) 
+div(h) = [T] - [0]
+```
+
+We know that such h does not exist, so T = 0.
 
 
 
