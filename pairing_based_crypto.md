@@ -1,7 +1,5 @@
 # Pairing-based cryptography
 
-Notes mostly taken from [1] and [2].
-
 The following notation will be used:
 
 ```
@@ -9,6 +7,8 @@ k~: an algebraic closure of k
 ```
 
 ## Bilinear pairing or bilinear map
+
+Notes mostly taken from [1] and [2].
 
 Let G_1, G_2 be two cyclic groups of the same prime order n. Let us view G_1 as an additive group with identity ∞ and G_2 as a multiplicative group with identity 1. Let P be a generator of G_1.
 
@@ -842,6 +842,78 @@ div(h) = [T] - [0]
 ```
 
 We know that such h does not exist, so T = 0.
+
+#### e_n(h(S), h(T)) = h(e_n(S, T)) 
+
+e_n(h(S), h(T)) = h(e_n(S, T)) for all automorphisms h of K~ such that h is the identity map on the coefficients of E (if E is in Weierstrass form, this means h(A) = A, h(B) = B).
+
+Proof: 
+
+Let's denote with f^h the function obtained by applying h on the coefficients on f. We do the same for g (f and g from Weil pairing definition).
+
+Let's say f corresponds to T, then f^h corresponds to h(T), because div(f^h) = n*[h(T)] - n*[0] and h is homomorphism. Similarly for g and g^h.
+
+```
+h(e_n(S, T)) = h(g(P+S)/g(P))
+e_n(h(S), h(T)) = g^h(h(P) + h(S)) / g^h(h(P)) = g^h(h(P+S)) / g^h(h(P)
+```
+
+Both are the same due to the definition of g^h and h being homomorphism.
+
+#### Compatibility with isogenies
+
+```
+e_n(alpha(S), alpha(T)) = e_n(S, T)^deg(alpha)
+```
+
+for all separable endomorphisms alpha of E.
+
+Proof:
+
+Let {Q_1,...,Q_k} = Ker(alpha). Since alpha is separable, k = deg(alpha). Let:
+
+```
+div(f_T) = n[T] - n[0]
+div(f_alpha(T)) = n[alpha(T)] - n[0]
+g_T^n = f_T ◦ n
+g_alpha(T)^n = f_alpha(T) ◦ n
+```
+
+Let tau_Q denote adding Q. Then:
+
+```
+div(f_T ◦ tau_(-Q_i)) = n[T+Q_i] - n[Q_i] 
+```
+
+Therefore:
+
+```
+div(f_alpha(T) ◦ alpha) = n * Σ_(alpha(T1) = alpha(T)) [T1] - n * Σ_(alpha(Q) = 0) [Q] = n * Σ ([T + Q_i] - [Q_i]) = div(Π f_T ◦ tau_(-Q_i))
+```
+
+For each i, choose Q1_i with n*Q1_i = Q_i. Then:
+
+```
+g_T(P - Q1_i)^n = f_T(n*P - Q_i) 
+```
+
+And:
+
+```
+div(Π (g_T ◦ tau_(-Q1_i))^n) = div(Π  f_T ◦ tau_(-Qi) ◦ n) = div(f_alpha(T) ◦ alpah ◦ n) = div(f_alpha(T) ◦ n ◦ alpha) = div(g_alpha(T) ◦ alpha)^n
+```
+
+Thus:
+
+```
+e_n(alpha(S), alpha(T)) = g_alpha(T)(alpha(P+S)) / g_alpha(T)(alpha(P)) = Π (g_T(P+S-Q1_i) / g_T(P - Q1__i)) = Π e_n(S, T) = e_n(S, T)^deg(alpha)
+```
+
+For Frobenius endomorphism:
+
+```
+e_n(Phi_q(S), Phi_q(T)) = e_n(S, T)^q
+```
 
 
 
