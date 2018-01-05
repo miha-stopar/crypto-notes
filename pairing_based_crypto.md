@@ -585,6 +585,35 @@ Theorem (Lower star equation): If alpha: E -> E1 is a non-constant rational map 
 alpha_*(div(f)) = div(alpha_*(f))
 ```
 
+### Leading coefficient
+
+The leading coefficient of a function f at 0 is:
+
+```
+lc(f) = ((x/y)^(-ord_0(f)) * f)(0)
+```
+
+Note that x/y is a uniformizer at 0.
+
+A function f is monic at 0 if lc(f) = 1.
+
+Canonical form of a function f(x,y): v(x) + y * w(x). Every rational function can be written in canonical form.
+
+But how is a rational function r = f/g evaluated at point at infinity:
+
+```
+deg(f) < deg(g): r(0) = 0
+deg(f) > deg(g): r(0) not finite
+deg(f) = deg(g) and deg(f) is even: write f and g in canonical form, then they both have a leading terms a*x^d and b*x^d (d = deg(f)/2), then r(0) = a/b 
+deg(f) = deg(g) and deg(f) is odd: write f and g in canonical form, then they both have a leading terms a*y*x^d and b*y*x^d (d = (deg(f)-3)/2), then r(0) = a/b 
+```
+
+Example: r(x,y) = (2*x^2 + 7*x)/(3*y*x + 2):
+
+```
+lc(r) = (x/y)^(-1) * r(x,y) = (2*y*x^2 + 7*y*x)/(3*y*x^2 + 2*x) (0) = 2/3
+```
+
 ## Weil reciprocity
 
 For D = Σ_(P) n_P * [P] we define support as a set supp(D) = {P; n_P != 0}.
@@ -667,7 +696,7 @@ We can see that it is independent of the choice of S if have a look at the pairi
 F(S) = ( f_P(Q + S) / f_P(S) ) / ( f_Q(P - S) / f_Q(-S) )
 ```
 
-It turns out the divisor is 0 and from the Theorem it follows, F(S) is constant.
+It turns out the divisor is 0, thus F(S) is constant.
 
 ### Second definition of Weil pairing
 
@@ -707,6 +736,12 @@ Weil pairing:
 
 ```
 e_n(S, T) = g(P + S)/g(P)
+```
+
+Example of using upper star equation:
+
+```
+div(f ◦ [n]) = div([n]*(f)) = [n]*(div(f)) = [n]*(n[P]-n[0]) = n * Σ_(R from E[n]) ([T + R] - [R]) 
 ```
 
 ### Weil pairing properties
@@ -915,8 +950,89 @@ For Frobenius endomorphism:
 e_n(Phi_q(S), Phi_q(T)) = e_n(S, T)^q
 ```
 
+### Third definition of Weil pairing 
+
+For P, Q from E[n]-{0}, P != Q, let f_P and f_Q be such that:
+
+```
+f_P = n[P] - n[0]
+f_Q = n[Q] - n[0]
+```
+
+Then:
+
+```
+e_n(P,Q) = (-1)^n * f_P(Q)/f_Q(P) * (f_Q/f_P)(0)
+```
+
+If f_P and f_Q are chosen monic at 0, then:
+
+```
+e_n(P,Q) = (-1)^n * f_P(Q)/f_Q(P)
+```
+
+For P = Q or one or both of P and Q being 0, the definition needs to be completed by e_n(P,Q) = 1.
+
+### Equivalence of the second and third definition
+
+Let P_0 and Q_0 be such that:
+
+```
+n*P_0 = P
+n*Q_0 = Q
+```
+
+Let g_P be the function, monic at 0, such that:
+
+```
+div(g_P) = Σ_(R from E[n]) ([P_0 + R] - [R])
+```
+
+Similarly for g_Q.
+
+Let h_Q be the function, monic at 0, such that:
+
+```
+div(h_Q) = (n-1)[Q_0] + [Q_0 - Q) - n[0]
+```
+
+Let: 
+
+```
+H_Q = Π_(R from E[n])(h_Q ◦ tau_R)
+```
+
+By generalised Weil reciprocity:
+
+```
+Π_(S from supp(div(g_P)) ∪ supp(div(h_Q))) <g_P, h_Q>_S = 1
+```
+
+If P != Q, then supp(div(g_P)) ∩ supp(div(h_Q)) = {0}, and we can easily compute:
+
+```
+<g_P, h_Q>_Q_0 = g_P^(n-1)(Q_0)
+<g_P, h_Q>_(Q_0-Q) = g_P(Q_0-Q)
+<g_P, h_Q>_(P_0+R) = h_Q^(-1)(P_0+R) for R from E[n]
+<g_P, h_Q>_(R) = h_Q(R) for R from E[n] - {0}
+<g_P, h_Q>_0 = (-1)^n * (h_Q/g_P^n)(0) = (-1)^n since g_P and h_Q are monic at 0
+```
+
+Multiplying:
+
+```
+1 = (-1)^n * g_P^n(Q_0)/g_Q^n(P_0) * e_n(P, Q)^-1
+```
+
+Note that:
+
+```
+g_P^n = c^(-1) * [n]*(f_P)
+c = lc([n]*(f_P)) = ((f_P ◦ [n])* X^n/Y^n)(0)
+```
 
 
+TODO
 
 
 
