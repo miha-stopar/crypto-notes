@@ -599,15 +599,6 @@ A function f is monic at 0 if lc(f) = 1.
 
 Canonical form of a function f(x,y): v(x) + y * w(x). Every rational function can be written in canonical form.
 
-But how is a rational function r = f/g evaluated at point at infinity:
-
-```
-deg(f) < deg(g): r(0) = 0
-deg(f) > deg(g): r(0) not finite
-deg(f) = deg(g) and deg(f) is even: write f and g in canonical form, then they both have a leading terms a*x^d and b*x^d (d = deg(f)/2), then r(0) = a/b 
-deg(f) = deg(g) and deg(f) is odd: write f and g in canonical form, then they both have a leading terms a*y*x^d and b*y*x^d (d = (deg(f)-3)/2), then r(0) = a/b 
-```
-
 Example: r(x,y) = (2*x^2 + 7*x)/(3*y*x + 2):
 
 ```
@@ -667,7 +658,7 @@ e_m : E[m] x E[m] -> mi_m
 
 Weil pairing is a major tool in the study of elliptic curves - it can be for example used to prove Hasse's theorem on the number of points on an elliptic curve over a finite field.
 
-There are three equivalent definitions of Weil pairing.
+There are multiple equivalent definitions of Weil pairing.
 
 ### First definition of Weil pairing
 
@@ -1031,8 +1022,39 @@ g_P^n = c^(-1) * [n]*(f_P)
 c = lc([n]*(f_P)) = ((f_P ◦ [n])* X^n/Y^n)(0)
 ```
 
+### Fourth definition of Weil pairing
 
-TODO
+Let S, T from E[n]. Let D_S and D_T be divisors of degree 0 such that:
+
+```
+sum(D_S) = S
+sum(D_T) = T
+```
+
+and such that D_S and D_T have no points in common. Let f_S and f_T be functions such that:
+
+```
+div(f_S) = n * D_S
+div(f_T) = n * D_T
+```
+
+Then Weil pairing is given by:
+
+```
+e_n(S, T) = f_T(D_S) / f_S(D_T)
+```
+
+Recall that f(Σ a_i * P) = Π f(P)^a_i.
+
+
+Example (Washington [9] Example 11.5): Let's have y^2 = x^3 + 2 over GF(7). Let's compute e_3((0,3),(5,1)).
+
+
+
+
+
+
+
 
 
 

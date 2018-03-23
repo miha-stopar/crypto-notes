@@ -87,7 +87,16 @@ sage: P1.division_points(5)
 
 There are 25 = 5^2, thus the whole E[5].
 
-Weil pairing is function f: E[r] x E[r] -> F_(q^k).
+Note that each point in the extended field has polynomials as coordinates (in this case polynomials of degree 2). When multiplying an irreducible polynomial is needed - by default Sage is using Conway polynomials.
+
+To get a Conway polynomial for GF(59^2):
+
+```
+sage: conway_polynomial(59,2)
+x^2 + 58*x + 2
+```
+
+Weil pairing is a function f: E[r] x E[r] -> F_(q^k).
 
 In E(F_(59^2)) Weil pairing exists and is not trivial.
 
