@@ -100,7 +100,7 @@ For z_1 we define `g0 = g/p_1^2	 and we get `g0^l_1 = g0^(z_0 + z_1*p_1)`, so `g
 It is pretty much the same as in the section above.
 We have points P and Q on elliptic curve and it holds l * P = Q (we are solving elliptic curve discrete logarithm problem - ECDLP).
 
-Pohlig-Hellman reduces ECDLP in <P> to ECDLP in the prime order subgroups of <P>. It constructs l using <P> subgroups.
+Pohlig-Hellman reduces ECDLP in `<P>` to ECDLP in the prime order subgroups of `<P>`. It constructs l using `<P>` subgroups.
 
 Let us say that the order of P is n and `n = p_1^e_1 * p_2^e_2 * ... * p_r^e_r`. Now we define `l_i = l mod p_i^e_i` for each 1 <= i <= r. It holds:
 
@@ -129,7 +129,7 @@ And further (because `p_1 * P_0 = 0`):
 
 Thus: `Q_0 = z_0 * P_0`
 
-This means if we are able to break ECDLP in <P_0>, we partially break ECDLP in <P>. We continue to extract other parts.
+This means if we are able to break ECDLP in <P_0>, we partially break ECDLP in `<P>`. We continue to extract other parts.
 
 We define `P_1 = (n/(p_1^2))*P` and `Q_1 = (n/(p_1^2))*Q`.
 
@@ -156,15 +156,15 @@ Once again we have points P and Q on elliptic curve and it holds l * P = Q (we a
 
 Let us define n as order of P.
 
-If we have f:<P> -> <P>, we can define a finite set: `{X_i; i>0} where X_i = f(X_(i-1)) and X_0 from <P>` (simply put: `{X_0, f(X_0), f(f(X_0)), f(f(f(X_0))),...}`)
+If we have `f:<P> -> <P>`, we can define a finite set: `{X_i; i>0} where X_i = f(X_(i-1)) and X_0 from <P>` (simply put: `{X_0, f(X_0), f(f(X_0)), f(f(f(X_0))),...}`)
 
-This set is finite because <P> is finite. So there exist t and s such that `X_t = X_(t+s)`. It holds `X_i = X_(i-s) for all i >= t+s`. 
+This set is finite because `<P>` is finite. So there exist t and s such that `X_t = X_(t+s)`. It holds `X_i = X_(i-s) for all i >= t+s`. 
 
 We can find a pair `X_i, X_j where X_i = X_j and i != j` by searching pairs `X_i, X_(2*i)`. We know that in the interval [t, t+s) there is a multiple of s. Let us say `t <= u*s < t+s`. Now we know `X_(u*s) = X_(u*s + u*s) = X_(2*u*s)`. 
 
 This is because `X_m = X_(m + u*s) for m >= t and each integer u`.
 
-Let us construct f now. We split <P> into partitions {S_1, S_2,...,S_32} of roughly the same size (for example according to the five least significant bits of x-coordinate of the point - the point goes into S_j if these five bits represents integer j-1).
+Let us construct f now. We split `<P>` into partitions `{S_1, S_2,...,S_32}` of roughly the same size (for example according to the five least significant bits of x-coordinate of the point - the point goes into S_j if these five bits represents integer j-1).
 
 We define function H: H(X) = j if X from S_j. We define some a_j, b_j from [0, n-1] for 1 <= j <= 32.
 
@@ -174,11 +174,11 @@ Function f is random due to how function H is defined. Randomness is needed for 
 
 So, in two steps: `X -> H(X) -> X + a_(H(X)) * P + b_(H(X)) * Q`
 
-Is f(X) in <P>? Yes, because `X_0 = u*P` for some integer u. And:
+Is f(X) in `<P>`? Yes, because `X_0 = u*P` for some integer u. And:
 
 `f(u*P) = u*P + a_j * u * P + b_j * l * P = (u + a_j * u + b_j * l) * P`
 
-Thus, f(X_0) = f(u*P) is from <P>. Similarly, f(f(X_0)) is from <P>...
+Thus, f(X_0) = f(u*P) is from `<P>`. Similarly, f(f(X_0)) is from `<P>`...
 
 We can take P as X_0 and observe {P, f(P), f(f(P)),...}. But we do a little trick and observe elements of this set as being written in coordinates (a, b):
 
