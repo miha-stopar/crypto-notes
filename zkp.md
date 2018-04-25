@@ -35,7 +35,19 @@ Whatever z1 and z2 the prover sent (potentially not of the form r + c*s), he obv
 
 But note that the extractor needs to be able to compute cdiff_inv. For this the group order needs to be known (q in Schnorr group). Alternatively, the extractor works if (c1-c2) divides (z1-z2), which is the case in Damgard-Fujisaki commitments (where order is not known). Note also that if the challenge space is {0, 1}, the inverse is not needed (as c1 - c2 = 1), so in hidden order groups we have an extractor if we use binary challenges, however this is not efficient. The extractor shows that if the prover is able to succesffuly run the protocol two times, then it must know the secret (there is no way z1 and z2 can be prepared without knowing the secret).
 
-Below we will see how proof of knowledge can be achieved in groups with hidden order (like RSA) without using binary challenges.
+In RSA group which is hidden order, the extractor still works due to the strong RSA assumption. We have g^(z2-z1) = h^(c2-c1) - due to the strong RSA assumption it holds that (z2-z1) = u * (c2-c1) for some u. So:
+
+```
+g^(u*(c2-c1)) = h^(c2-c1)
+```
+
+That doesn't necessarily mean that we have u such that g^u = h, it might be:
+
+```
+(g*b)^u = h 
+```
+
+where b^(c2-c1) = h. But it turns out b can only be 1 or -1.
 
 In Schnorr protocol the simulator for proving the zero-knowledge property:
 
@@ -49,20 +61,6 @@ If we want to make Schnorr protocol to be ZKP (maybe it is anyway, but it is not
 Because the knowledge error is 1/2 (if challenges space is {0, 1}), the protocol needs to be repeated multiple times.
 
 An alternative to executing protocol many times with small challenges is approach proposed by Damgard [2] - here instead of g^r a commitment to it is sent and thus verifier cannot choose challenge based on the first message (challenge is thus chosen randomly).
-
-## Proof of knowledge in hidden order groups
-
-Let's say we have n = p * q, a product of two distinct safe primes. Thus, p = 2*p1 + 1 and q = 2*q1 + 1 where p1, q1 are two distinct primes. Z_n\* is of order 4*p1*q1, QR_n is of order p1*q1.
-
-Let's choose g from QR_N and some random alpha < p1*q1, and h = g^alpha mod n. Fujisaki and Damgard [3] proposed the following commitment scheme:
-
-```
-commit(x) = g^x * h^r mod n where r random < 
-```
-
-
-
-
 
 # Zero-knowledge proofs of knowledge for homomorphisms using sigma_psi protocols
 
@@ -96,7 +94,7 @@ The first technique applies to exponentiation homomorphisms psi_E: Z^l -> H in h
 
 The second technique is based on a novel protocol which will be here denoted by sigma_psi_plus. It yields so called proofs of knowledge in the auxiliary string model, which was introduced by Damgard [2]. The key idea is that an auxiliary string with a prescribed probability distribution is available to the prover and the verifier. The sigma_psi_plus protocol yields zero-knowledge proofs of knowledge in the auxiliary string model for any exponentiation homomorphism (thus also in hidden order groups). The resulting proofs of knowledge are very efficient when |image(psi_E)| contains only large prime factors. However, the setup protocol is rather inefficient (but in many cases the cost of the setup protocol does not matter).
 
-The third techniqu is using sigma_psi_plus-WS protocol, which is a variant of the sigma_psi_plus protocol that removes the setup protocol and the associated cost. The sigma_psi_plus-WS protocol is a zero-knolwedge proofs of knowledge in random oracle model.
+The third technique is using sigma_psi_plus-WS protocol, which is a variant of the sigma_psi_plus protocol that removes the setup protocol and the associated cost. The sigma_psi_plus-WS protocol is a zero-knolwedge proofs of knowledge in random oracle model.
 
 # Sigma_psi protocols
 
