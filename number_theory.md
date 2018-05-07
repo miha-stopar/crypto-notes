@@ -212,9 +212,9 @@ Then the m-th power residues of G are exactly G2 (and n-th power residues are G1
 
 ### Cyclic groups
 
-Cyclic group is usually denoted by <g>, where g is the generator. For example Z_7* = {1,3,3^2, 3^3, 3^4, 3^5} = {1,3,2,6,4,5}, where the generator is 3.
+Cyclic group is usually denoted by `<g>`, where g is the generator. For example Z_7* = {1,3,3^2, 3^3, 3^4, 3^5} = {1,3,2,6,4,5}, where the generator is 3.
 
-All subgroups of a cyclic group are cyclic. For each d which divides n (order of <g>) there exists exactly one subgroup of order d and it is <g^(n/d)>.
+All subgroups of a cyclic group are cyclic. For each d which divides n (order of `<g>`) there exists exactly one subgroup of order d and it is `<g^(n/d)>`.
 
 #### Product of two cyclic groups
 
@@ -368,7 +368,7 @@ Just as an interesting fact:
 
 We have two primes p and q such that p = q * r + 1. Subgroup H of Z_p\* of order q is called Schnorr group.
 
-For each element h from H there is an element a from Z_p\* such that h = a^r (mod p) (see Cyclic group section above - the order of Z_p\* is p-1, the order of H is q, thus H = <g^((p-1)/q)> = <g^r>).
+For each element h from H there is an element a from Z_p\* such that h = a^r (mod p) (see Cyclic group section above - the order of Z_p\* is p-1, the order of H is q, thus `H = <g^((p-1)/q)> = <g^r>`).
 
 Let's choose u, v from Z_p\*. Let's define s = u^r (mod p) and t = v^r (mod p).
 
@@ -601,6 +601,56 @@ If for example we want to calculate 169 * 2 in GF(256):
 
 In the first equality we used the formula above for b_7 = 1. So 169 * 2 = 73 in GF(256). It is not uncommon to have a pre-prepared multiplication tables in the actual implementations.
 
+### Every finite field has a primitive element
+
+Let's say we have a field F of order q (as it turns out q can be p or p^m where p is prime). For each non-zero element x from F the set {1, x, x^2, ..., x^(n-1)} forms a cyclic group and n divides q-1 (F is field, so non-zero elements form an abelian group of order q-1). So x^(q-1) = 1. Note that for each n there is at most one cyclic subgroup of order n (because polynomial x^n - 1 has n zeros).
+
+We can see that non-zero elements of F are roots of polynomial x^(q-1) - 1. The elements of F are zeros of polynomial x^q - x.
+
+We will show that each finite field F has a primitive element (generator of non-zero elements). We need to show that there exists at least one element of order q-1.
+
+Let's observe any cylic group of order n. We can see that for any d that divides n there are Phi(d) elements of order d (observe {g^(n/d), g^(2*n/d), ..., g^(d*n/d)}). Thus:
+
+```
+n = Σ_(d|n) Phi(d)
+```
+
+We have at most (this is where we use fundamental theorem of algebra - about how many roots can have polynomials) one cyclic group of order d for each d that divides q-1. In each of these groups there are Phi(d) elements of order d. If we go over all these groups we get Σ_(d|q-1) Phi(d) elements and these are all elements of F\*. But we know that the there are q-1 elements in F\*. So:
+
+```
+q-1 = Σ_(d|q-1) Phi(d)
+```
+
+That means there has to be Phi(d) elements for each d that divides q-1, including d = q-1.
+
+
+### Subfields and extension fields
+
+A subset K1 of a field K is a **subfield** of K if K1 is also a field with respect to the operations of K. We say K is an **extension** of K1. A field F_(p^m) has precisely one subfield of order p^l for each divisor l of m (the elements of this subfield are the elements a from F_(p^m) for which it holds: a^(p^l) = a).
+
+Actually, the study of fields primarily investigates field extensions.
+
+If K1 is a subfield of K, we refer to K/K1 as the field extension of K1 and to K1 as the base field. K can be seen as a vector space over K1. The elements of K are vectors and the elements of K1 are scalars. The dimension of the vector space is called the degree of the extension and is denoted as [K:K1].
+
+Some examples of extensions:
+
+ * Complex numbers C is an extension field of the field of real numbers R. Here [C:R] = 2, because {1, i} is a basis.
+ * Real numbers R is an extension of rational numbers Q.
+ * The set Q(√2) = {a + b√2; a, b from Q} is extension field of rational numbers Q. The degree is 2, because {1, √2} is a basis.
+
+### Polynomial rings
+
+A polynomial ring is a ring formed by the set of polynomials with coefficients in another ring. If K is a ring where we take coefficients, we denote a polynomial ring as K[x].
+
+For example if we have a ring of integers modulo n (denoted as Z_n), a polynomialring Z_n[x] are polynomials of the form a_m * x^m + ... + a_1 * x + a_0 where a_i are from Z_n.
+
+### Ideal
+
+Let's say we have a ring R. If I is an additive subgroup of R and is closed for multiplication by elements of R, I is an ideal.
+
+
+
+
 ### Subfields and extension fields
 
 A subset K1 of a field K is a **subfield** of K if K1 is also a field with respect to the operations of K. We say K is an **extension** of K1. A field F_(p^m) has precisely one subfield of order p^l for each divisor l of m (the elements of this subfield are the elements a from F_(p^m) for which it holds: a^(p^l) = a).
@@ -799,7 +849,7 @@ g^(x1/x2) = (g1^x2)^(x1/x2) = g1^x1 = g (mod p)
 
 #### If we can find an algorithm to break discrete logarithm for some fraction of inputs, we can break it for all inputs
 
-Let's say we have a cyclic group G = <g>. If we have an algorithm A that solves discrete logarithm in G for a fraction 1/P of all inputs, then we actually have an algorithm to solve all inputs.
+Let's say we have a cyclic group `G = <g>`. If we have an algorithm A that solves discrete logarithm in G for a fraction 1/P of all inputs, then we actually have an algorithm to solve all inputs.
 
 Let's say we want to find the discrete log of h. We try for various random values b to find a discrete log of h1 = h \* g^b by algorithm A. When we find b for which A was successful, we have log h = log h1 - b.
 

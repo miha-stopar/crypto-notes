@@ -48,6 +48,8 @@ Given P, aP, bP, cP, find if ab = c. As e(aP, bP) = e(P, P)^(ab), we can simply 
 
 Thus, the cryptosystems relying on intractability of decisional Diffie-Hellman cannot be constructed in a cyclic group with bilinear pairing.
 
+Note that if e(P, P) = 1 for all P, the above check does not work. In this case the check can be done using distortion maps.
+
 ## Bilinear Diffie-Hellman problem (BDHP)
 
 The security of many pairing-based protocols relies on the intractabilty of BDHP which is as follows: given P, aP, bP, cP, compute e(P, P)^(abc).
