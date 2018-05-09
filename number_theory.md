@@ -601,7 +601,7 @@ If for example we want to calculate 169 * 2 in GF(256):
 
 In the first equality we used the formula above for b_7 = 1. So 169 * 2 = 73 in GF(256). It is not uncommon to have a pre-prepared multiplication tables in the actual implementations.
 
-### Every finite field has a primitive element
+### Every finite field has a primitive element (F\* is cylic)
 
 Let's say we have a field F of order q (as it turns out q can be p or p^m where p is prime). For each non-zero element x from F the set {1, x, x^2, ..., x^(n-1)} forms a cyclic group and n divides q-1 (F is field, so non-zero elements form an abelian group of order q-1). So x^(q-1) = 1. Note that for each n there is at most one cyclic subgroup of order n (because polynomial x^n - 1 has n zeros).
 
@@ -623,7 +623,6 @@ q-1 = Σ_(d|q-1) Phi(d)
 
 That means there has to be Phi(d) elements for each d that divides q-1, including d = q-1.
 
-
 ### Subfields and extension fields
 
 A subset K1 of a field K is a **subfield** of K if K1 is also a field with respect to the operations of K. We say K is an **extension** of K1. A field F_(p^m) has precisely one subfield of order p^l for each divisor l of m (the elements of this subfield are the elements a from F_(p^m) for which it holds: a^(p^l) = a).
@@ -638,32 +637,12 @@ Some examples of extensions:
  * Real numbers R is an extension of rational numbers Q.
  * The set Q(√2) = {a + b√2; a, b from Q} is extension field of rational numbers Q. The degree is 2, because {1, √2} is a basis.
 
-### Polynomial rings
+### A field of prime power order p^n is a splitting field over F_p of x^(p^n) - x
 
-A polynomial ring is a ring formed by the set of polynomials with coefficients in another ring. If K is a ring where we take coefficients, we denote a polynomial ring as K[x].
+The extension field E of L is called a splitting field for the polynomial r with coefficients in L if the polynomial r factors completely into linear factors in E and it does not factor completely over any proper subfield of E containing L. 
 
-For example if we have a ring of integers modulo n (denoted as Z_n), a polynomialring Z_n[x] are polynomials of the form a_m * x^m + ... + a_1 * x + a_0 where a_i are from Z_n.
+We saw that elements of F_p^n are roots of x^(p^n) - x. This set has the size p^n because the polynomial x^(p^n) - x is separable - it has no roots in common with its derivative p^n * x^(p^n - 1) - 1 = -1.
 
-### Ideal
-
-Let's say we have a ring R. If I is an additive subgroup of R and is closed for multiplication by elements of R, I is an ideal.
-
-
-
-
-### Subfields and extension fields
-
-A subset K1 of a field K is a **subfield** of K if K1 is also a field with respect to the operations of K. We say K is an **extension** of K1. A field F_(p^m) has precisely one subfield of order p^l for each divisor l of m (the elements of this subfield are the elements a from F_(p^m) for which it holds: a^(p^l) = a).
-
-Actually, the study of fields primarily investigates field extensions.
-
-If K1 is a subfield of K, we refer to K/K1 as the field extension of K1 and to K1 as the base field. K can be seen as a vector space over K1. The elements of K are vectors and the elements of K1 are scalars. The dimension of the vector space is called the degree of the extension and is denoted as [K:K1].
-
-Some examples of extensions:
-
- * Complex numbers C is an extension field of the field of real numbers R. Here [C:R] = 2, because {1, i} is a basis.
- * Real numbers R is an extension of rational numbers Q.
- * The set Q(√2) = {a + b√2; a, b from Q} is extension field of rational numbers Q. The degree is 2, because {1, √2} is a basis.
 
 ### Polynomial rings
 
