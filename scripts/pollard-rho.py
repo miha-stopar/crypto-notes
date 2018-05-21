@@ -47,13 +47,10 @@ def find_repetition(P, Q):
         hare, hare_coordinates = f(hare_coordinates)
         hare, hare_coordinates = f(hare_coordinates)
         if tortoise == hare:
-	    if true:
-		T = (1,0)
-		for i in range(2*count):
-    		    point, T = f(T) 
-                    print point, T
-    		    if i == count-1:
-			print "----" 
+	    T = (1,0)
+	    for i in range(2*count):
+    	        point, T = f(T) 
+                print point, T
   	    return tortoise_coordinates, hare_coordinates
 
 def discrete_log(P, Q):
