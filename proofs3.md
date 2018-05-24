@@ -92,6 +92,30 @@ Proof is the generalization of Schnorr protocol. The prover chooses random r_1,.
 
 While [2] discourage users from sharing their pseudonyms and credentials using PKI-assured non-transferability (sharing a credential implies also sharing a particular, valuable secret key from outside the system), Camenisch-Lysyanskaya [4] proposed a system which uses all-or-nothing non-transferability which does not require having some external valuable secret key. Here, sharing one pseudonym or credential implies sharing all of the user's other credentials and pseudonyms in the system.
 
+Camenisch-Lysyanskaya credentials are somehow similar to the RSA signatures (note: this is simplified):
+
+ * n = p * q; where p, q big primes
+ * public key: (n, e), private key: (n, d); where e * d = 1 (mod Phi(n))
+ * signature: m^d (mod n)
+ * verification: (m^d)^e = m (mod n)
+
+Camenisch-Lysyanskaya signature:
+
+ * n = p * q; where p, q safe primes (safe primes to have a cyclic group of quadratic residues)
+ * A = (Z / (R_1^m_1 * ... * R_l^m_l * S^v))^d (mod n); where Z, R_i, S are publicly known quadratic residues, v is random, e is random prime (as in RSA: e*d = 1 (mod Phi(n)))
+ * signature (credential): (A, e, v)
+ * verification: Z = A^e * (R_1^m_1 * ... * R_l^m_l * S^v) (mod n)
+
+Example of Camenisch-Lysyanskaya credential:
+ * credential (A, e, V) where A = (Z / (R_1^name * R_2^age * R_3^student_status * S^v))^d (mod n)
+ * randomize the credential before it is used: new (A, e, V) = (A*S^r_A, e - 2^(l_e-1), v - e*r_a) where r_a is random
+
+Reveal only student_status data for example to get a discount in a shop:
+ * let the verifier know your student_status
+ * the verifier computes Foo = Z / (R_3^student_status * A^e * S^v)
+ * user proves via ZKP the knowledge of name and age such that Foo = R_1^name * R_2^age (mod n)
+ * note that if user lied about student_status, he won't be able to produce a valid ZKP
+
 
 
 
