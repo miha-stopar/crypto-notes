@@ -38,6 +38,7 @@ First, we modify the initial equation to (e is the biggest such that p-1 = Q * 2
 x^2 = (n^(((p-1)/2^e + 1)/2)^2 = n^((p-1)/2^e) * n
 ```
 
+Note that `(p-1)/2^e + 1` is even, so we can divide it by 2.
 If n^((p-1)/2^e) = 1, we are done. Otherwise we find the lowest i such that:
 
 ```
@@ -61,6 +62,33 @@ x^2 * z1^2 = t * z1^2 * n
 
 We have t1 = t * z1^2 with order smaller than order of t.
 
+## Generalized Tonelli-Shanks algorithm
+
+Let's compute a^(1/l) mod p.
+
+```
+p-1 = l^r * u where l is prime and it does not divide u
+```
+
+Let's compute x, y such that: `y*l - u*x = 1`. So:
+
+```
+a^(y*l - u*x) = a
+(a^y)^l = a^(u*x) * a
+```
+
+If a^(u*x) = 1, we have a solution: a^y. If not, we multiply the equation by some l-power element b (b = b1^l) which makes the order of a^(u*x) * b smaller than the order of a^(u*x).
+
+Let's say the order of a^(u*x) is l^w (we know it is a power of l). Now we choose a generator g of a l-Sylow group. It holds: g^(l^r) = 1. We find v such that: g^(l^v) has the same order as a^(u*x).
+
+If we apply homomorphism f: x -> x^(l^(w-1)) to a^(u*x) and g^(l^v), we get two l-roots. That means both are from the same cyclic group and we can find z such that:
+
+```
+f(a^(u*x)) = f(g^(l^v))^z
+f(a^(u*x)) = f(g^(z * l^v))
+```
+
+Now the element a^(u*x) * g^(-z * l^v) is of order l^(w-1) because f(a^(u*x) * g^(-z * l^v)) = 1. Thus we reduced the order and we repeat the process until the order is 0. Note that g^(z * l^v) is a power of l, so the left side of the equation is still a power of l.
 
 
 

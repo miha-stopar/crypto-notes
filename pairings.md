@@ -50,7 +50,7 @@ psi(x,y) = (-x, i*y) where i^2 = -1
 
 ## Type 2
 
-Let's have a curve E over F_q with embedding degree k > 1. G1 is subgroup of E)F_q) of order l. For G2 we choose a random point from E(F_q^k)[l] and define G2 = <Q>. Q is published as system parameter.
+Let's have a curve E over F_q with embedding degree k > 1. G1 is subgroup of E(F_q) of order l. For G2 we choose a random point from E(F_q^k)[l] and define `G2 = <Q>`. Q is published as system parameter.
 
 Let's observe two maps - Frobenius map and trace map. Frobenius map is: pi: x -> x^q. Note that Frobenius map is a generator of Galois group Gal(F_q^k, F_q).
 
@@ -67,7 +67,10 @@ If we calculate Tr(x)^q:
 Tr(x)^q = x^q + x^q^2 + ... + x = Tr(x)
 ```
 
-Tr(x)^q = Tr(x) means Tr(x) is in F_q (because x -> x^q is an automorhpism F_q^k -> F_q^k that preserves exactly F_q).
+Tr(x)^q = Tr(x) means Tr(x) is in F_q (because x -> x^q is an automorphism F_q^k -> F_q^k that preserves exactly F_q).
+
+Furthermore, as Tr: E(F_q^k) -> E(F_q) is group homomorphism, if Q is from E[l] where l | #E(F_q), Tr(Q) is also in E[l] because l*Q = 0 and 0 = Tr(l*Q) = l*Tr(Q) and l is prime.
+
 
 So we have a homomorphism from G2 to G1. The advantage of type 2 pairings is that any curve can be used and there is still a homomorphism from G2 to G1. On the other hand G2 does not have any special structure and it is impossible to sample randomly from G2 except by computing multiples of the generator, thus we cannot securely hash to G2. Also, membership testing can be a serious overhead.
 
