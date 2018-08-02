@@ -2,9 +2,44 @@
 
 A subgroup G of an elliptic curve E(F_q) is said to have embedding degree k if the subgroup order divides q^k - 1, but does not divide q^i - 1 for 0 < i < k.
 
-To have efficient pairings k needs to be small enough for computations in the field F_(p^k) to be feasible, but also big enough to have a required level of security.
+To have efficient pairings k needs to be small enough for computations in the field F_(q^k) to be feasible, but also big enough to have a required level of security.
 
 Let E be an elliptic curve over the finite field F_q. Let N be the number of F_q points on E and l be a prime divisor of N. In crypto applications, E is always chosen so that N is divisible by a large prime l. Thus, solving dlog in the cyclic group of l points is hard.
+
+## Torsion points
+
+Let E be an elliptic curve over field K. Let l be a positive integer.
+
+```
+E[l] = {P from E(K~); l*P = 0} where K~ is algebraic closure of K
+```
+
+E[l] contains points with coordinates in K~, not just in K.
+
+Let's say characteristic of K is not 2. What are the 2-torsion points of E: y^2 = x^3 + a*x + b? Obviously 2-torsion points are those where tangent is vertical. Tangent at (x1, y1) is:
+
+```
+(3*x1^2 + a) * x - 2*y1 * (y-y1) = 0
+```
+
+We can see that E[2] are points where y = 0. So we need to solve x^3 + a*x + b = 0 which gives us three points and we also have point at infinity. So E[2] = {0, (e1,0), (e2,0), (e3,0)}.
+
+
+
+
+
+## Balasubramanian-Koblitz theorem
+
+Let E(F_q) contains a subgroup of order l where l does not divide q-1. Then for any positive integer k, E(F_q^k) contains all l^2 points of order l if and only if l divides q^k - 1.
+
+Proof: It is known that if E(F_q^k) contains E[l] (all l^2 points of order l), then l divides q^k - 1 (where does it come from?). The conditions l divides #E(F_q) and l does not divide q-1 are not needed.
+
+Conversely, suppose k > 1 and l divides q^k - 1.
+
+
+page 48, pbc thesis
+B-K paper
+
 
 ## Menezes-Okamoto-Vanstone (MOV) attack
 

@@ -90,6 +90,15 @@ f(a^(u*x)) = f(g^(z * l^v))
 
 Now the element a^(u*x) * g^(-z * l^v) is of order l^(w-1) because f(a^(u*x) * g^(-z * l^v)) = 1. Thus we reduced the order and we repeat the process until the order is 0. Note that g^(z * l^v) is a power of l, so the left side of the equation is still a power of l.
 
+In a special case when r = 1 (p-1 = l^1 * u), we can write for the l-th power a = x^l:
 
+```
+a^((p-1)/l) = 1
+a^((p-1+l)/l) = a
+a^((l*u+l)/l) = a
+a^(u+1) = a
+```
+
+If u+1 is divisible with l, we can easily obtain l-th root of a: a^((u+1)/l).
 
 

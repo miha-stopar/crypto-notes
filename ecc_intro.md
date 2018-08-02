@@ -153,7 +153,7 @@ y3 = - y1 - k*(x3-x1)
 
 However, there are some special cases (images from 2 to 4), for example where P = Q, which are covered in images 2 - 4.
 
-For P = Q, the slope of tangent line at P is computed. Let us say E(x, y) = x^3 + a * x + b and P = (x1, y1). The slope is then:
+For P = Q, the slope of tangent line at P is computed. Let us say E(x, y) = x^3 + a * x + b - y^2 and P = (x1, y1). The slope is then:
 
 ```
 lambda = [∂E/∂X / ∂E/∂Y](x1, y1) = (3 * x1^2 + a) / (2 * y1)
