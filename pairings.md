@@ -22,7 +22,38 @@ Let's say characteristic of K is not 2. What are the 2-torsion points of E: y^2 
 (3*x1^2 + a) * x - 2*y1 * (y-y1) = 0
 ```
 
-We can see that E[2] are points where y = 0. So we need to solve x^3 + a*x + b = 0 which gives us three points and we also have point at infinity. So E[2] = {0, (e1,0), (e2,0), (e3,0)}.
+We can see that E[2] are points where y = 0. So we need to solve x^3 + a*x + b = 0 which gives us three points (and we also have point at infinity which is of torsion 2 as well). Are these three points pairwise different? If we take nonsingular curve, then yes. Recall that curve is singular iff its discriminant is 0 (discriminant of polynomial x^3 + a*x + b). But discriminat tells us: if it is 0, then polynomial has a multiple root.
+
+So E[2] = {0, (e1,0), (e2,0), (e3,0)}. Later we will show that E[2] is isomorphic to Z_2 + Z_2.
+
+Let's have a look at E[3] for curves in fields with characteristic different from 2 and 3. These are points P for which 2*P = -P which means that 2*P and -P have the same coordinate x.
+
+Recall that for P1 = (x1, y1), P2 = (x2, y2), the coordinates of P3 = P1 + P2 are:
+
+```
+(x3, y3) = (m^2 - x1 - x2, m * (x1 - x2) - y1) where m = (y2-y1)/(x2-x1)
+```
+
+For P1 = P2:
+
+```
+(x3, y3) = (m^2 - 2*x, (x - x3) * m - y) where m = (3*x^2 + a) / 2*y
+```
+
+The equations x = m^2 - 2*x, m = (3*x^2 + a) / 2*y, and y^2 = x^3 + a * x + b give us:
+
+```
+m^2 * 4*y^2 = (3*x^2 + a)^2
+3*x * 4*y^2 = (3*x^2 + a)^2
+12*x*(x^3 + a*x + b) = (3*x^2 + a)^2
+3*x^4 + 6*a*x^2 + 12*b*x - a^2 = 0
+```
+
+The discriminant of this polynomial is -6912(4*a^3 + 27*b^2)^2 which is nonzero, so we have 4 different zeros, meaning we have 8 different points in E[3] and also point at infinity, so 9 points. As we will see later:
+
+```
+E[3] = Z_3 + Z_3
+```
 
 
 

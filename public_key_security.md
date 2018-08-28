@@ -63,6 +63,8 @@ Informally, adversary should not be able to guess which message (m_0 or m_1) has
 
 ![CCA security](https://raw.github.com/miha-stopar/crypto-notes/master/img/cca_security_public_key.png)
 
+Note that the probabilistic nature of E guarantees that even if an adversary computes E(m_0) and E(m_1), the comparison with the challenge ciphertext does not bring any advantage.
+
 # Trapdoor functions (TDF)
 
 For public key cryptography it is crucial to have the algorithms that are easy to process in one direction, but difficult in the other (these are trapdoor functions). The bigger the difference between the difficulty of going one direction and the other, the more secure a crypto system is.
