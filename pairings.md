@@ -55,9 +55,37 @@ The discriminant of this polynomial is -6912(4*a^3 + 27*b^2)^2 which is nonzero,
 E[3] = Z_3 + Z_3
 ```
 
+What about for general n?
 
+### E[n] is isomorphic to Z_n x Z_n
 
+It can be shown (by division polynomials which enable us to see the degree of rational functions which determine endomorphism [n]) that endomorphism [n] (multiplication by n) is separable and of degree n^2.
 
+For separable endomorhpisms it holds (Proposition 2.21 in Washington [2]): 
+
+```
+#ker(end) = deg(end) where end is endomorphism
+```
+
+That means that [n] has n^2 elements in the kernel, thus E[n] has n^2 elements. 
+
+By structure theorem for finite abelian groups we know:
+
+```
+E[n] = Z_n_1 x ... x Z_n_k where n_i divides n_(i+1)
+```
+
+Let's take a prime l that divides n1. Then l divides all n_i. It holds: E[l] ⊆ E[n]. Because l|n_i, the order of E[l] is l^k. But we also know that order of E[l] is l^2, thus k = 2 and:
+
+```
+E[n] = Z_n_1 x Z_n_2
+```
+
+We know n^2 = n_1 x n_2, but we also know that n annihilates Z_n_1 x Z_n_2, thus n1|n and n2|n, so n_1 = n_2 = n and:
+
+```
+E[n] = Z_n x Z_n
+```
 
 ## Balasubramanian-Koblitz theorem
 
@@ -160,3 +188,4 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 
 [1] Galbraith, Steven D., Kenneth G. Paterson, and Nigel P. Smart. "Pairings for cryptographers." Discrete Applied Mathematics 156.16 (2008): 3113-3121.
 
+[2] [9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.

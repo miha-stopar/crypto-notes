@@ -116,6 +116,45 @@ Reveal only student_status data for example to get a discount in a shop:
  * user proves via ZKP the knowledge of name and age such that Foo = R_1^name * R_2^age (mod n)
  * note that if user lied about student_status, he won't be able to produce a valid ZKP
 
+# Signature scheme and anonymous credentials from bilinear maps
+
+Camenisch-Lysyanskaya signature scheme [7] relies on LRSW assumption [2]: Let G be a cyclic group with generator g and of order |G|. Let g^x and g^y be given. Assume that an oracle can be called that answers a query s by a triple (a, a^(s*y), a^(x+s*x*y)), where a = g^z is a random group element of G. Let this oracle be called for s1,s2... Then, the problem is to generate (t, b, b^(t*y), b^(x+t*x*y), where t is not 0,s1,s2...
+
+Actually, in [7] the triple given by oracle is (a, a^y, a^(x+s*x*y)), the quadruple to be generated is (t, b, b^y, b^(x+s*x*y).
+
+The key idea in [7] is signature scheme for message m:
+
+```
+signature = (a, a^y, a^(x+m*x*y)) where a is random
+```
+
+The public key contains g^x, g^y. Verification:
+
+```
+e(a^y, g) = e(a, g^y)
+e(g, a^(x+m*x*y)) = e(g^(x+m*x*y), a)
+```
+
+The right side of the second equations is computed:
+
+```
+e(g^(x+m*x*y), a) = e(g^x,a) * e*g^(m*x*y, a) = e(g^x, a) * e(g^x, a^y)^m
+```
+
+For anonymous credentials, a signature scheme needs to be randomized (the signature needs to be information-theoretically independent of the message m being signed). Thus the scheme above is modified in the following way - there is an additional value z in the secret key, g^z is part of the public key:
+
+```
+signature = (a, a^z, a^y, a^(z*y), a^(x+m*x*y) * a^(z*x*y*r)) where a is random and r is random
+```
+
+Finally, to enable the signatures on block of messages the scheme is modified:
+
+```
+signature = (a, a^z_1, ..., a^z_n, a^y, a^(z_1*y), ..., a^(z_n*y),  a^(x+m_0*x*y) * a^(z_1*x*y*m_1) * ... * a^(z_n*x*y*m_n)) where a is random and r is random
+```
+
+
+
 
 
 
@@ -132,3 +171,4 @@ Reveal only student_status data for example to get a discount in a shop:
 
 [6] S. Brands. An efficient off-line electronic cash system based on the representation problem. Technical Report CS-R9323, CWI, Apr. 1993.
 
+[7] Camenisch, Jan, and Anna Lysyanskaya. "Signature schemes and anonymous credentials from bilinear maps." Annual International Cryptology Conference. Springer, Berlin, Heidelberg, 2004.
