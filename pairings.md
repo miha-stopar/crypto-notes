@@ -87,6 +87,76 @@ We know n^2 = n_1 x n_2, but we also know that n annihilates Z_n_1 x Z_n_2, thus
 E[n] = Z_n x Z_n
 ```
 
+Recall: 
+
+```
+E[n] = E[F_q~][n] where F_q~ is closure of F_q
+```
+
+We will see in what follows when E(F_q) contains all n^2 n-torsion points of E(F_q~).
+
+Lemma (see [3], Lemma 3): If gcd(n, q) = 1, then E[n] is contained in E(F_q) iff:
+
+ * n^2 | #E(F_q)
+ * n | q-1
+ * TODO: check [4]
+
+Let's have E(F_q) an elliptic curve over F_q, the finite field on q elements. Let q = p^m, where p is the characteristic of F_q.
+
+By Hasse theorem, the order of E(F_q) is q + 1 - t where |t| <= 2*sqrt(q). E(F_q) is said to be supersingular if p divides t. It seems like Neal Koblitz was the first to conjecture that the supersingular curves have a small embedding degree.
+
+From Hasse theorem we know t^2 <= 4*q. It actually turns out that t^2 can only be 0, q, 2*q, 3*q, or 4*q.
+
+Moreover, the group structure of the supersingular curves is as follows:
+
+ * if t^2 = q, 2*q, or 3*q, then E(F_q) is cyclic
+ * if t^2 = 4*q, then either E(F_q) = Z_(sqrt(q)-1) ⊕ Z_(sqrt(q)-1) or E(F_q) = Z_(sqrt(q)+1) ⊕ Z_(sqrt(q)+1), depending on whether t = 2*sqrt(q) or t = -2*sqrt(q) respectively
+
+The above are results from Schoof's paper [4] which answers on the following question: given a finite field F_q and integer N >= 0, how many projectively inequivalent non-singular elliptic curves are there over F_q that have exactly N points defined over F_q?
+
+Weil pairing is a function:
+
+```
+e_n: E[n] x E[n] -> F_q~
+```
+
+Lemma (Lemma 5 in [3]): Let E(F_q) be an elliptic curve such that E[n] is contained in E(F_q), and where n is a positive integer coprime to q. Let P be from E[n] and of order n. Then for all P1, P2 from E[n], P1 and P2 are in the same coset of <P> within E[n] iff e_n(P, P1) = e_n(P, P2).
+
+Proof:
+
+If P1, P2 are from the same coset, then P1 = P2 + k*P and e_n(P,P1) = e_n(P,P2)*e_n(P,P^k = e_n(P,P2).
+
+Conversely, suppose that P1, P2 are from a different coset. Let's choose Q such that (P,Q) generates E[n] = Z_n x Z_n. Then: P1 - P2 = a1*P + a2*Q where a2*Q is not identity.
+
+```
+e_n(P,P1) = e_n(P,P2 + a1*P + a2*Q) = e_n(P,P2) * e_n(P, P)^a1 * e_n(P, a2*Q) = e_n(P,P2) * e_n(P, a2*Q)
+```
+
+We are done if we prove e_n(P, a2*Q) is not identity. If e_n(P, Q) = 1, then for each element R = a*P + b*Q from E[n] we have e_n(P, a*P + b*Q) = e_n(P,P)^a * e_n(P,Q)^b = 1. But from non-deneneracy of e_n we then have that P is identity which is a contradiction.
+
+## Structure of E(F_q)
+
+Classical result from Max Deuring (1941):
+
+E(F_q) is either cyclic or isomorphic to a product of two cyclic groups Z_n1 x Z_n2 where n2|n1.
+
+Some other questions regarding the structure of E(F_q):
+
+ * let e_q(E) be the size of the largest cyclic subgroup of E(F_q) (note that n1 = e_q(E)) - is it typical for E to have a large exponent e_q(E)?
+ * how often is E cyclic?
+
+## Menezes-Okamoto-Vanstone (MOV) attack
+
+MOV attack [3] reduces the elliptic curve logarithm in a curve E over a finite field F_q to the discrete logarithm in a suitable extension field F_q^k of F_q. This is done by establishing an isomorphism between <P> and the subgroup of n-th root of unity in F_q^k, where n denotes the order of P. The isomorphism is given by Weil pairing.
+
+Dlog in finite fields can be attacked by index calculus methods and can be thus solved faster than dlog in elliptic curves.
+
+For the MOV algorithm we need to be able to pick points P uniformly and randomly on E(F_q) in probabilistic polynomial time. This can be done by randomly choosing an element x1 from F_q. If x1 is x-coordinate of some point in E(F_q), then we can find y1 such that (x1,y1) from E(F_q) by solving a root finding problem in F_q. From Hasse theorem, the probability that x1 is the x-coordinate of some point in E(F_q) is at least (q+1-2*sqrt(q))/2*q, so at least 1/2 - 1/sqrt(q).
+
+
+
+We are trying to find x from x*P. If we have linearly independent P and Q, we have e(x*P, Q) = e(P, Q)^x where e(P, Q) is not 1. Thus, we can find x by breaking dlog in F_(q^k).
+
 ## Balasubramanian-Koblitz theorem
 
 Let E(F_q) contains a subgroup of order l where l does not divide q-1. Then for any positive integer k, E(F_q^k) contains all l^2 points of order l if and only if l divides q^k - 1.
@@ -100,11 +170,6 @@ page 48, pbc thesis
 B-K paper
 
 
-## Menezes-Okamoto-Vanstone (MOV) attack
-
-MOV attack uses Weil pairing to move dlog problem in E(F_q) into F_(q^k). Dlog in finite fields can be attacked by index calculus methods and can be thus solved faster than dlog in elliptic curves.
-
-We are trying to find x from x*P. If we have linearly independent P and Q, we have e(x*P, Q) = e(P, Q)^x where e(P, Q) is not 1. Thus, we can find x by breaking dlog in F_(q^k).
 
 # Types of pairings (see [1])
 
@@ -189,3 +254,8 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 [1] Galbraith, Steven D., Kenneth G. Paterson, and Nigel P. Smart. "Pairings for cryptographers." Discrete Applied Mathematics 156.16 (2008): 3113-3121.
 
 [2] [9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
+
+[3] Menezes, Alfred J., Tatsuaki Okamoto, and Scott A. Vanstone. "Reducing elliptic curve logarithms to logarithms in a finite field." iEEE Transactions on information Theory 39.5 (1993): 1639-1646.
+
+[4] Schoof, René. "Nonsingular plane cubic curves over finite fields." Journal of combinatorial theory, Series A 46.2 (1987): 183-211.
+
