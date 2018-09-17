@@ -145,6 +145,75 @@ Some other questions regarding the structure of E(F_q):
  * let e_q(E) be the size of the largest cyclic subgroup of E(F_q) (note that n1 = e_q(E)) - is it typical for E to have a large exponent e_q(E)?
  * how often is E cyclic?
 
+### Number of points on E(F_q)
+
+Number of points on E(F_q) can be computed in polynomial time using Schoof's algorithm [5].
+
+Schoof's algorithm uses Frobenius endomorphism pi and its characteristic equation:
+
+```
+pi^2 - [t]*pi + [q] = 0
+```
+
+What does that mean? Let's use sage and curve y^2 = x^3 + x over finite field of size 59. The value t for this curve is 0, so characteristic equation is:
+
+```
+pi^2 + [q] = 0
+```
+
+Let's check:
+
+```
+E = EllipticCurve(GF(59), [1,0])
+E1 = E.base_extend(GF(59^2))
+q2 = 59^2
+
+for p in E1.points():
+    if p != E1(0):
+        print(E1(p[0]^q2, p[1]^q2, 1) + q*p)
+```
+
+The output is (0 : 1 : 0) for all points.
+
+
+Quick notes on endomorphisms (Washington [2], section 2.9):
+
+ * each endomorphism can be written as (r1(x), r2(x) * y) where r1, r2 rational functions
+ * def: endomorphism is separable if the derivative of r1(x) is not identically zero 
+ * def: degree of endomorphism is max{deg(p(x), q(x)) where r1(x) = p(x)/q(x)
+ * for each separable endomorphism end: #ker(end) = deg(end)
+
+We can see that for pi, deg(r1) = 0, so Frobenius endomrphism is not separable. Another example of non-separable endomorphism is multiplication by p in characteristic p.
+
+
+pi^n - 1 is separable (glej rjchen)
+glej Washington 53
+
+
+
+https://math.stackexchange.com/questions/1268144/question-about-characteristic-polynomial-of-the-frobenius-endomorphism-on-ellipt
+
+Frobenius map is not separable:
+https://people.cs.nctu.edu.tw/~rjchen/ECC2009/11_FrobeniusEndomorphism.pdf
+
+http://pages.cs.wisc.edu/~cdx/MathJournal/October/CharPoly04.pdf
+
+
+https://math.mit.edu/classes/18.783/2015/LectureNotes7.pdf
+
+
+
+
+https://perso.univ-rennes1.fr/reynald.lercier/file/LM95.pdf
+http://web.math.sinica.edu.tw/bulletin_ns/20144/2014406.pdf
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.370.3295&rep=rep1&type=pdf
+https://math.mit.edu/classes/18.783/2017/LectureNotes9.pdf
+
+https://crypto.stanford.edu/miller/miller.pdf
+
+Also, n1 and n2 can be determined in probabilistic polynomial time by an algorithm due to Miller [6].
+
+
 ## Menezes-Okamoto-Vanstone (MOV) attack
 
 MOV attack [3] reduces the elliptic curve logarithm in a curve E over a finite field F_q to the discrete logarithm in a suitable extension field F_q^k of F_q. This is done by establishing an isomorphism between <P> and the subgroup of n-th root of unity in F_q^k, where n denotes the order of P. The isomorphism is given by Weil pairing.
@@ -259,3 +328,6 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 
 [4] Schoof, René. "Nonsingular plane cubic curves over finite fields." Journal of combinatorial theory, Series A 46.2 (1987): 183-211.
 
+[5] Schoof, René. "Elliptic curves over finite fields and the computation of square roots mod 𝑝." Mathematics of computation 44.170 (1985): 483-494.
+
+[6] Miller, Victor. "Short programs for functions on curves." Unpublished manuscript 97.101-102 (1986): 44.
