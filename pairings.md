@@ -166,7 +166,8 @@ Let's check:
 ```
 E = EllipticCurve(GF(59), [1,0])
 E1 = E.base_extend(GF(59^2))
-q2 = 59^2
+q = 59
+q2 = q^2
 
 for p in E1.points():
     if p != E1(0):
@@ -174,7 +175,6 @@ for p in E1.points():
 ```
 
 The output is (0 : 1 : 0) for all points.
-
 
 Quick notes on endomorphisms (Washington [2], section 2.9):
 
@@ -184,6 +184,36 @@ Quick notes on endomorphisms (Washington [2], section 2.9):
  * for each separable endomorphism end: #ker(end) = deg(end)
 
 We can see that for pi, deg(r1) = 0, so Frobenius endomrphism is not separable. Another example of non-separable endomorphism is multiplication by p in characteristic p.
+
+Now let's see how we get characteristic polynomial of Frobenius endomorphism. We can restrict each endomorphism to E[n] because endomorphism maps n-torsion points to n-torsion points. E[n] can be viewed as Z_n x Z_n and we can represent endomorphism with 2 x 2 matrix A. 
+
+```
+A = [[a b] [c d]]
+```
+
+We will need Cayley-Hamilton theorem. For a matrix A, we define its characteristic polynomial:
+
+``` 
+p(lambda) = det(A - lambda) where lambda is identity matrix multiplied by lambda
+``` 
+
+Cayley-Hamilton says p(A) = 0. In out case for 2 x 2 matrix A, this means:
+
+```
+p(lambda) = (a - lambda) * (d - lambda) - b*c = lambda^2 - lambda*(a + d) a*d - b*c = lambda^2 - lambda*tr(A) + a*d - b*c 
+```
+
+Note that trace of A (written as tr(A)) is the sum of diagonal elements.
+
+By Cayley-Hamilton:
+
+```
+A^2 - A * tr(A) + det(A) = 0
+```
+
+By definition t = tr(A).
+
+
 
 
 pi^n - 1 is separable (glej rjchen)
