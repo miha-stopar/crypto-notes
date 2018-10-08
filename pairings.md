@@ -1,4 +1,40 @@
-# Embedding degree
+## Briefly about endomorphisms
+
+Quick notes on endomorphisms (Washington [2], section 2.9 or MIT lectures [7]).
+
+Definition:
+Morphism of projective curves is a rational map that is defined everywhere.
+
+Theorem:
+If C1 is a smooth projective curve then every rational map from C1 to a projective curve C2 is a morphism (proof in [8], see II.2.1).
+
+Theorem:
+A morphism of projective curves is either surjective or constant.
+
+Definition:
+An isogeny phi: E1 -> E2 of elliptic curves defined over k is a surjective morphism of curves that induces a group homomorphism E1(k~) -> E2(k~).
+
+This definition is actually stronger than necessary. It could be: An isogeny phi: E1 -> E2 of elliptic curves defined over k is a non-constant rational map that sends point at infinity to point at infinity.
+
+This is because any morphism of abelian varieties that preserves the identity element induces a group homomorphism.
+
+Definition:
+A morphism from an elliptic curve E/k to itself that fixes the distinguished point is called an endomorphism. An endomorphism that is also an isomorphism is an automorphism.
+
+Except for the zero morphism, every endomorphism is an isogeny. The endomorphisms of an elliptic curve have a natural ring structure.
+
+
+It holds:
+
+ * each endomorphism can be written as (r1(x), r2(x) * y) where r1, r2 rational functions
+ * def: endomorphism is separable if the derivative of r1(x) is not identically zero 
+ * def: degree of endomorphism is max{deg(p(x), q(x)) where r1(x) = p(x)/q(x)
+ * for each separable endomorphism end: #ker(end) = deg(end)
+
+
+
+
+## Embedding degree
 
 A subgroup G of an elliptic curve E(F_q) is said to have embedding degree k if the subgroup order divides q^k - 1, but does not divide q^i - 1 for 0 < i < k.
 
@@ -175,13 +211,6 @@ for p in E1.points():
 ```
 
 The output is (0 : 1 : 0) for all points.
-
-Quick notes on endomorphisms (Washington [2], section 2.9):
-
- * each endomorphism can be written as (r1(x), r2(x) * y) where r1, r2 rational functions
- * def: endomorphism is separable if the derivative of r1(x) is not identically zero 
- * def: degree of endomorphism is max{deg(p(x), q(x)) where r1(x) = p(x)/q(x)
- * for each separable endomorphism end: #ker(end) = deg(end)
 
 We can see that for pi, deg(r1) = 0, so Frobenius endomrphism is not separable. Another example of non-separable endomorphism is multiplication by p in characteristic p.
 
@@ -361,3 +390,7 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 [5] Schoof, René. "Elliptic curves over finite fields and the computation of square roots mod 𝑝." Mathematics of computation 44.170 (1985): 483-494.
 
 [6] Miller, Victor. "Short programs for functions on curves." Unpublished manuscript 97.101-102 (1986): 44.
+
+[7] https://math.mit.edu/classes/18.783/2017/LectureNotes5.pdf
+
+[8] Joseph H. Silverman, The arithmetic of elliptic curves, Graduate Texts in Mathematics 106, second edition, Springer 2009.
