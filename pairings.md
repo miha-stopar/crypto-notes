@@ -373,6 +373,17 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 (x^q, y^q) = q*(x,y)
 ```
 
+# Barreto-Naehrig (BN) curves
+
+BN curves [10] are curves of prime order (meaning that we take the whole curve, not only some primer order subgroup) and embedding degree k = 12. The equation of the curve is y^2 = x^3 + b with b != 0.
+
+To recall - a subgroup G of an elliptic curve E(F_q) has an embedding degree or security multiplier k if the subgroup order r divides q^k - 1, but does not divide q^i - 1 for ) < i < k. Note that for pairings we need r|(q^k - 1) - pairing e: G1 x G2 -> GT where GT is subgroup of order r in F_q^k. 
+
+The problem is to construct curves containing a subgroup with embedding degree k such that is it at once big enough to prevent the Frey-Ruck attack, but small enough that pairings are efficiently computable [9].
+
+BN curves are constructed using some smart parametrisation. 
+
+Let's have a look at BN256, here a prime p over which we form a basic field is of form 36*u^4 + 36*u^3 + 24*u^2 + 6*u + 1 where u = 1868033^3 = 6518589491078791937 (see for example Go implementation [11]). Order (number of elements in both, G1 and G2) is 36*u^4 + 36*u^3 + 18*u^2 + 6*u + 1 = 65000549695646603732796438742359905742570406053903786389881062969044166799969.
 
 
 
@@ -381,7 +392,7 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 
 [1] Galbraith, Steven D., Kenneth G. Paterson, and Nigel P. Smart. "Pairings for cryptographers." Discrete Applied Mathematics 156.16 (2008): 3113-3121.
 
-[2] [9] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
+[2] Washington, Lawrence C. Elliptic curves: number theory and cryptography. CRC press, 2008.
 
 [3] Menezes, Alfred J., Tatsuaki Okamoto, and Scott A. Vanstone. "Reducing elliptic curve logarithms to logarithms in a finite field." iEEE Transactions on information Theory 39.5 (1993): 1639-1646.
 
@@ -394,3 +405,10 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 [7] https://math.mit.edu/classes/18.783/2017/LectureNotes5.pdf
 
 [8] Joseph H. Silverman, The arithmetic of elliptic curves, Graduate Texts in Mathematics 106, second edition, Springer 2009.
+
+[9] Barreto, Paulo SLM, Ben Lynn, and Michael Scott. "Constructing elliptic curves with prescribed embedding degrees." International Conference on Security in Communication Networks. Springer, Berlin, Heidelberg, 2002.
+
+[10] Barreto, Paulo SLM, and Michael Naehrig. "Pairing-friendly elliptic curves of prime order." International Workshop on Selected Areas in Cryptography. Springer, Berlin, Heidelberg, 2005.
+
+[11] https://github.com/golang/crypto/blob/master/bn256/constants.go
+
