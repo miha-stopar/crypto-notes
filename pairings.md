@@ -373,6 +373,100 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 (x^q, y^q) = q*(x,y)
 ```
 
+# Torsion points - examples
+
+Mostly from [12] which is a great introduction to pairings.
+
+Let's have q = 7691, E: y^2 = x^3 + 1, and F(q^2) constructed as F_q(u) where u^2 + 1 = 0 (Example 4.0.1 from [12]).
+
+```
+sage: E = EllipticCurve(GF(7691), [0, 1]); E
+Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field of size 7691
+sage: K.<x> = GF(q^2, modulus=x^2+1); K
+Finite Field in x of size 7691^2
+sage: E_ext = E.base_extend(K); E_ext
+Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field in x of size 7691^2
+sage: E.cardinality()
+7692 (note, this is 2^2 * 3 * 641)
+sage: E_ext.cardinality()
+59166864 (note, this is 2^4 * 3^2 * 641^2)
+```
+
+Now we will observe two points of order r = 641 and their Weil pairing:
+
+```
+sage: r = 641
+sage: P = E_ext(2693, 4312)
+sage: Q = E_ext(633*x + 6145, 7372*x+109)
+sage: P.order()
+641
+sage: Q.order()
+641
+sage: P.weil_pairing(Q, 641)
+6744*x + 5677
+```
+
+The result of Weil pairing lies in F(q^2) and is r-th root of unity: e(P, Q)^r = 1. Weil pairing is bilinear map e: G1 x G2 -> GT where all three groups are of order r. Bilinearity means: e(a*P, b*Q) = e(P, Q)^(a*b).
+
+Note that Weil pairing is useful for cryptography only when r is huge, meaning that discrete logarithm cannot be computed in r-order subgroup.
+
+Note also that the parameters above have been carefully chosen - r needs to divide #E(F(q^2)) so that E(F(q^2)) contains all r^2 r-torsion points; P and Q are r-order points (not in the same subgroup).
+
+
+
+# Twisted curves
+
+Twists of elliptic curves are used for efficient representations of elements in G2.
+
+Let's say we have two curves in F_q:
+
+```
+E: y^2 = x^3 + a*x + b
+E1: y^2 = x^3 + a*v^2*x + v^3*b
+```
+
+If we have v = c^2, we have a map psi E1(F_q) -> E(F_q):
+
+```
+psi(x, y) = (c^2 * x, c^3 * y)
+```
+
+Now, we want v to be a quadratic nonresidue so that we will be able to non-trivially extend the field F(q) to F(q^2).
+
+
+začni s 4.0.1 v Costellotu
+
+
+
+
+
+Let's see an example:
+
+```
+sage: E = EllipticCurve(GF(19), [1, 6]); E
+Elliptic Curve defined by y^2 = x^3 + x + 6 over Finite Field of size 19
+sage: E1 = EllipticCurve(GF(19), [4, 10]); E1
+sage: E.cardinality()
+18
+Elliptic Curve defined by y^2 = x^3 + 4*x + 10 over Finite Field of size 19
+sage: E1.cardinality()
+22
+
+# now extend the field and observe curve in extended field F(19^2)
+sage: E_ext = E.base_extend(GF(19^2)); E_ext
+Elliptic Curve defined by y^2 = x^3 + x + 6 over Finite Field in z2 of size 19^2
+sage: E1_ext = E1.base_extend(GF(19^2)); E1_ext
+Elliptic Curve defined by y^2 = x^3 + 4*x + 10 over Finite Field in z2 of size 19^2
+sage: E_ext.cardinality()
+396
+sage: E1_ext.cardinality()
+396
+```
+
+
+
+
+
 # Barreto-Naehrig (BN) curves
 
 BN curves [10] are curves of prime order (meaning that we take the whole curve, not only some primer order subgroup) and embedding degree k = 12. The equation of the curve is y^2 = x^3 + b with b != 0.
@@ -412,3 +506,4 @@ Let's have a look at BN256, here a prime p over which we form a basic field is o
 
 [11] https://github.com/golang/crypto/blob/master/bn256/constants.go
 
+[12] http://www.craigcostello.com.au/pairings/PairingsForBeginners.pdf
