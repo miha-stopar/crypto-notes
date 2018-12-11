@@ -373,14 +373,17 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 (x^q, y^q) = q*(x,y)
 ```
 
-# Torsion points - examples
+It turns out that this subgroup is precisely the kernel of trace map (see [13][12]). The kernel of the trace map can be obtained by a function P -> k*[P] - Tr(P). It can be easily seen that Tr(k*[P] - Tr(P)) = 0. This function is sometimes called anti-trace map.
+
+# Pairings - examples in Sage
 
 Mostly from [12] which is a great introduction to pairings.
 
 Let's have q = 7691, E: y^2 = x^3 + 1, and F(q^2) constructed as F_q(u) where u^2 + 1 = 0 (Example 4.0.1 from [12]).
 
 ```
-sage: E = EllipticCurve(GF(7691), [0, 1]); E
+sage: q = 7691
+sage: E = EllipticCurve(GF(q), [0, 1]); E
 Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field of size 7691
 sage: K.<x> = GF(q^2, modulus=x^2+1); K
 Finite Field in x of size 7691^2
@@ -412,9 +415,117 @@ Note that Weil pairing is useful for cryptography only when r is huge, meaning t
 
 Note also that the parameters above have been carefully chosen - r needs to divide #E(F(q^2)) so that E(F(q^2)) contains all r^2 r-torsion points; P and Q are r-order points (not in the same subgroup).
 
+However, what is this mysterious Weil pairing? To construct Weil pairing we first need two rational functions of some special format. Rational function is any function p(x)/q(x) where p, q are polynomials. What about the special format? Actually, the divisor of a rational function needs to be of a special format. Divisor is something that tells us the zeros (zeros of polynomial p) and poles (zeros of polynomial q) of the rational function.
+
+So, we are looking for two rational functions, let's say f_P and f_Q. f_P needs to have zero of degree r in point P and a pole of degree r in point at infinity, f_Q needs to have zero of degree r in point Q and a pole of degree r in point at infinity.
+
+We can construct such functions by using Miller algorithm. Miller algorithm first finds a function that has zero of degree 2 in P, pole of degree 1 in P, and pole of degree 1 at infinty. This means the divisor is 2[P] - [P] - [0]. The algorithm then iteratively builds towards a function with divisor r[P] - [rP] - (r-1)[0] = r[P] - r[0] (note that rP = 0).
+
+How do we get a function f such that div(f) = 2[P] - [P] - [0]?
+
+Let's observe linear function (which is of course a rational function as well) e*x + f*y + g. This function has three zeros of degree 1 - it has three zeros because the zeros are the solutions of the following two equations:
+
+```
+e*x + f*y + g = 0
+y^2 = x^3 + a*x + b
+```
+
+It can be shown that the discriminant of the polynomial which we get when we use the first equation in the second is nonzero which means that the three zeros are different.
+
+## Torsion points
+
+Example 4.1.1 from [12]:
+
+```
+sage: q=11
+sage: K.<x> = GF(q^2, modulus=x^2+1);K
+Finite Field in x of size 11^2
+sage: E = EllipticCurve(GF(q), [0,4]);E
+Elliptic Curve defined by y^2 = x^3 + 4 over Finite Field of size 11
+sage: E.points()
+[(0 : 1 : 0), (0 : 2 : 1), (0 : 9 : 1), (1 : 4 : 1), (1 : 7 : 1), (2 : 1 : 1), (2 : 10 : 1), (3 : 3 : 1), (3 : 8 : 1), (6 : 0 : 1), (10 : 5 : 1), (10 : 6 : 1)]
+sage: len(E.points())
+12
+
+sage: E_ext = E.base_extend(K); E_ext
+Elliptic Curve defined by y^2 = x^3 + 4 over Finite Field in x of size 11^2
+```
+
+Let's see for r = 3. We know there are r^2 (group of torsion points is isomorphic to Z_r x Z_r) torsion points, in our case 9. 
+
+We know r does not divide q-1 and r divides q^2-1 = 120, so embedding degree k = 2. All torsion points can be found in E_ext (field extension from F(q) to F(q^2)). Let's see them:
+
+```
+sage: zero=E_ext(0)
+sage: r = 3
+sage: zero.division_points(r)
+[(0 : 1 : 0),
+ (0 : 2 : 1),
+ (0 : 9 : 1),
+ (8 : x : 1),
+ (8 : 10*x : 1),
+ (2*x + 7 : x : 1),
+ (2*x + 7 : 10*x : 1),
+ (9*x + 7 : x : 1),
+ (9*x + 7 : 10*x : 1)]
+```
+
+There are 4 cyclic subgroups (there are always r+1 cyclic subgroups of r torsion points) of order 3 (at each subgroup there is also point at infinity which is omitted below):
+
+```
+{(0 : 2 : 1), (0 : 9 : 1)}
+{(8 : x : 1), (8 : 10*x : 1)}
+{(2*x + 7 : x : 1), (2*x + 7 : 10*x : 1)}
+{(9*x + 7 : x : 1), (9*x + 7 : 10*x : 1)}
+```
+
+Let's observe Frobenius endomorphism:
+
+```
+sage: frob = K.frobenius_endomorphism()
+sage: frob(9)
+9
+sage: frob(9*x+7)
+2*x + 7
+```
+
+Frobenius endomorphism on torsion points:
+
+```
+(0 : 2 : 1) -> (0 : 2 : 1)
+(0 : 9 : 1) -> (0 : 9 : 1)
+(8 : x : 1) -> (8 : 10*x : 1)
+(8 : 10*x : 1) -> (8 : x : 1)
+(2*x + 7 : x : 1) -> (9*x + 7 : 10*x : 1)
+(2*x + 7 : 10*x : 1) -> (9*x + 7 : x : 1)
+(9*x + 7 : x : 1) -> (2*x + 7 : 10*x : 1)
+(9*x + 7 : 10*x : 1) -> (2*x + 7 : x : 1)
+```
+
+If we take two different points from two different subgroups we will get two generators of all torsion points. Let's take p1 = (0 : 2 : 1) and p2 = (8 : x : 1). Each torsion point can be written as a * p1 + b * p2 where a, b from Z_r.
+
+We can now write Frobenius endomorphism as 2x2 matrix with elements from Z_3.
+
+We might for example take as generators of torsion group the following two elements:
+
+```
+e1 = (0 : 2 : 1)
+e2 = (8 : x : 1)
+```
+
+or 
+
+```
+f1 = (2*x + 7 : x : 1)
+f2 = (9*x + 7 : x : 1)
+```
+
+The matrix corresponding to e1, e2 is E = [[1, 0], [0, 2]]. The matrix corresponding to f1, f2 is E = [[0, 2], [2, 0]]. We can see that tr(E) = 1 + 2 = 3 = 0 and tr(F) = 0 + 0 = 0.
 
 
-# Twisted curves
+
+
+## Twisted curves
 
 Twists of elliptic curves are used for efficient representations of elements in G2.
 
@@ -434,7 +545,6 @@ psi(x, y) = (c^2 * x, c^3 * y)
 Now, we want v to be a quadratic nonresidue so that we will be able to non-trivially extend the field F(q) to F(q^2).
 
 
-začni s 4.0.1 v Costellotu
 
 
 
@@ -469,17 +579,21 @@ sage: E1_ext.cardinality()
 
 # Barreto-Naehrig (BN) curves
 
-BN curves [10] are curves of prime order (meaning that we take the whole curve, not only some primer order subgroup) and embedding degree k = 12. The equation of the curve is y^2 = x^3 + b with b != 0.
+BN curves [10] are curves of prime order (meaning that we take the whole curve, not only some prime order subgroup) and embedding degree k = 12. The equation of the curve is y^2 = x^3 + b with b != 0.
 
 To recall - a subgroup G of an elliptic curve E(F_q) has an embedding degree or security multiplier k if the subgroup order r divides q^k - 1, but does not divide q^i - 1 for ) < i < k. Note that for pairings we need r|(q^k - 1) - pairing e: G1 x G2 -> GT where GT is subgroup of order r in F_q^k. 
 
 The problem is to construct curves containing a subgroup with embedding degree k such that is it at once big enough to prevent the Frey-Ruck attack, but small enough that pairings are efficiently computable [9].
 
-BN curves are constructed using some smart parametrisation. 
+BN curves are constructed using some smart parameterisation. 
 
-Let's have a look at BN256, here a prime p over which we form a basic field is of form 36*u^4 + 36*u^3 + 24*u^2 + 6*u + 1 where u = 1868033^3 = 6518589491078791937 (see for example Go implementation [11]). Order (number of elements in both, G1 and G2) is 36*u^4 + 36*u^3 + 18*u^2 + 6*u + 1 = 65000549695646603732796438742359905742570406053903786389881062969044166799969.
+Let's have a look at BN256, here a prime p over which we form a basic field is of form 36*u^4 + 36*u^3 + 24*u^2 + 6*u + 1 where u = 1868033^3 = 6518589491078791937 (see for example Go implementation [11]). 
 
+Order (number of elements in both, G1 and G2) is 36*u^4 + 36*u^3 + 18*u^2 + 6*u + 1 = 65000549695646603732796438742359905742570406053903786389881062969044166799969.
 
+And t (trace) is 6*u^2 + 1.
+
+Because t, n, p are parameterised, the space needed to store or transmit information about such curve is small.
 
 
 
@@ -507,3 +621,7 @@ Let's have a look at BN256, here a prime p over which we form a basic field is o
 [11] https://github.com/golang/crypto/blob/master/bn256/constants.go
 
 [12] http://www.craigcostello.com.au/pairings/PairingsForBeginners.pdf
+
+[13] S. D. Galbraith. Pairings, volume 317 of London Mathematical
+Society Lecture Notes, chapter IX, pages 183–213. Cambridge University
+Press, 2005.
