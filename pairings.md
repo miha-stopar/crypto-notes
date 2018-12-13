@@ -335,6 +335,45 @@ psi: E(K)[r] -> E[r]\G1.
 psi(x,y) = (-x, i*y) where i^2 = -1
 ```
 
+Distortion map is by definition a non-rational (non-F_q-rational) endomorphism that takes a point in E(F_q) to a point in E(F_q^k)) [13]. Distortion map exists for supersingular curves (one definition of supersingular curves is that they have #E(F_q) = q+1). Non-supersingular (ordinary) curves do not have distortion maps.
+
+Let's check an example 4.1.4 from [12].
+
+```
+sage: q= 59
+sage: E = EllipticCurve(GF(59), [0,1]); E
+Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field of size 59
+sage: len(E.points())
+60
+```
+
+We can see that E is supersingular, so distortion map exists. The embedding degree is k = 2, we construct extension as F_q^2 = F_q(x) where x^2 + 1 = 0. If we take ksi3 = 29 + 24*x (cube root of unity), we can define distortion map as end(x,y) = (ksi3*x, y):
+
+```
+sage: ksi3=29 + 24*x; ksi3
+24*x + 29
+sage: def end(x,y):
+....:     return ksi3*x, y
+....: 
+sage: end(18,46)
+(19*x + 50, 46)
+sage: end(18,13)
+(19*x + 50, 13)
+```
+
+This map is endomorphism, meaning: end(P+Q) = end(P) + end(Q). It maps subgroups to subgroups, so if we take for example 5-torsion subgroups (which are 6), we could observe for example that 5-torsion subgroup {inf, (18,46), (18, 13), (28,8), (28, 51)} is mapped to {inf, (50+19x, 46), (45+23x, 51), (50+19x, 13), (45+23x, 8)} (sometimes a distortion map maps a subgroup back to itself).
+
+As a side note, if we define "slightly" different curve:
+
+```
+sage: Ec=EllipticCurve(GF(59), [1,1]); Ec
+Elliptic Curve defined by y^2 = x^3 + x + 1 over Finite Field of size 59
+sage: len(Ec.points())
+63
+```
+
+We can see that this curve is ordinary, so there does not exist a distortion map for it.
+
 ## Type 2
 
 Let's have a curve E over F_q with embedding degree k > 1. G1 is subgroup of E(F_q) of order l. For G2 we choose a random point from E(F_q^k)[l] and define `G2 = <Q>`. Q is published as system parameter.
@@ -358,12 +397,21 @@ Tr(x)^q = Tr(x) means Tr(x) is in F_q (because x -> x^q is an automorphism F_q^k
 
 Furthermore, as Tr: E(F_q^k) -> E(F_q) is group homomorphism, if Q is from E[l] where l | #E(F_q), Tr(Q) is also in E[l] because l*Q = 0 and 0 = Tr(l*Q) = l*Tr(Q) and l is prime.
 
-
 So we have a homomorphism from G2 to G1. The advantage of type 2 pairings is that any curve can be used and there is still a homomorphism from G2 to G1. On the other hand G2 does not have any special structure and it is impossible to sample randomly from G2 except by computing multiples of the generator, thus we cannot securely hash to G2. Also, membership testing can be a serious overhead.
 
-The existence of homomorphism from G2 to G1 is sometimes require for security proofs. There are many schemes for which the security proof does not work if the system is implemented using type 3 pairings instead of type 2 pairings.
+The existence of homomorphism from G2 to G1 is sometimes required for security proofs. There are many schemes for which the security proof does not work if the system is implemented using type 3 pairings instead of type 2 pairings.
+
+Note that there is exactly one subgroup of E[l] (there are l+1 subgroups of order l of torsion points E[l]) which is mapped into {0} by a trace map. This one is used for Type 3 pairings. So in Type 2 pairing we can take for G2 any of l-1 l-torsion subgroups (the two "forbidden" are kernel of the trace map and the one that is under E(F_q).
 
 ## Type 3
+
+Characteristic polynomial for a Frobenius map is:
+
+```
+pi^2 - [t]*p + [q] = 0
+```
+
+We can see that pi has two eigenvalues: 1 and q.
 
 Let's have a pairing friendly curve E over F_q of embedding degree > 1. For G1 we take the subgroup of E(F_q) of order l. We can say G1 = ker(pi - [1]) ∩ E[l].
 
@@ -374,6 +422,10 @@ For G2 we take E[l] ∩ ker(pi - [q]). Note that [m] means x -> m*x in elliptic 
 ```
 
 It turns out that this subgroup is precisely the kernel of trace map (see [13][12]). The kernel of the trace map can be obtained by a function P -> k*[P] - Tr(P). It can be easily seen that Tr(k*[P] - Tr(P)) = 0. This function is sometimes called anti-trace map.
+
+We can hash to G2 by using anti-trace map.
+
+However, we do not have an isomorphism G2 -> G1 (the usual trace map here does not work as it maps G2 to infinity element). This kind of isomorhpism exists (both are cyclic groups of the same order) but we do not have an efficient way to compute it.
 
 # Pairings - examples in Sage
 
@@ -522,59 +574,67 @@ f2 = (9*x + 7 : x : 1)
 
 The matrix corresponding to e1, e2 is E = [[1, 0], [0, 2]]. The matrix corresponding to f1, f2 is E = [[0, 2], [2, 0]]. We can see that tr(E) = 1 + 2 = 3 = 0 and tr(F) = 0 + 0 = 0.
 
-
-
-
 ## Twisted curves
 
-Twists of elliptic curves are used for efficient representations of elements in G2.
+We are observing Type 3 pairings here (G2 is kernel of trace map).
 
-Let's say we have two curves in F_q:
+Twists of elliptic curves are used for efficient representations of elements in G2. This is done by an isomorphism from G2 (which is under E(F_q^k) to a subgroup of E(F_q^k1) where k1 < k. We can then execute the operations in the target group and then map back to G2. Obviously, the operations in target group are more efficient since we are working there with polynomials of smaller degree. The parameter d for which k/d = k1 is named the degree of the twist.
 
-```
-E: y^2 = x^3 + a*x + b
-E1: y^2 = x^3 + a*v^2*x + v^3*b
-```
-
-If we have v = c^2, we have a map psi E1(F_q) -> E(F_q):
+Let's see an example 4.3.1 from [12]:
 
 ```
-psi(x, y) = (c^2 * x, c^3 * y)
+sage: q=11
+sage: E=EllipticCurve(GF(q), [0,4]); E
+Elliptic Curve defined by y^2 = x^3 + 4 over Finite Field of size 11
+sage: len(E.points())
+12
 ```
 
-Now, we want v to be a quadratic nonresidue so that we will be able to non-trivially extend the field F(q) to F(q^2).
+There are 4 3-torsion subgroups (we are excluding 0 - point at infinity): {(0,2), (0,9)}, {(8,x), (8, 10x)}, {(7+2x, 10x), (7+2x, x)}, {(7+9x, x), (7+9x, 10x)}. The second one is the kernel of trace map, so G2.
 
-
-
-
-
-
-
-Let's see an example:
+Let's observe another elliptic curve:
 
 ```
-sage: E = EllipticCurve(GF(19), [1, 6]); E
-Elliptic Curve defined by y^2 = x^3 + x + 6 over Finite Field of size 19
-sage: E1 = EllipticCurve(GF(19), [4, 10]); E1
-sage: E.cardinality()
-18
-Elliptic Curve defined by y^2 = x^3 + 4*x + 10 over Finite Field of size 19
-sage: E1.cardinality()
-22
+sage: E1=EllipticCurve(GF(q), [0,-4]); E1
+Elliptic Curve defined by y^2 = x^3 + 7 over Finite Field of size 11
 
-# now extend the field and observe curve in extended field F(19^2)
-sage: E_ext = E.base_extend(GF(19^2)); E_ext
-Elliptic Curve defined by y^2 = x^3 + x + 6 over Finite Field in z2 of size 19^2
-sage: E1_ext = E1.base_extend(GF(19^2)); E1_ext
-Elliptic Curve defined by y^2 = x^3 + 4*x + 10 over Finite Field in z2 of size 19^2
-sage: E_ext.cardinality()
-396
-sage: E1_ext.cardinality()
-396
 ```
 
+E and E1 are isomorphic and isomorphism is end1: (x,y) -> (-x, i*y) where i^2 + 1 = 0. The inverse of end1 is end2: (x,y) -> (-x, -i*y).
+
+Now, the beautiful thing is that end1 maps G2 (which is under E(F_q^2) into elements of E1(F_q). So we can represent elements from G2 as elements in "non-extended" E1. Note that maps end1, end2 are almost cost free.
 
 
+Let's have another example (4.3.2 from [12]).
+
+```
+sage: q=103
+sage: E=EllipticCurve(GF(q), [0,72]); E
+Elliptic Curve defined by y^2 = x^3 + 72 over Finite Field of size 103
+sage: len(E.points())
+84
+```
+
+The embedding degree k = 6.
+
+```
+sage: K.<x> = GF(q^6, modulus=x^6+2)
+sage: E_ext=EllipticCurve(K, [0,72]); E_ext
+Elliptic Curve defined by y^2 = x^3 + 72 over Finite Field in x of size 103^6
+```
+
+The trace zero subgroup G2 is in E_ext and is generated by (35x^4, 42x^3).
+
+Let's observe the following elliptic curve:
+
+```
+sage: E1=EllipticCurve(GF(q), [0,72*x^6]); E1
+Elliptic Curve defined by y^2 = x^3 + 62 over Finite Field of size 103
+```
+
+The isomorhpism between E_ext and E1_ext is given by end1: (x,y) -> (x/i^2, y/i^3) and end2: (x,y) -> (i^2 * x, i^3 * y) where i^6 + 2 = 0. This is a sextic twist (d is 6) as we can map elements from E(F_q^6) to E(F_q).
+
+Obviously, we want d (degree of twist) as high as possible, but as it turns out d can be only 2, 3, 4, or 6. For example d=4 twist is available only for curves of form y^2 = x^3 + a*x, while d=6 twist is available only when curve is of the form y^2 = x^3 + b.
 
 
 # Barreto-Naehrig (BN) curves
@@ -622,6 +682,6 @@ Because t, n, p are parameterised, the space needed to store or transmit informa
 
 [12] http://www.craigcostello.com.au/pairings/PairingsForBeginners.pdf
 
-[13] S. D. Galbraith. Pairings, volume 317 of London Mathematical
+[13] S. D. sGalbraith. Pairings, volume 317 of London Mathematical
 Society Lecture Notes, chapter IX, pages 183–213. Cambridge University
 Press, 2005.
